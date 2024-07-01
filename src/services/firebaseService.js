@@ -1,6 +1,7 @@
 import { fbdb } from '../app/firebase';
 import {
   push,
+  update,
   set,
   ref,
   query,
@@ -11,6 +12,10 @@ import {
 
 const fbPush = (path, values) => {
   return push(ref(fbdb, path), values).key;
+}
+
+const fbUpdate = (path, values) => {
+  return update(ref(fbdb, path), values);
 }
 
 const fbSet = (path, values) => {
@@ -31,6 +36,7 @@ const fbOnValue = (path) => {
 
 export {
   fbPush,
+  fbUpdate,
   fbSet,
   fbOnValue
 }

@@ -5,14 +5,14 @@ import Menu from '../components/Menu';
 import Drawer from '../components/Drawer';
 import { TagContext } from '../context/TagContext';
 import moment from 'moment';
-import { fbPush, fbSet } from '../services/firebaseService';
+import { fbPush, fbUpdate } from '../services/firebaseService';
 
 const initialState = {
   body: '',
   characterSize: 'noSize',
   tags: [],
   tagsLoaded: false,
-  tagList: [],
+  autoTagging: [],
   saving: false,
   published: false
 };
@@ -45,16 +45,17 @@ const Post = () => {
   }
 
   const updatePostDetails = (newPostDetails) => {
-    const mergeObjects = Object.assign(postDetails, newPostDetails);
+    const mergeObjects = Object.assign({...postDetails}, newPostDetails);
     setPostDetails(mergeObjects);
   }
 
+    /** text and update ** */
   const handleChange = (e) => {
     const { value } = e.target;
     const { length } = value;
     updatePostDetails({
-      characterSize: getSize(length),
-      body: value
+      body: value,
+      characterSize: getSize(length)
     });
   }
 
@@ -75,29 +76,29 @@ const Post = () => {
             text: body
           }
         })).then((resp) => {
-          const newTagListArray = resp.data.response.content.split(',').map((item) => item.trim());
-          const newTagListObject = {};
+          const autoTaggingArray = resp.data.response.content.split(',').map((item) => item.trim());
+          const autoTaggingObject = {};
 
           updatePostDetails({
-            tagList: newTagListArray,
+            autoTagging: autoTaggingArray,
             published: true,
             saving: true
           });
 
-          for (const key of newTagListArray) {
-            newTagListObject[key] = true;
+          for (const key of autoTaggingArray) {
+            autoTaggingObject[key] = true;
           }
 
           const pushKey = fbPush('/userPost/-NrnSwk-t38iZWOB76Lt/post/', {
             dateCreated: moment().valueOf(),
             body,
-            tags: newTagListObject
+            tags: autoTaggingObject
           });
 
-          for(let i in newTagListArray) {
+          for(let i in autoTaggingArray) {
             const tagPost = {};
             tagPost[pushKey] = true;
-            fbSet(`/userTags/-NrnSwk-t38iZWOB76Lt/tags/${newTagListArray[i]}`, tagPost);
+            fbUpdate(`/userTags/-NrnSwk-t38iZWOB76Lt/tags/${autoTaggingArray[i]}`, tagPost);
           }
 
           // update userTags
@@ -109,12 +110,13 @@ const Post = () => {
 
   const renderLabels = () => {
     return postDetails.tags.map((item, index) => {
-      const highlightStyles = postDetails.tagList.includes(item.text) ? 'opacity-100 border border-green-500 text-green-500' : 'opacity-70 border border-blue-800 text-blue-800';
+      const highlightStyles = postDetails.autoTagging.includes(item.text) ? 'opacity-100 border border-green-500 text-green-500' : 'opacity-70 border border-blue-800 text-blue-800';
       return (<span key={`label${index}`} className={`${highlightStyles} bg-transparent text-sm font-medium me-2 px-2.5 py-0.5 rounded`}>{item.text}</span>)
     })
   }
 
   useEffect(() => {
+    if (postDetails.tagsLoaded) return;
     tags.then((resp) => {
       const newPostDetails = {...postDetails}
       newPostDetails.tags = resp;
