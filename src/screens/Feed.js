@@ -25,7 +25,7 @@ const Feed = () => {
               <div className="flex-1 text-left text-[#ffffff]">
                 <div className="ml-5">
                   <p className="text-lg font-bold">Generated tag</p>
-                  <p className="text-sm text-[#A9AAC5]">Your topic description</p>
+                  <p className="text-sm text-[#A9AAC5]">Your tag description</p>
                   <p className="text-sm text-[#A9AAC5] opacity-60">1 day ago</p>
                 </div>
               </div>
@@ -44,7 +44,7 @@ const Feed = () => {
               <div className="flex-1 text-left text-[#ffffff]">
                 <div className="ml-5">
                   <p className="text-lg font-bold">Generated tag</p>
-                  <p className="text-sm text-[#A9AAC5]">Your topic description</p>
+                  <p className="text-sm text-[#A9AAC5]">Your tag description</p>
                   <p className="text-sm text-[#A9AAC5] opacity-60">1 day ago</p>
                 </div>
               </div>
@@ -63,7 +63,7 @@ const Feed = () => {
               <div className="flex-1 text-left text-[#ffffff]">
                 <div className="ml-5">
                   <p className="text-lg font-bold">Generated tag</p>
-                  <p className="text-sm text-[#A9AAC5]">Your topic description</p>
+                  <p className="text-sm text-[#A9AAC5]">Your tag description</p>
                   <p className="text-sm text-[#A9AAC5] opacity-60">1 day ago</p>
                 </div>
               </div>

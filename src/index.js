@@ -6,18 +6,25 @@ import {
 } from 'react-router-dom';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
+import { TagContextHOC } from './context/TagContext';
 import {
 	LandingPage,
 	Export,
 	Feed,
 	Post,
+  Publish,
 	Profile,
 	Pricing,
-	Topic,
+	Tags,
   SignIn
 } from './screens';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
+
+const TagContextComponent = (BaseComponent) => {
+  const Component = TagContextHOC(BaseComponent);
+  return <Component />;
+}
 
 const router = createBrowserRouter([
   {
@@ -26,27 +33,31 @@ const router = createBrowserRouter([
   },
   {
     path: '/export',
-    element: <Export />,
+    element: TagContextComponent(Export),
   },
   {
     path: '/feed',
-    element: <Feed />,
+    element: TagContextComponent(Feed),
   },
   {
     path: '/post',
-    element: <Post />,
+    element: TagContextComponent(Post),
+  },
+  {
+    path: '/publish',
+    element: TagContextComponent(Publish),
   },
   {
     path: '/profile',
-    element: <Profile />,
+    element: TagContextComponent(Profile),
   },
   {
     path: '/pricing',
-    element: <Pricing />,
+    element: TagContextComponent(Pricing),
   },
   {
-    path: '/topic',
-    element: <Topic />,
+    path: '/tags',
+    element: TagContextComponent(Tags),
   },
   {
     path: '/signin',

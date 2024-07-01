@@ -2,9 +2,10 @@ import LandingPage from './LandingPage';
 import Export from './Export';
 import Feed from './Feed';
 import Post from './Post';
+import Publish from './Publish';
 import Profile from './Profile';
 import Pricing from './Pricing';
-import Topic from './Topic';
+import Tags from './Tags';
 import SignIn from './SignIn';
 
 export {
@@ -12,8 +13,9 @@ export {
 	Export,
 	Feed,
 	Post,
+	Publish,
 	Profile,
 	Pricing,
-	Topic,
+	Tags,
 	SignIn
 }
