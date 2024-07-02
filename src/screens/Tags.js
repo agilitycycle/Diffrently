@@ -7,11 +7,11 @@ import { fbSet } from '../services/firebaseService';
 const Tags = () => {
   const [tagList, setTagList] = useState([
     {
-      text: ''
+      tag: ''
     }
   ]);
   const [tagsLoaded, setTagsLoaded] = useState(false);
-  const tags = useContext(TagContext);
+  const { tags } = useContext(TagContext);
 
   const handleNewTag = (e) => {
     const { value, id } = e.target;
@@ -28,7 +28,7 @@ const Tags = () => {
     fbSet(`/userTags/-NrnSwk-t38iZWOB76Lt/tags/${tagValue}`, true);
 
     newTagList.push({
-      text: ''
+      tag: ''
     });
     setTagList(newTagList);
   }
@@ -39,7 +39,7 @@ const Tags = () => {
       const elementId = `tag${index}`;
       return (
         <li key={elementId}>
-          <input type="text" id={elementId} value={item.text} onChange={handleNewTag} className="bg-transparent text-white text-lg block inline w-fit mb-5 mr-3 p-2.5 border-b !outline-none" disabled={index !== tagLength} placeholder="Tag" />
+          <input type="text" id={elementId} value={item.tag} onChange={handleNewTag} className="bg-transparent text-white text-lg block inline w-fit mb-5 mr-3 p-2.5 border-b !outline-none" disabled={index !== tagLength} placeholder="Tag" />
           {index === tagLength && (
             <button type="button" onClick={handleAddTag} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">+</button>
           )}
@@ -52,11 +52,12 @@ const Tags = () => {
   }
 
   useEffect(() => {
-    tags.then((resp) => {
-      setTagList(resp);
+    if (tagsLoaded) return;
+    if (tags.length > 0) {
+      setTagList(tags);
       setTagsLoaded(true);
-    })
-  }, [tags])
+    }
+  })
 
 	return (<>
 		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">

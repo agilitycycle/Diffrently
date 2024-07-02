@@ -40,6 +40,10 @@ const router = createBrowserRouter([
     element: TagContextComponent(Feed),
   },
   {
+    path: '/feed/:tag',
+    element: TagContextComponent(Feed),
+  },
+  {
     path: '/post',
     element: TagContextComponent(Post),
   },

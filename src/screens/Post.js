@@ -19,7 +19,7 @@ const initialState = {
 
 const Post = () => {
   const navigate = useNavigate();
-  const tags = useContext(TagContext);
+  const { tags, getTags } = useContext(TagContext);
   const [postDetails, setPostDetails] = useState(initialState);
 
   const characterSizes = {
@@ -49,7 +49,6 @@ const Post = () => {
     setPostDetails(mergeObjects);
   }
 
-    /** text and update ** */
   const handleChange = (e) => {
     const { value } = e.target;
     const { length } = value;
@@ -72,7 +71,7 @@ const Post = () => {
       // check whether user has any tags...
       axios.post('https://d9mi4czmx5.execute-api.ap-southeast-2.amazonaws.com/prod/{read+}', JSON.stringify({
           data: {
-            tags: tags.map((item) => `\n- ${item.text}`).join(',').replace(',', ''),
+            tags: tags.map((item) => `\n- ${item.tag}`).join(',').replace(',', ''),
             text: body
           }
         })).then((resp) => {
@@ -101,6 +100,8 @@ const Post = () => {
             fbUpdate(`/userTags/-NrnSwk-t38iZWOB76Lt/tags/${autoTaggingArray[i]}`, tagPost);
           }
 
+          getTags();
+
           // update userTags
       }).catch(error => {
         console.log(error);
@@ -110,20 +111,20 @@ const Post = () => {
 
   const renderLabels = () => {
     return postDetails.tags.map((item, index) => {
-      const highlightStyles = postDetails.autoTagging.includes(item.text) ? 'opacity-100 border border-green-500 text-green-500' : 'opacity-70 border border-blue-800 text-blue-800';
-      return (<span key={`label${index}`} className={`${highlightStyles} bg-transparent text-sm font-medium me-2 px-2.5 py-0.5 rounded`}>{item.text}</span>)
+      const highlightStyles = postDetails.autoTagging.includes(item.tag) ? 'opacity-100 border border-green-500 text-green-500' : 'opacity-70 border border-blue-800 text-blue-800';
+      return (<span key={`label${index}`} className={`${highlightStyles} bg-transparent text-sm font-medium me-2 px-2.5 py-0.5 rounded`}>{item.tag}</span>)
     })
   }
 
   useEffect(() => {
     if (postDetails.tagsLoaded) return;
-    tags.then((resp) => {
+    if (tags.length > 0) {
       const newPostDetails = {...postDetails}
-      newPostDetails.tags = resp;
+      newPostDetails.tags = tags;
       newPostDetails.tagsLoaded = true;
       setPostDetails(newPostDetails);
-    })
-  }, [tags, postDetails])
+    }
+  })
 
 	return (<>
 		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">

@@ -1,8 +1,53 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import Menu from '../components/Menu';
 import Drawer from '../components/Drawer';
+import { TagContext } from '../context/TagContext';
+
+const initialState = {
+  tags: [],
+  post: []
+}
 
 const Feed = () => {
+  const { tags } = useContext(TagContext);
+  const [tagsLoaded, setTagsLoaded] = useState(initialState);
+
+  const renderTags = () => {
+    return tags.map((item, index) => {
+      return (<div key={`tag${index}`} className="flex flex-row text-white mb-5">
+        <div>
+          <div className="flex items-center justify-center rounded-full w-12 h-12 bg-[#40435a]">
+            &nbsp;
+          </div>
+        </div>
+        <div className="flex-1 text-left text-[#ffffff]">
+          <div className="ml-5">
+            <p className="text-lg font-bold">
+              <Link to="/feed" onClick={() => {}} className="flex items-center text-white">
+                <span>{item.tag} ({item.post.length})</span>
+              </Link>
+            </p>
+            <p className="text-sm text-[#A9AAC5]">Your tag description</p>
+            <p className="text-sm text-[#A9AAC5] opacity-60">1 day ago</p>
+          </div>
+        </div>
+        <div>
+          <div className="flex items-center justify-center rounded-md ml-auto w-12 h-12 bg-[#40435a]">
+            &nbsp;
+          </div>
+        </div>
+      </div>)
+    })
+  }
+
+  useEffect(() => {
+    if (tagsLoaded) return;
+    if (tags.length > 0) {
+      setTagsLoaded(true);
+    }
+  })
+
 	return (<>
 		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
 			<Drawer/>
@@ -16,7 +61,8 @@ const Feed = () => {
 		      	Flipbio
 		      </h1>
           <div className="min-w-80">
-            <div className="flex flex-row text-white mb-5">
+            {tagsLoaded && renderTags()}
+            {!tagsLoaded && (<div className="flex flex-row text-white mb-5">
               <div>
                 <div className="flex items-center justify-center rounded-full w-12 h-12 bg-[#40435a]">
                   &nbsp;
@@ -24,7 +70,7 @@ const Feed = () => {
               </div>
               <div className="flex-1 text-left text-[#ffffff]">
                 <div className="ml-5">
-                  <p className="text-lg font-bold">Generated tag</p>
+                  <p className="text-lg font-bold">Tags loading...</p>
                   <p className="text-sm text-[#A9AAC5]">Your tag description</p>
                   <p className="text-sm text-[#A9AAC5] opacity-60">1 day ago</p>
                 </div>
@@ -34,45 +80,7 @@ const Feed = () => {
                   &nbsp;
                 </div>
               </div>
-            </div>
-            <div className="flex flex-row text-white mb-5">
-              <div>
-                <div className="flex items-center justify-center rounded-full w-12 h-12 bg-[#40435a]">
-                  &nbsp;
-                </div>
-              </div>
-              <div className="flex-1 text-left text-[#ffffff]">
-                <div className="ml-5">
-                  <p className="text-lg font-bold">Generated tag</p>
-                  <p className="text-sm text-[#A9AAC5]">Your tag description</p>
-                  <p className="text-sm text-[#A9AAC5] opacity-60">1 day ago</p>
-                </div>
-              </div>
-              <div>
-                <div className="flex items-center justify-center rounded-md ml-auto w-12 h-12 bg-[#40435a]">
-                  &nbsp;
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-row text-white">
-              <div>
-                <div className="flex items-center justify-center rounded-full w-12 h-12 bg-[#40435a]">
-                  &nbsp;
-                </div>
-              </div>
-              <div className="flex-1 text-left text-[#ffffff]">
-                <div className="ml-5">
-                  <p className="text-lg font-bold">Generated tag</p>
-                  <p className="text-sm text-[#A9AAC5]">Your tag description</p>
-                  <p className="text-sm text-[#A9AAC5] opacity-60">1 day ago</p>
-                </div>
-              </div>
-              <div>
-                <div className="flex items-center justify-center rounded-md ml-auto w-12 h-12 bg-[#40435a]">
-                  &nbsp;
-                </div>
-              </div>
-            </div>
+            </div>)}
           </div>
 		    </div>
 		  </div>
