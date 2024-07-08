@@ -1,9 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Menu from '../components/Menu';
 import Drawer from '../components/Drawer';
 import FlipBioProfileImage from '../assets/fb-profile-1000.png';
 
 const LandingPage = () => {
+	const navigate = useNavigate();
+
 	return (<>
 		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
 			<Drawer/>
@@ -20,7 +23,7 @@ const LandingPage = () => {
 			      <p className="text-lg text-white mb-4 ml-auto mr-auto">
 			      	7 day free trial
 			      </p>
-			    	<button className="rounded-full mb-20 ml-auto mr-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center">
+			    	<button onClick={() => navigate('/signin')} className="rounded-full mb-20 ml-auto mr-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center">
 			    		start now
 			    	</button>
 		      </div>

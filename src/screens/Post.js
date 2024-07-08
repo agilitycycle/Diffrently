@@ -44,18 +44,14 @@ const Post = () => {
     }
   }
 
-  const updatePostDetails = (newPostDetails) => {
-    const mergeObjects = Object.assign({...postDetails}, newPostDetails);
-    setPostDetails(mergeObjects);
-  }
-
   const handleChange = (e) => {
     const { value } = e.target;
     const { length } = value;
-    updatePostDetails({
+    const newPostDetails = Object.assign({...postDetails}, {
       body: value,
       characterSize: getSize(length)
     });
+    setPostDetails(newPostDetails);
   }
 
   const handlePostAnother = () => setPostDetails(initialState);
@@ -64,9 +60,7 @@ const Post = () => {
     const { body, tags } = postDetails;
     if (body.length < 3) return;
     if (body.length > 50) {
-      updatePostDetails({
-        saving: true
-      });
+      setPostDetails(Object.assign({...postDetails}, { saving: true }));
 
       // check whether user has any tags...
       axios.post('https://d9mi4czmx5.execute-api.ap-southeast-2.amazonaws.com/prod/{read+}', JSON.stringify({
@@ -76,23 +70,24 @@ const Post = () => {
           }
         })).then((resp) => {
           const autoTaggingArray = resp.data.response.content.split(',').map((item) => item.trim());
-          const autoTaggingObject = {};
 
-          updatePostDetails({
+          const newPostDetails = Object.assign({...postDetails}, {
             autoTagging: autoTaggingArray,
             published: true,
             saving: true
           });
+          setPostDetails(newPostDetails);
 
-          for (const key of autoTaggingArray) {
-            autoTaggingObject[key] = true;
+          const postItem = {
+            dateCreated: moment().valueOf(),
+            body
           }
 
-          const pushKey = fbPush('/userPost/-NrnSwk-t38iZWOB76Lt/post/', {
-            dateCreated: moment().valueOf(),
-            body,
-            tags: autoTaggingObject
-          });
+          for (const key of autoTaggingArray) {
+            postItem[`tag${key}`] = true;
+          }
+
+          const pushKey = fbPush('/userPost/-NrnSwk-t38iZWOB76Lt/post/', postItem);
 
           for(let i in autoTaggingArray) {
             const tagPost = {};

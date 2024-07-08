@@ -22,9 +22,7 @@ const Publish = () => {
             <h2 className="block text-[#707070] border border-slate-700 rounded-lg p-10 text-xl text-white leading-snug mb-10">
 		      	  Your post was published. Would you like to publish another?
 		        </h2>
-            <button onClick={() => {
-              navigate('/post');
-            }} className="rounded-full mb-10 ml-auto mr-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center">
+            <button onClick={() => navigate('/post')} className="rounded-full mb-10 ml-auto mr-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center">
 			    		post again
 			    	</button>
 		      </div>

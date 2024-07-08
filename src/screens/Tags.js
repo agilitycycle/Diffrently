@@ -5,37 +5,61 @@ import { TagContext } from '../context/TagContext';
 import { fbSet } from '../services/firebaseService';
 
 const Tags = () => {
-  const [tagList, setTagList] = useState([
+  const [formTags, setFormTags] = useState([
     {
-      tag: ''
+      tag: '',
+      post: []
     }
   ]);
   const [tagsLoaded, setTagsLoaded] = useState(false);
   const { tags } = useContext(TagContext);
 
+  const tagExist = (checkArray, tag) => {
+    let array = [];
+    for (let i in checkArray) {
+      if (checkArray[i].tag === tag) {
+        array.push(tag);
+      }
+    }
+    return array;
+  }
+
   const handleNewTag = (e) => {
     const { value, id } = e.target;
-    const newTagList = [...tagList];
-    newTagList[Number(id.replace('tag', ''))] = value;
-    setTagList(newTagList);
+    const newFormTags = [...formTags];
+    const reformatId = id.replace('tag', '');
+    newFormTags[Number(reformatId)] = {
+      tag: value,
+      post: []
+    }
+    setFormTags(newFormTags);
   }
 
   const handleAddTag = () => {
-    const newTagList = [...tagList];
+    const newFormTags = [...formTags];
+    const tagValue = formTags[formTags.length - 1];
+    const { tag } = tagValue;
 
-    // validate value before setting
-    const tagValue = tagList[tagList.length - 1];
-    fbSet(`/userTags/-NrnSwk-t38iZWOB76Lt/tags/${tagValue}`, true);
-
-    newTagList.push({
-      tag: ''
-    });
-    setTagList(newTagList);
+    if (tag === '') return;
+    
+    // Doesn't exist
+    if (tagExist(tags, tag).length === 0) {
+      fbSet(`/userTags/-NrnSwk-t38iZWOB76Lt/tags/${tag}`, true);
+    }
+    
+    // Exist
+    if (tagExist(formTags, tag).length === 1) {
+      newFormTags.push({
+        tag: '',
+        post: []
+      });
+      setFormTags(newFormTags);
+    }
   }
 
 	const renderList = () => {
-    return tagList.map((item, index) => {
-      const tagLength = tagList.length - 1;
+    return formTags.map((item, index) => {
+      const tagLength = formTags.length - 1;
       const elementId = `tag${index}`;
       return (
         <li key={elementId}>
@@ -54,7 +78,7 @@ const Tags = () => {
   useEffect(() => {
     if (tagsLoaded) return;
     if (tags.length > 0) {
-      setTagList(tags);
+      setFormTags(tags);
       setTagsLoaded(true);
     }
   })

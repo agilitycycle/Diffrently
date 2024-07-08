@@ -6,7 +6,9 @@ import {
   ref,
   query,
   orderByKey,
+  orderByChild,
   limitToLast,
+  equalTo,
   onValue
 } from 'firebase/database';
 
@@ -22,7 +24,7 @@ const fbSet = (path, values) => {
   set(ref(fbdb, path), values);
 }
 
-const fbOnValue = (path) => {
+const fbOnValueOrderByKeyLimitToLast = (path) => {
   const r = ref(fbdb, path);
   const q = query(r, orderByKey(), limitToLast(5));
   return new Promise((resolve) => {
@@ -34,9 +36,25 @@ const fbOnValue = (path) => {
   })
 }
 
+const fbOnValueOrderByChild = (path, orderByChildValue, equalToValue) => {
+  const r = ref(fbdb, path);
+  const q = query(r, orderByChild(orderByChildValue), equalTo(equalToValue));
+  return new Promise((resolve) => {
+    onValue(q, (snapshot) => {
+      if(snapshot.val()) {
+        resolve(snapshot.val());
+      }
+      if(snapshot.val() === null) {
+        resolve(false);
+      }
+    });
+  })
+}
+
 export {
   fbPush,
   fbUpdate,
   fbSet,
-  fbOnValue
+  fbOnValueOrderByKeyLimitToLast,
+  fbOnValueOrderByChild
 }

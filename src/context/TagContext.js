@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext } from 'react';
-import { fbOnValue } from '../services/firebaseService';
+import { fbOnValueOrderByKeyLimitToLast } from '../services/firebaseService';
 
 export const TagContext = createContext(null);
 
@@ -17,7 +17,7 @@ const TagContextProvider = (props) => {
   const getTags = async () => {
     const newTags = {...tags};
     newTags.tags = [];
-    const result = await fbOnValue('/userTags/-NrnSwk-t38iZWOB76Lt/tags/');
+    const result = await fbOnValueOrderByKeyLimitToLast('/userTags/-NrnSwk-t38iZWOB76Lt/tags/');
     for (let value in result) {
       const post = getPost(result[value]);
       newTags.tags.push({

@@ -1,30 +1,29 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import {appState } from '../app/appSlice';
 import Menu from '../components/Menu';
 import Drawer from '../components/Drawer';
 import { TagContext } from '../context/TagContext';
 
-const initialState = {
-  tags: [],
-  post: []
-}
-
 const Feed = () => {
   const { tags } = useContext(TagContext);
-  const [tagsLoaded, setTagsLoaded] = useState(initialState);
+  const currentAppState = {...useSelector(appState)};
+  const { photoUrl } = currentAppState;
+  const [tagsLoaded, setTagsLoaded] = useState(false);
 
   const renderTags = () => {
     return tags.map((item, index) => {
       return (<div key={`tag${index}`} className="flex flex-row text-white mb-5">
         <div>
-          <div className="flex items-center justify-center rounded-full w-12 h-12 bg-[#40435a]">
+          <div className="flex items-center justify-center rounded-full w-12 h-12 bg-[#40435a]" style={renderProfileStyle()}>
             &nbsp;
           </div>
         </div>
         <div className="flex-1 text-left text-[#ffffff]">
           <div className="ml-5">
             <p className="text-lg font-bold">
-              <Link to="/feed" onClick={() => {}} className="flex items-center text-white">
+              <Link to={`/feed/${item.tag}`} onClick={() => {}} className="flex items-center text-white">
                 <span>{item.tag} ({item.post.length})</span>
               </Link>
             </p>
@@ -41,12 +40,19 @@ const Feed = () => {
     })
   }
 
+  const renderProfileStyle = () => {
+    return {
+      backgroundImage: `url(${photoUrl})`,
+      backgroundSize: 'contain'
+    };
+  }
+
   useEffect(() => {
     if (tagsLoaded) return;
     if (tags.length > 0) {
       setTagsLoaded(true);
     }
-  })
+  }, [tagsLoaded, tags.length])
 
 	return (<>
 		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">

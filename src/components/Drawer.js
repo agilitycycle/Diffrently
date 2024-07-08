@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { getAuth, signOut } from 'firebase/auth';
 import { updateAppState, appState } from '../app/appSlice';
 import { clsx } from 'clsx';
 
@@ -27,6 +28,7 @@ const classNames = {
 
 const Drawer = ({ side = 'left' }) => {
   const currentAppState = useSelector(appState);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const open = currentAppState && currentAppState.drawer;
 
@@ -43,6 +45,25 @@ const Drawer = ({ side = 'left' }) => {
       newAppState.drawerMenuItemClicked = false;
     }
     dispatch(updateAppState(newAppState));
+  }
+
+  const handleSignOut = () => {
+    const auth = getAuth();
+    const newDrawerState = !currentAppState.drawerMenuItemClicked;
+    signOut(auth).then(() => {
+      const newAppState = Object.assign({...currentAppState}, {
+        drawerMenuItemClicked: newDrawerState,
+        loggedIn: false,
+        photoUrl: '',
+        displayName: '',
+        email: '',
+        userId: ''
+      });
+      dispatch(updateAppState(newAppState));
+      navigate('/');
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 
   useEffect(() => {
@@ -115,6 +136,11 @@ const Drawer = ({ side = 'left' }) => {
                       <Link to="/feed" onClick={drawerMenuItemClicked} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
                          <span>Feed</span>
                       </Link>
+                    </li>
+                    <li>
+                      <button onClick={handleSignOut} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
+                         <span>Sign out</span>
+                      </button>
                     </li>
                   </ul>
                 </div>
