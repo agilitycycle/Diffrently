@@ -1,7 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Menu from '../components/Menu';
-import Drawer from '../components/Drawer';
+import {
+  Menu,
+  Drawer,
+  Header
+} from '../components';
 import FlipBioProfileImage from '../assets/fb-profile-1000.png';
 
 const LandingPage = () => {
@@ -13,9 +16,7 @@ const LandingPage = () => {
 			<Menu/>
 		  <div className="flex items-center justify-center h-full">
 		    <div className="h-full">
-		      <h1 className="text-5xl text-white text-left font-semibold mb-8">
-		      	Flipbio
-		      </h1>
+          <Header useLink={false} />
 		      <h2 className="text-6xl text-white text-left leading-snug w-full md:w-3/4 mb-8">
 		      	Start auto-tagging your content today.
 		      </h2>
@@ -95,11 +96,11 @@ const LandingPage = () => {
           <h2 className="text-lg text-white text-center leading-snug mb-3">
             <b>Hello</b>, I'm James - Creator of FlipBio
           </h2>
-          <h3 className="text-md text-white text-center leading-snug mb-20">
+          <h3 className="text-base text-white text-center leading-snug mb-20">
             Re-imagining tags.
           </h3>
           <div className="text-center">
-            <a href="#" className="font-medium text-sm text-blue-600 dark:text-blue-500 hover:underline pb-10">
+            <a href="/" className="font-medium text-sm text-blue-600 dark:text-blue-500 hover:underline pb-10">
               Terms and conditions
             </a>
           </div>

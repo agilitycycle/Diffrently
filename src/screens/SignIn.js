@@ -5,8 +5,11 @@ import { updateAppState, appState } from '../app/appSlice';
 import { auth, provider, fbdb } from '../app/firebase';
 import { signInWithPopup } from 'firebase/auth';
 import { ref, query, get, push, orderByChild, equalTo } from 'firebase/database';
-import Menu from '../components/Menu';
-import Drawer from '../components/Drawer';
+import {
+  Menu,
+  Drawer,
+  Header
+} from '../components';
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -61,9 +64,7 @@ const SignIn = () => {
 			<Menu/>
 		  <div className="flex items-center justify-center h-full">
 		    <div className="h-full sm:h-auto">
-		      <h1 className="text-5xl text-white text-left font-semibold mb-8">
-		      	Flipbio
-		      </h1>
+          <Header />
 		      <h2 className="text-2xl text-white text-left leading-snug mb-8">
 		      	1. Login to continue
 		      </h2>

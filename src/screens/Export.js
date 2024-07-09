@@ -1,6 +1,9 @@
 import React from 'react';
-import Menu from '../components/Menu';
-import Drawer from '../components/Drawer';
+import {
+  Menu,
+  Drawer,
+  Header
+} from '../components';
 
 const Export = () => {
 	return (<>
@@ -9,12 +12,7 @@ const Export = () => {
 			<Menu/>
 		  <div className="flex items-center justify-center h-full">
 		    <div className="min-w-80 h-full sm:h-auto">
-          <h3 className="text-lg text-[#A9AAC5] text-left leading-snug mb-2">
-		      	Export
-		      </h3>
-		      <h1 className="text-5xl text-white text-left font-semibold mb-10">
-		      	Flipbio
-		      </h1>
+		      <Header title="Export" className="text-5xl text-white text-left font-semibold mb-10" />
           <h2 className="text-2xl text-white text-left leading-snug mb-10">
 		      	Export your data to:
 		      </h2>

@@ -1,8 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { appState } from '../app/appSlice';
-import Menu from '../components/Menu';
-import Drawer from '../components/Drawer';
+import {
+  Menu,
+  Drawer,
+  Header
+} from '../components';
 
 const Profile = () => {
 	const currentAppState = useSelector(appState);
@@ -21,9 +24,7 @@ const Profile = () => {
 			<Menu/>
 		  <div className="flex items-center justify-center h-full">
 		    <div className="h-full sm:h-auto">
-		      <h1 className="text-5xl text-white text-left font-semibold mb-8">
-		      	Flipbio
-		      </h1>
+          <Header />
 		      <h2 className="text-2xl text-white text-left leading-snug mb-8">
 		      	1. Set up your profile
 		      </h2>
@@ -46,7 +47,7 @@ const Profile = () => {
 			    		save
 			    	</button>
             <div>
-              <a href="#" className="font-medium text-sm text-blue-600 dark:text-blue-500 hover:underline pb-10 mb-20">
+              <a href="/" className="font-medium text-sm text-blue-600 dark:text-blue-500 hover:underline pb-10 mb-20">
                 Subscriptions
               </a>
             </div>

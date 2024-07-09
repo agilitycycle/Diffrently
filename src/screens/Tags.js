@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import Menu from '../components/Menu';
-import Drawer from '../components/Drawer';
+import { useNavigate } from 'react-router-dom';
 import { TagContext } from '../context/TagContext';
 import { fbSet } from '../services/firebaseService';
+import {
+  Menu,
+  Drawer,
+  Header
+} from '../components';
 
 const Tags = () => {
   const [formTags, setFormTags] = useState([
@@ -13,6 +17,7 @@ const Tags = () => {
   ]);
   const [tagsLoaded, setTagsLoaded] = useState(false);
   const { tags } = useContext(TagContext);
+  const navigate = useNavigate();
 
   const tagExist = (checkArray, tag) => {
     let array = [];
@@ -78,10 +83,15 @@ const Tags = () => {
   useEffect(() => {
     if (tagsLoaded) return;
     if (tags.length > 0) {
-      setFormTags(tags);
+      const newFormTags = [...tags];
+      newFormTags.push({
+        tag: '',
+        post: []
+      });
+      setFormTags(newFormTags);
       setTagsLoaded(true);
     }
-  })
+  }, [tags, tagsLoaded, setFormTags])
 
 	return (<>
 		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
@@ -89,9 +99,7 @@ const Tags = () => {
 			<Menu/>
 		  <div className="flex items-center justify-center h-full">
 		    <div className="h-full sm:h-auto">
-		      <h1 className="text-5xl text-white text-left font-semibold mb-8">
-		      	Flipbio
-		      </h1>
+          <Header />
 		      <h2 className="text-2xl text-white text-left leading-snug mb-2">
 		      	2. Set up your tags
 		      </h2>
@@ -119,8 +127,8 @@ const Tags = () => {
             </div>
           )}
           <div className="text-center">
-			    	<button className="rounded-full mb-20 ml-auto mr-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center">
-			    		go
+			    	<button onClick={() => navigate('/post')} className="rounded-full mb-20 ml-auto mr-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center">
+			    		post
 			    	</button>
 		      </div>
 		    </div>

@@ -1,7 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Menu from '../components/Menu';
-import Drawer from '../components/Drawer';
+import {
+	Menu,
+	Drawer,
+	Header
+  } from '../components';
 
 const Publish = () => {
 	const navigate = useNavigate();
@@ -15,9 +18,7 @@ const Publish = () => {
           <h3 className="text-lg text-[#A9AAC5] text-left leading-snug mb-2">
 		      	Your feed
 		      </h3>
-		      <h1 className="text-5xl text-white text-left font-semibold mb-8">
-		      	Flipbio
-		      </h1>
+          <Header />
           <div className="text-center">
             <h2 className="block text-[#707070] border border-slate-700 rounded-lg p-10 text-xl text-white leading-snug mb-10">
 		      	  Your post was published. Would you like to publish another?

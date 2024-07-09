@@ -119,12 +119,12 @@ const Drawer = ({ side = 'left' }) => {
                   <ul className="space-y-2 font-medium">
                     <li>
                       <Link to="/profile" onClick={drawerMenuItemClicked} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
-                         <span>View profile</span>
+                         <span>Profile</span>
                       </Link>
                     </li>
                     <li>
                       <Link to="/tags" onClick={drawerMenuItemClicked} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
-                         <span>Add tags</span>
+                         <span>Add Tags</span>
                       </Link>
                     </li>
                     <li>

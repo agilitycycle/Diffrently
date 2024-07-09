@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Menu from '../components/Menu';
-import Drawer from '../components/Drawer';
 import { TagContext } from '../context/TagContext';
-import moment from 'moment';
 import { fbPush, fbUpdate } from '../services/firebaseService';
+import moment from 'moment';
+import {
+  Menu,
+  Drawer,
+  Header
+} from '../components';
 
 const initialState = {
   body: '',
@@ -119,7 +122,7 @@ const Post = () => {
       newPostDetails.tagsLoaded = true;
       setPostDetails(newPostDetails);
     }
-  })
+  }, [postDetails, tags])
 
 	return (<>
 		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
@@ -127,12 +130,7 @@ const Post = () => {
 			<Menu/>
 		  <div className="flex items-center justify-center h-full">
 		    <div className="w-[500px] h-full sm:h-auto">
-          <h3 className="text-lg text-[#A9AAC5] text-left leading-snug mb-2">
-		      	Your feed
-		      </h3>
-		      <h1 className="text-5xl text-white text-left font-semibold mb-8">
-		      	Flipbio
-		      </h1>
+          <Header title="Your feed" />
 		      <div>
             <textarea value={postDetails.body} onChange={handleChange} rows="6" className="resize-none block py-2.5 pr-2.5 mb-20 w-full text-lg text-lg text-white bg-transparent !outline-none" placeholder="Write something..."/>
           </div>
