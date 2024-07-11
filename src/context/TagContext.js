@@ -17,7 +17,7 @@ const TagContextProvider = (props) => {
   const getTags = async () => {
     const newTags = {...tags};
     newTags.tags = [];
-    const result = await fbOnValueOrderByKeyLimitToLast('/userTags/-NrnSwk-t38iZWOB76Lt/tags/');
+    const result = await fbOnValueOrderByKeyLimitToLast('/userTags/-NrnSwk-t38iZWOB76Lt/tags/', 4);
     for (let value in result) {
       const post = getPost(result[value]);
       newTags.tags.push({
@@ -40,6 +40,7 @@ const TagContextProvider = (props) => {
   useEffect(() => {
     if (tags.loaded) return;
     getTags();
+    // eslint-disable-next-line
   }, [tags])
 
   return (<TagContext.Provider value={tags}>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { appState } from '../app/appSlice';
 import { TagContext } from '../context/TagContext';
@@ -26,11 +26,23 @@ const Tag = () => {
   const { tagsLoaded, postLoaded } = loaded;
   const routeTagName = pathname.substring(pathname.lastIndexOf('/') + 1);
 
+  const getTags = (tagEl) => {
+    return tagEl.map(tag => {
+      const highlightStyles = routeTagName === tag ? 'opacity-50 border border-sky-100 text-sky-100' : 'opacity-90 border border-sky-100 text-sky-100';
+      return <Link to={`/feed/${tag}`}>
+        <span key={tag} className={`${highlightStyles} bg-transparent text-sm font-medium me-2 px-2.5 py-0.5 rounded`}>
+          {tag}
+        </span>
+      </Link>
+    })
+  }
+
   const renderPost = () => {
     if (postDetails.length < 1) return;
     return postDetails.map((item, index) => {
       const { body } = item;
-      return (<div key={`tag${index}`} className="flex flex-row text-white mb-12">
+      const tagEl = Object.keys(item).filter(a => a.indexOf('tag') > -1).map(b => b.replace('tag', ''));
+      return (<div key={`tag${index}`} className="flex flex-row text-white mb-12 sm:mb-24">
         <div>
           <div className="flex items-center justify-center rounded-full w-12 h-12 bg-[#40435a]" style={renderProfileStyle()}>
             &nbsp;
@@ -41,10 +53,13 @@ const Tag = () => {
             <p className="text-xl font-bold mb-1">
               <span className="flex items-center text-white">{routeTagName}</span>
             </p>
-            <p className="text-base text-[#A9AAC5] leading-loose mb-2">
+            <p className="text-base text-[#A9AAC5] leading-9 mb-3">
               {body}
             </p>
-            <p className="text-sm text-[#A9AAC5] opacity-60">1 day ago</p>
+            <p className="text-sm text-[#A9AAC5] opacity-60">
+              <span className="mr-2">1 day ago</span>
+              {getTags(tagEl)}
+            </p>
           </div>
         </div>
         <div>

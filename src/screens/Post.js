@@ -109,7 +109,7 @@ const Post = () => {
 
   const renderLabels = () => {
     return postDetails.tags.map((item, index) => {
-      const highlightStyles = postDetails.autoTagging.includes(item.tag) ? 'opacity-100 border border-green-500 text-green-500' : 'opacity-70 border border-blue-800 text-blue-800';
+      const highlightStyles = postDetails.autoTagging.includes(item.tag) ? 'border border-green-500 text-green-500' : 'opacity-70 border border-blue-800 text-blue-800';
       return (<span key={`label${index}`} className={`${highlightStyles} bg-transparent text-sm font-medium me-2 px-2.5 py-0.5 rounded`}>{item.tag}</span>)
     })
   }

@@ -7,7 +7,7 @@ import {
   query,
   orderByKey,
   orderByChild,
-  limitToLast,
+  limitToFirst,
   equalTo,
   onValue
 } from 'firebase/database';
@@ -24,9 +24,9 @@ const fbSet = (path, values) => {
   set(ref(fbdb, path), values);
 }
 
-const fbOnValueOrderByKeyLimitToLast = (path) => {
+const fbOnValueOrderByKeyLimitToLast = (path, limit) => {
   const r = ref(fbdb, path);
-  const q = query(r, orderByKey(), limitToLast(5));
+  const q = query(r, orderByKey(), limitToFirst(limit));
   return new Promise((resolve) => {
     onValue(q, (snapshot) => {
       if(snapshot.val()) {

@@ -16,65 +16,46 @@ const Tags = () => {
     }
   ]);
   const [tagsLoaded, setTagsLoaded] = useState(false);
-  const { tags } = useContext(TagContext);
+  const [tagFormValue, setTagFormValue] = useState('');
+  const { tags, getTags } = useContext(TagContext);
   const navigate = useNavigate();
 
-  const tagExist = (checkArray, tag) => {
-    let array = [];
-    for (let i in checkArray) {
-      if (checkArray[i].tag === tag) {
-        array.push(tag);
-      }
-    }
-    return array;
-  }
-
   const handleNewTag = (e) => {
-    const { value, id } = e.target;
-    const newFormTags = [...formTags];
-    const reformatId = id.replace('tag', '');
-    newFormTags[Number(reformatId)] = {
-      tag: value,
-      post: []
-    }
-    setFormTags(newFormTags);
+    const { value } = e.target;
+    setTagFormValue(value);
   }
 
   const handleAddTag = () => {
-    const newFormTags = [...formTags];
-    const tagValue = formTags[formTags.length - 1];
-    const { tag } = tagValue;
-
-    if (tag === '') return;
-    
-    // Doesn't exist
-    if (tagExist(tags, tag).length === 0) {
-      fbSet(`/userTags/-NrnSwk-t38iZWOB76Lt/tags/${tag}`, true);
-    }
-    
-    // Exist
-    if (tagExist(formTags, tag).length === 1) {
-      newFormTags.push({
-        tag: '',
-        post: []
-      });
-      setFormTags(newFormTags);
+    if (tagFormValue.length > 3) {
+      // auto refresh
+      fbSet(`/userTags/-NrnSwk-t38iZWOB76Lt/tags/${tagFormValue}`, true);
+      setTagFormValue('');
+      setTagsLoaded(false);
+      getTags();
     }
   }
 
 	const renderList = () => {
     return formTags.map((item, index) => {
-      const tagLength = formTags.length - 1;
       const elementId = `tag${index}`;
       return (
-        <li key={elementId}>
-          <input type="text" id={elementId} value={item.tag} onChange={handleNewTag} className="bg-transparent text-white text-lg block inline w-fit mb-5 mr-3 p-2.5 border-b !outline-none" disabled={index !== tagLength} placeholder="Tag" />
-          {index === tagLength && (
-            <button type="button" onClick={handleAddTag} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">+</button>
-          )}
-          {index !== tagLength && (
-            <button type="button" className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">x</button>
-          )}
+        <li key={elementId} className="py-4">
+          <div className="flex items-center space-x-4 rtl:space-x-reverse">
+            <div className="inline-flex items-center rounded-md ml-auto w-12 h-12 bg-[#40435a]">
+              &nbsp;
+            </div>
+            <div className="flex-1">
+              <p className="text-base font-medium text-gray-900 truncate dark:text-white mb-0.5">
+                {item.tag}
+              </p>
+              <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                Your tag description...
+              </p>
+            </div>
+            <div className="inline-flex items-center">
+              <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-xs px-2 py-1 text-center mb-2 ">Edit</button>
+            </div>
+          </div>
         </li>
       )
     })
@@ -84,10 +65,6 @@ const Tags = () => {
     if (tagsLoaded) return;
     if (tags.length > 0) {
       const newFormTags = [...tags];
-      newFormTags.push({
-        tag: '',
-        post: []
-      });
       setFormTags(newFormTags);
       setTagsLoaded(true);
     }
@@ -98,19 +75,35 @@ const Tags = () => {
 			<Drawer/>
 			<Menu/>
 		  <div className="flex items-center justify-center h-full">
-		    <div className="h-full sm:h-auto">
+		    <div className="h-full">
           <Header />
 		      <h2 className="text-2xl text-white text-left leading-snug mb-2">
 		      	2. Set up your tags
 		      </h2>
-			    <h3 className="text-lg text-[#A9AAC5] text-left leading-snug mb-8">
+			    <h3 className="text-lg text-[#A9AAC5] text-left leading-snug mb-4">
 		      	For auto-tagging
 		      </h3>
           {tagsLoaded && (
             <div>
-              <ol className="mb-20 max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400">
-                {renderList()}
-              </ol>
+              <div className="space-y-1">
+                <ul className="max-w-md">
+                  <li>
+                    <div className="flex flex-row space-x-4 rtl:space-x-reverse">
+                      <div className="grow mb-8">
+                        <input type="text" value={tagFormValue} onChange={handleNewTag} className="w-full h-[40px] bg-transparent text-white text-lg block inline py-2.5 border-b border-b-sky-100 !outline-none" placeholder="Add a tag" />
+                      </div>
+                      <div className="flex-none">
+                        <button type="button" onClick={handleAddTag} className="h-[40px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add</button>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div className="mb-4 space-y-1 text-gray-500 rounded border border-gray-700">
+                <ul className="px-4 max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+                  {renderList()}
+                </ul>
+              </div>
             </div>
           )}
           {!tagsLoaded && (
@@ -126,11 +119,18 @@ const Tags = () => {
               </ol>
             </div>
           )}
-          <div className="text-center">
-			    	<button onClick={() => navigate('/post')} className="rounded-full mb-20 ml-auto mr-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center">
-			    		post
-			    	</button>
-		      </div>
+          {tagsLoaded && (
+            <div className="text-center">
+              <div className="mb-8">
+                <a href="/" className="font-medium text-sm text-blue-600 dark:text-blue-500 hover:underline pb-10 mb-20">
+                  Load more
+                </a>
+              </div> 
+              <button onClick={() => navigate('/post')} className="rounded-full mb-20 ml-auto mr-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center">
+                post
+              </button>
+            </div>
+          )}
 		    </div>
 		  </div>
 	  </div>
