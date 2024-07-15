@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { appState } from '../app/appSlice';
 import { TagContext } from '../context/TagContext';
-import { fbOnValueOrderByChild } from '../services/firebaseService';
+import { fbOnValueOrderByChildLimitToFirst } from '../services/firebaseService';
 import {
   Menu,
   Drawer,
@@ -28,7 +28,7 @@ const Tag = () => {
 
   const getTags = (tagEl) => {
     return tagEl.map(tag => {
-      const highlightStyles = routeTagName === tag ? 'opacity-50 border border-sky-100 text-sky-100' : 'opacity-90 border border-sky-100 text-sky-100';
+      const highlightStyles = routeTagName === tag ? 'opacity-40 border border-[#A9AAC5] text-[#A9AAC5]' : 'border border-emerald-300 text-emerald-300';
       return <Link to={`/feed/${tag}`}>
         <span key={tag} className={`${highlightStyles} bg-transparent text-sm font-medium me-2 px-2.5 py-0.5 rounded`}>
           {tag}
@@ -53,11 +53,11 @@ const Tag = () => {
             <p className="text-xl font-bold mb-1">
               <span className="flex items-center text-white">{routeTagName}</span>
             </p>
-            <p className="text-base text-[#A9AAC5] leading-9 mb-3">
+            <p className="text-base text-[#A9AAC5] leading-9 mb-3 break-all">
               {body}
             </p>
-            <p className="text-sm text-[#A9AAC5] opacity-60">
-              <span className="mr-2">1 day ago</span>
+            <p className="text-sm text-[#A9AAC5]">
+              <span className="mr-2 opacity-60">1 day ago</span>
               {getTags(tagEl)}
             </p>
           </div>
@@ -87,7 +87,7 @@ const Tag = () => {
     if (tagsLoaded && !postLoaded) {
       const getPost = async () => {
         const path = '/userPost/-NrnSwk-t38iZWOB76Lt/post/';
-        const result = await fbOnValueOrderByChild(path, `tag${routeTagName}`, true);
+        const result = await fbOnValueOrderByChildLimitToFirst(path, `tag${routeTagName}`, true, 5);
         let newPostDetails = [];
         for (let i in result) {
           let newPost = Object.assign({ id: i }, result[i]);
@@ -168,6 +168,9 @@ const Tag = () => {
                 </div>
               </div>
             </div>)}
+            <div className="flex items-center justify-center mb-3">
+              <button type="button" className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Load More</button>
+            </div>
           </div>
 		    </div>
 		  </div>

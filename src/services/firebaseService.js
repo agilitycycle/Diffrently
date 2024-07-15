@@ -24,13 +24,28 @@ const fbSet = (path, values) => {
   set(ref(fbdb, path), values);
 }
 
-const fbOnValueOrderByKeyLimitToLast = (path, limit) => {
+const fbOnValueOrderByKeyLimitToFirst = (path, limit) => {
   const r = ref(fbdb, path);
   const q = query(r, orderByKey(), limitToFirst(limit));
   return new Promise((resolve) => {
     onValue(q, (snapshot) => {
       if(snapshot.val()) {
         resolve(snapshot.val());
+      }
+    });
+  })
+}
+
+const fbOnValueOrderByChildLimitToFirst = (path, orderByChildValue, equalToValue, limit) => {
+  const r = ref(fbdb, path);
+  const q = query(r, orderByChild(orderByChildValue), equalTo(equalToValue), limitToFirst(limit));
+  return new Promise((resolve) => {
+    onValue(q, (snapshot) => {
+      if(snapshot.val()) {
+        resolve(snapshot.val());
+      }
+      if(snapshot.val() === null) {
+        resolve(false);
       }
     });
   })
@@ -55,6 +70,7 @@ export {
   fbPush,
   fbUpdate,
   fbSet,
-  fbOnValueOrderByKeyLimitToLast,
+  fbOnValueOrderByChildLimitToFirst,
+  fbOnValueOrderByKeyLimitToFirst,
   fbOnValueOrderByChild
 }

@@ -9,6 +9,8 @@ import {
 } from '../components';
 
 const Tags = () => {
+  const { tags, getTags } = useContext(TagContext);
+  const navigate = useNavigate();
   const [formTags, setFormTags] = useState([
     {
       tag: '',
@@ -17,8 +19,15 @@ const Tags = () => {
   ]);
   const [tagsLoaded, setTagsLoaded] = useState(false);
   const [tagFormValue, setTagFormValue] = useState('');
-  const { tags, getTags } = useContext(TagContext);
-  const navigate = useNavigate();
+  const [max, setMax] = useState(4);
+
+  const loadMore = () => {
+    setMax(100);
+  }
+
+  const showLess = () => {
+    setMax(4);
+  }
 
   const handleNewTag = (e) => {
     const { value } = e.target;
@@ -37,6 +46,7 @@ const Tags = () => {
 
 	const renderList = () => {
     return formTags.map((item, index) => {
+      if (index >= max) return false;
       const elementId = `tag${index}`;
       return (
         <li key={elementId} className="py-4">
@@ -71,7 +81,7 @@ const Tags = () => {
   }, [tags, tagsLoaded, setFormTags])
 
 	return (<>
-		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
+		<div className="flex flex-col px-5 h-screen bg-[#000423]">
 			<Drawer/>
 			<Menu/>
 		  <div className="flex items-center justify-center h-full">
@@ -99,7 +109,7 @@ const Tags = () => {
                   </li>
                 </ul>
               </div>
-              <div className="mb-4 space-y-1 text-gray-500 rounded border border-gray-700">
+              <div className="mb-6 space-y-1 text-gray-500 rounded border border-gray-700">
                 <ul className="px-4 max-w-md divide-y divide-gray-200 dark:divide-gray-700">
                   {renderList()}
                 </ul>
@@ -108,7 +118,7 @@ const Tags = () => {
           )}
           {!tagsLoaded && (
             <div>
-              <ol className="mb-20 max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400">
+              <ol className="mb-6 max-w-md space-y-1 text-gray-500 list-decimal list-inside dark:text-gray-400">
               <li>
                 <input type="text" className="bg-transparent text-white text-lg block inline w-fit mb-5 mr-3 p-2.5 border-b !outline-none" disabled placeholder="Tag" />
                 <svg aria-hidden="true" className="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -122,9 +132,16 @@ const Tags = () => {
           {tagsLoaded && (
             <div className="text-center">
               <div className="mb-8">
-                <a href="/" className="font-medium text-sm text-blue-600 dark:text-blue-500 hover:underline pb-10 mb-20">
-                  Load more
-                </a>
+                {max < 100 && (
+                  <button onClick={loadMore} className="font-medium text-sm text-blue-600 dark:text-blue-500 hover:underline pb-10">
+                    Load more
+                  </button>
+                )}
+                {max > 4 && (
+                  <button onClick={showLess} className="font-medium text-sm text-blue-600 dark:text-blue-500 hover:underline pb-10">
+                    Show less
+                  </button>
+                )}
               </div> 
               <button onClick={() => navigate('/post')} className="rounded-full mb-20 ml-auto mr-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center">
                 post
