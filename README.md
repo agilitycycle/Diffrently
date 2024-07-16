@@ -1,11 +1,17 @@
-
 # Flipbio
 
-Flipbio is the portfolio work of James Star, in the demonstration of AI *(Artificial Intelligence)*, and Text Classification (auto-tagging).
-
-**Flipbio:** Start AUTO-TAGGING your content today.
+Start Auto-Tagging your content today.
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+
+## 🚀 About Me
+
+Founder at Agility Cycle | Learn AI Auto-Tags | Join our FREE Subscription Service. • Unlock your cost. Buy me a coffee. ☕ 😱
+
+## Authors
+
+- [@jamesstar89](https://www.github.com/jamesstar89)
+
 ## Run Locally
 
 Clone the project
@@ -68,11 +74,3 @@ Takes two numbers and returns the sum.
  - [React](https://react.dev)
  - [Capacitor](https://capacitorjs.com)
  - [Readme](https://readme.so)
-
-
-## 🚀 About Me
-I'm a front-end developer with a passion for UX/UI workflow.
-
-## Authors
-
-- [@jamesstar89](https://www.github.com/jamesstar89)

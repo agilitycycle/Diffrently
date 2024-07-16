@@ -85,7 +85,7 @@ const Tags = () => {
 			<Drawer/>
 			<Menu/>
 		  <div className="flex items-center justify-center h-full">
-		    <div className="h-full">
+		    <div className="h-full w-10/12 sm:w-7/12">
           <Header />
 		      <h2 className="text-2xl text-white text-left leading-snug mb-2">
 		      	2. Set up your tags
@@ -96,7 +96,7 @@ const Tags = () => {
           {tagsLoaded && (
             <div>
               <div className="space-y-1">
-                <ul className="max-w-md">
+                <ul className="w-full">
                   <li>
                     <div className="flex flex-row space-x-4 rtl:space-x-reverse">
                       <div className="grow mb-8">
@@ -110,7 +110,7 @@ const Tags = () => {
                 </ul>
               </div>
               <div className="mb-6 space-y-1 text-gray-500 rounded border border-gray-700">
-                <ul className="px-4 max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+                <ul className="px-4 w-full divide-y divide-gray-200 dark:divide-gray-700">
                   {renderList()}
                 </ul>
               </div>
@@ -131,17 +131,19 @@ const Tags = () => {
           )}
           {tagsLoaded && (
             <div className="text-center">
-              <div className="mb-8">
-                {max < 100 && (
-                  <button onClick={loadMore} className="font-medium text-sm text-blue-600 dark:text-blue-500 hover:underline pb-10">
-                    Load more
-                  </button>
-                )}
-                {max > 4 && (
-                  <button onClick={showLess} className="font-medium text-sm text-blue-600 dark:text-blue-500 hover:underline pb-10">
-                    Show less
-                  </button>
-                )}
+              <div>
+                <div className="flex items-center justify-center mt-10">
+                  {max < 100 && (
+                      <button onClick={loadMore} className="font-medium text-sm text-blue-600 dark:text-blue-500 hover:underline pb-10">
+                        Load more
+                      </button>
+                  )}
+                  {max > 4 && (
+                    <button onClick={showLess} className="font-medium text-sm text-blue-600 dark:text-blue-500 hover:underline pb-10">
+                      Show less
+                    </button>
+                  )}
+                </div>
               </div> 
               <button onClick={() => navigate('/post')} className="rounded-full mb-20 ml-auto mr-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center">
                 post

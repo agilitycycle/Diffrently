@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { appState } from '../app/appSlice';
 import { TagContext } from '../context/TagContext';
-import { fbOnValueOrderByChildLimitToFirst } from '../services/firebaseService';
+import { fbOnValueOrderByChildLimitToLast } from '../services/firebaseService';
 import {
   Menu,
   Drawer,
@@ -37,6 +37,10 @@ const Tag = () => {
     })
   }
 
+  const loadMore = () => {
+
+  }
+
   const renderPost = () => {
     if (postDetails.length < 1) return;
     return postDetails.map((item, index) => {
@@ -53,8 +57,8 @@ const Tag = () => {
             <p className="text-xl font-bold mb-1">
               <span className="flex items-center text-white">{routeTagName}</span>
             </p>
-            <p className="text-base text-[#A9AAC5] leading-9 mb-3 break-all">
-              {body}
+            <p className="text-base text-[#A9AAC5] leading-9 mb-3" style={{wordBreak: 'break-word'}}>
+              {body.slice(0, 150 - 1)}...
             </p>
             <p className="text-sm text-[#A9AAC5]">
               <span className="mr-2 opacity-60">1 day ago</span>
@@ -87,12 +91,17 @@ const Tag = () => {
     if (tagsLoaded && !postLoaded) {
       const getPost = async () => {
         const path = '/userPost/-NrnSwk-t38iZWOB76Lt/post/';
-        const result = await fbOnValueOrderByChildLimitToFirst(path, `tag${routeTagName}`, true, 5);
+        const result = await fbOnValueOrderByChildLimitToLast(path, `tag${routeTagName}`, true, 5);
         let newPostDetails = [];
         for (let i in result) {
           let newPost = Object.assign({ id: i }, result[i]);
           newPostDetails.push(newPost);
         }
+  
+        const sortByDate = (a, b) => a.dateCreated - b.dateCreated;
+
+        newPostDetails.sort(sortByDate).reverse();
+
         setPostDetails(newPostDetails);
         const newLoaded = {...loaded};
         newLoaded.postLoaded = true;
@@ -169,7 +178,7 @@ const Tag = () => {
               </div>
             </div>)}
             <div className="flex items-center justify-center mb-3">
-              <button type="button" className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Load More</button>
+              <button type="button" onClick={loadMore} className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Load More</button>
             </div>
           </div>
 		    </div>
