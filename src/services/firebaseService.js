@@ -10,7 +10,9 @@ import {
   limitToFirst,
   limitToLast,
   equalTo,
-  onValue
+  onValue,
+  startAt,
+  endAt
 } from 'firebase/database';
 
 const fbPush = (path, values) => {
@@ -40,6 +42,21 @@ const fbOnValueOrderByKeyLimitToFirst = (path, limit) => {
 const fbOnValueOrderByChildLimitToFirst = (path, orderByChildValue, equalToValue, limit) => {
   const r = ref(fbdb, path);
   const q = query(r, orderByChild(orderByChildValue), equalTo(equalToValue), limitToFirst(limit));
+  return new Promise((resolve) => {
+    onValue(q, (snapshot) => {
+      if(snapshot.val()) {
+        resolve(snapshot.val());
+      }
+      if(snapshot.val() === null) {
+        resolve(false);
+      }
+    });
+  })
+}
+
+const fbOnValueOrderByChildEndAtLimitToFirst = (path, orderByChildValue, equalToValue, lastId, limit) => {
+  const r = ref(fbdb, path);
+  const q = query(r, orderByChild(orderByChildValue), startAt(true), endAt(true, lastId), limitToFirst(limit));
   return new Promise((resolve) => {
     onValue(q, (snapshot) => {
       if(snapshot.val()) {
@@ -88,6 +105,7 @@ export {
   fbSet,
   fbOnValueOrderByChildLimitToFirst,
   fbOnValueOrderByKeyLimitToFirst,
+  fbOnValueOrderByChildEndAtLimitToFirst,
   fbOnValueOrderByChildLimitToLast,
   fbOnValueOrderByChild
 }

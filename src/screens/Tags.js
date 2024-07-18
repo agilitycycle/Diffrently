@@ -36,7 +36,6 @@ const Tags = () => {
 
   const handleAddTag = () => {
     if (tagFormValue.length > 3) {
-      // auto refresh
       fbSet(`/userTags/-NrnSwk-t38iZWOB76Lt/tags/${tagFormValue}`, true);
       setTagFormValue('');
       setTagsLoaded(false);
