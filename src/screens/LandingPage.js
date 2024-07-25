@@ -1,19 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Menu,
-  Drawer,
-  Header
-} from '../components';
+import { Header } from '../components';
 import FlipBioProfileImage from '../assets/fb-profile-1000.png';
 
 const LandingPage = () => {
 	const navigate = useNavigate();
 
 	return (<>
-		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
-			<Drawer/>
-			<Menu/>
+		<div className="flex flex-col pt-7 px-5 h-screen bg-[#000423]">
 		  <div className="flex items-center justify-center h-full">
 		    <div className="h-full">
           <Header useLink={false} />

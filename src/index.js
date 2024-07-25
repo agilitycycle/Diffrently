@@ -23,6 +23,7 @@ import {
 	Pricing,
 	Tags,
   Tag,
+  Founders,
   SignIn
 } from './screens';
 import './index.css';
@@ -139,6 +140,10 @@ const router = createBrowserRouter([
   {
     path: '/tags',
     element: TagContextComponent(Tags),
+  },
+  {
+    path: '/founders',
+    element: TagContextComponent(Founders),
   },
   {
     path: '/signin',

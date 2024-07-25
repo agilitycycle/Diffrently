@@ -39,6 +39,33 @@ const fbOnValueOrderByKeyLimitToFirst = (path, limit) => {
   })
 }
 
+const fbOnValueOrderByKeyLimitToLast = (path, limit) => {
+  const r = ref(fbdb, path);
+  const q = query(r, orderByKey(), limitToLast(limit));
+  return new Promise((resolve) => {
+    onValue(q, (snapshot) => {
+      if(snapshot.val()) {
+        resolve(snapshot.val());
+      }
+    });
+  })
+}
+
+const fbOnValueOrderByKeyEndAtLimitToLast = (path, lastId, limit) => {
+  const r = ref(fbdb, path);
+  const q = query(r, orderByKey(), endAt(lastId), limitToLast(limit));
+  return new Promise((resolve) => {
+    onValue(q, (snapshot) => {
+      if(snapshot.val()) {
+        resolve(snapshot.val());
+      }
+      if(snapshot.val() === null) {
+        resolve(false);
+      }
+    });
+  })
+}
+
 const fbOnValueOrderByChildLimitToFirst = (path, orderByChildValue, equalToValue, limit) => {
   const r = ref(fbdb, path);
   const q = query(r, orderByChild(orderByChildValue), equalTo(equalToValue), limitToFirst(limit));
@@ -54,7 +81,7 @@ const fbOnValueOrderByChildLimitToFirst = (path, orderByChildValue, equalToValue
   })
 }
 
-const fbOnValueOrderByChildEndAtLimitToFirst = (path, orderByChildValue, equalToValue, lastId, limit) => {
+const fbOnValueOrderByChildEndAtLimitToFirst = (path, orderByChildValue, lastId, limit) => {
   const r = ref(fbdb, path);
   const q = query(r, orderByChild(orderByChildValue), startAt(true), endAt(true, lastId), limitToFirst(limit));
   return new Promise((resolve) => {
@@ -103,8 +130,10 @@ export {
   fbPush,
   fbUpdate,
   fbSet,
-  fbOnValueOrderByChildLimitToFirst,
   fbOnValueOrderByKeyLimitToFirst,
+  fbOnValueOrderByKeyLimitToLast,
+  fbOnValueOrderByKeyEndAtLimitToLast,
+  fbOnValueOrderByChildLimitToFirst,
   fbOnValueOrderByChildEndAtLimitToFirst,
   fbOnValueOrderByChildLimitToLast,
   fbOnValueOrderByChild

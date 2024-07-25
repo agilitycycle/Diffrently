@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { appState } from '../app/appSlice';
 import { TagContext } from '../context/TagContext';
@@ -18,10 +18,9 @@ const initialLoaded = {
   postLoaded: false
 }
 
-const Tag = () => {
+const Founders = () => {
   const { tags } = useContext(TagContext);
   const location = useLocation();
-  const navigate = useNavigate();
   const currentAppState = useSelector(appState);
   const { photoUrl } = currentAppState;
   const [loaded, setLoaded] = useState(initialLoaded);
@@ -32,23 +31,14 @@ const Tag = () => {
   const { tagsLoaded, postLoaded } = loaded;
   const routeTagName = pathname.substring(pathname.lastIndexOf('/') + 1);
 
-  const loadTag = (tag) => {
-    const newLoaded = {...loaded};
-    newLoaded.postLoaded = false;
-    setLoaded(newLoaded);
-    setPostTagDetails([]);
-    setLastId('');
-    navigate(`/feed/${tag}`);
-  }
-
   const getTags = (tagEl) => {
     return tagEl.map((tag, index) => {
       const highlightStyles = routeTagName === tag ? 'opacity-40 border border-[#A9AAC5] text-[#A9AAC5]' : 'border border-emerald-300 text-emerald-300';
-      return <button key={`tag${index}`} onClick={() => loadTag(tag)}>
+      return <Link key={`tag${index}`} to={`/feed/${tag}`}>
         <span key={tag} className={`${highlightStyles} bg-transparent text-sm font-medium me-2 px-2.5 py-0.5 rounded`}>
           {tag}
         </span>
-      </button>
+      </Link>
     })
   }
 
@@ -223,4 +213,4 @@ const Tag = () => {
   </>);
 };
 
-export default Tag;
+export default Founders;

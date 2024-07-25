@@ -7,6 +7,7 @@ import Profile from './Profile';
 import Pricing from './Pricing';
 import Tags from './Tags';
 import Tag from './Tag';
+import Founders from './Founders';
 import SignIn from './SignIn';
 
 export {
@@ -19,5 +20,6 @@ export {
 	Pricing,
 	Tags,
 	Tag,
+	Founders,
 	SignIn
 }

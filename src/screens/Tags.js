@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { TagContext } from '../context/TagContext';
 import { fbSet } from '../services/firebaseService';
@@ -55,7 +56,9 @@ const Tags = () => {
             </div>
             <div className="flex-1">
               <p className="text-base font-medium text-gray-900 truncate dark:text-white mb-0.5">
-                {item.tag}
+                <Link to={`/feed/${item.tag}`} className="flex items-center text-white">
+                  <span>{item.tag} ({item.post.length})</span>
+                </Link>
               </p>
               <p className="text-sm text-gray-500 truncate dark:text-gray-400">
                 Your tag description...

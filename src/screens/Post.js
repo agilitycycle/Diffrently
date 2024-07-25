@@ -267,7 +267,7 @@ const Post = () => {
 		    <div className="w-[500px] h-full sm:h-auto">
           <Header title="Your feed" />
 		      <div>
-            <textarea value={postDetails.body} onChange={handleChange} rows="6" className="resize-none block py-2.5 pr-2.5 mb-20 w-full text-lg text-lg text-white bg-transparent !outline-none" placeholder="Write something..."/>
+            <textarea value={postDetails.body} onChange={handleChange} rows="9" className="resize-none block py-2.5 pr-2.5 mb-20 w-full text-lg text-lg text-white bg-transparent !outline-none" placeholder="Write something..."/>
           </div>
           <div className="text-center">
             {postDetails.published && (
