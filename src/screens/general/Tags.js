@@ -1,17 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { TagContext } from '../context/TagContext';
-import { fbSet } from '../services/firebaseService';
+import { TagContext } from '../../context/TagContext';
+import { fbSet } from '../../services/firebaseService';
 import {
   Menu,
   Drawer,
   Header
-} from '../components';
+} from '../../components';
+import { updateAppState, appState } from '../../app/appSlice';
 
 const Tags = () => {
-  const { tags, getTags } = useContext(TagContext);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const currentAppState = useSelector(appState);
+  const contextObj = useContext(TagContext);
+  const { credit, userId } = currentAppState;
   const [formTags, setFormTags] = useState([
     {
       tag: '',
@@ -22,12 +27,29 @@ const Tags = () => {
   const [tagFormValue, setTagFormValue] = useState('');
   const [max, setMax] = useState(4);
 
+  const getCredit = () => {
+    const tags = credit && Number(credit.split('/')[0]) || 0;
+    const post = credit && Number(credit.split('/')[1]) || 0;
+    return {
+      tags,
+      post
+    }
+  }
+
+  const capitalizeFirstLetter = (tagName) => {
+    return `${tagName.charAt(0).toUpperCase()}${tagName.slice(1)}`;
+  }
+
   const loadMore = () => {
     setMax(100);
   }
 
-  const showLess = () => {
-    setMax(4);
+  const showLess = () => setMax(4);
+
+  const handleDeleteTag = (tag) => {
+    // how to successfully remove tags and post??
+    // remove(ref(fbdb, 'every related post id'));
+    // remove(ref(fbdb, 'id'));
   }
 
   const handleNewTag = (e) => {
@@ -36,11 +58,29 @@ const Tags = () => {
   }
 
   const handleAddTag = () => {
-    if (tagFormValue.length > 3) {
-      fbSet(`/userTags/-NrnSwk-t38iZWOB76Lt/tags/${tagFormValue}`, true);
+    if (tagsLoaded && tagFormValue.length > 2 && getCredit().tags > 0) {
+      let hydrateBody = /\s/.test(tagFormValue) ?
+        tagFormValue.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase()).replace(/\s/g, '') :
+        tagFormValue;
+      hydrateBody = capitalizeFirstLetter(hydrateBody);
+
+      if (contextObj.tags.some(obj => obj.tag === hydrateBody)) return;
+
+      // reset context loading
+      contextObj.loading();
+
+      // remove credit
+      const tagsCredit = getCredit().tags - 1;
+      let postCredit = getCredit().post;
+      fbSet(`/users/${userId}/credit`, `${tagsCredit}/${postCredit}`);
+      const newAppState = Object.assign({...currentAppState}, {
+        credit: `${tagsCredit}/${postCredit}`
+      });
+      dispatch(updateAppState(newAppState));
+      fbSet(`/userTags/${userId}/tags/${hydrateBody}`, true);
       setTagFormValue('');
       setTagsLoaded(false);
-      getTags();
+      contextObj.getTags(userId);
     }
   }
 
@@ -65,7 +105,12 @@ const Tags = () => {
               </p>
             </div>
             <div className="inline-flex items-center">
-              <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-xs px-2 py-1 text-center mb-2 ">Edit</button>
+              <button type="button" onClick={() => handleDeleteTag(item.tag)}>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5 mr-2 text-rose-900">
+                  <path fillRule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clipRule="evenodd" />
+                </svg>
+              </button>
+              <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-xs px-2 py-1 text-center">Edit</button>
             </div>
           </div>
         </li>
@@ -73,21 +118,33 @@ const Tags = () => {
     })
   }
 
+  /**
+   * 
+   * Two sets of load:
+   * 1. One from context level
+   * 2. One for UI level
+   * 
+   */
+  
   useEffect(() => {
     if (tagsLoaded) return;
-    if (tags.length > 0) {
-      const newFormTags = [...tags];
+    if (contextObj.loaded && contextObj.tags.length < 1) {
+      // no tags avail yet
+      setTagsLoaded(true);
+    }
+    if (contextObj.tags.length > 0) {
+      const newFormTags = [...contextObj.tags];
       setFormTags(newFormTags);
       setTagsLoaded(true);
     }
-  }, [tags, tagsLoaded, setFormTags])
+  }, [contextObj.tags, tagsLoaded, setFormTags])
 
 	return (<>
 		<div className="flex flex-col px-5 h-screen bg-[#000423]">
 			<Drawer/>
 			<Menu/>
 		  <div className="flex items-center justify-center h-full">
-		    <div className="h-full w-10/12 sm:w-7/12">
+		    <div className="h-full w-10/12 sm:w-6/12">
           <Header />
 		      <h2 className="text-2xl text-white text-left leading-snug mb-2">
 		      	2. Set up your tags
@@ -95,26 +152,41 @@ const Tags = () => {
 			    <h3 className="text-lg text-[#A9AAC5] text-left leading-snug mb-4">
 		      	For auto-tagging
 		      </h3>
-          {tagsLoaded && (
-            <div>
+          {credit &&
+            (<div>
               <div className="space-y-1">
-                <ul className="w-full">
+                <ul className="w-full sm:w-7/12">
                   <li>
                     <div className="flex flex-row space-x-4 rtl:space-x-reverse">
                       <div className="grow mb-8">
                         <input type="text" value={tagFormValue} onChange={handleNewTag} className="w-full h-[40px] bg-transparent text-white text-lg block inline py-2.5 border-b border-b-sky-100 !outline-none" placeholder="Add a tag" />
                       </div>
                       <div className="flex-none">
-                        <button type="button" onClick={handleAddTag} className="h-[40px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add</button>
+                        <button type="button" onClick={handleAddTag} className="h-[40px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add ({getCredit().tags})</button>
                       </div>
                     </div>
                   </li>
                 </ul>
               </div>
-              <div className="mb-6 space-y-1 text-gray-500 rounded border border-gray-700">
-                <ul className="px-4 w-full divide-y divide-gray-200 dark:divide-gray-700">
-                  {renderList()}
-                </ul>
+              {contextObj.tags.length > 0 && (
+                <div className="mb-6 space-y-1 text-gray-500 rounded border border-gray-700">
+                  <ul className="px-4 w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    {renderList()}
+                  </ul>
+                </div>
+              )}
+            </div>)
+          }
+          {!credit && (
+            <div className="flex flex-row text-white mb-6">
+              <div className="flex-1 text-left text-[#ffffff]">
+                <div className="block w-full p-6 bg-white border border-gray-700 rounded-lg shadow dark:bg-transparent dark:border-gray-700">
+                  <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">No active subscriptions</h5>
+                  <p className="text-base text-[#A9AAC5] dark:text-[#A9AAC5] leading-loose">{
+                    !currentAppState.freeTrial ? (<a href={null} onClick={() => navigate('/subscriptions')} className="cursor-pointer hover:underline">Consider getting a FREE Trial plan.</a>) :
+                      (<a href={null} onClick={() => navigate('/subscriptions')} className="cursor-pointer hover:underline">Consider getting a Pay as you go plan</a>)
+                  }</p>
+                </div>
               </div>
             </div>
           )}

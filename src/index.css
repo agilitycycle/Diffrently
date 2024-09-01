@@ -16,3 +16,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.react-player {
+  width: 365px !important;
+  height: 697px !important;
+  border: 1px solid #fff;
+}
+
+@media screen and (max-width: 767px) {
+  .react-player {
+    width: 300px !important;
+    height: 573px !important;
+    border-color: rgb(161 161 170);
+  }
+}

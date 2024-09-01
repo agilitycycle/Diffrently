@@ -2,16 +2,15 @@ import { fbdb } from '../app/firebase';
 import {
   push,
   update,
+  remove,
   set,
   ref,
   query,
   orderByKey,
-  orderByChild,
-  limitToFirst,
   limitToLast,
+  orderByChild,
   equalTo,
   onValue,
-  startAt,
   endAt
 } from 'firebase/database';
 
@@ -23,79 +22,20 @@ const fbUpdate = (path, values) => {
   return update(ref(fbdb, path), values);
 }
 
+// path/id
+const fbRemove = (path) => {
+  remove(ref(fbdb, path));
+}
+
 const fbSet = (path, values) => {
   set(ref(fbdb, path), values);
 }
 
-const fbOnValueOrderByKeyLimitToFirst = (path, limit) => {
-  const r = ref(fbdb, path);
-  const q = query(r, orderByKey(), limitToFirst(limit));
-  return new Promise((resolve) => {
-    onValue(q, (snapshot) => {
-      if(snapshot.val()) {
-        resolve(snapshot.val());
-      }
-    });
-  })
-}
-
-const fbOnValueOrderByKeyLimitToLast = (path, limit) => {
-  const r = ref(fbdb, path);
-  const q = query(r, orderByKey(), limitToLast(limit));
-  return new Promise((resolve) => {
-    onValue(q, (snapshot) => {
-      if(snapshot.val()) {
-        resolve(snapshot.val());
-      }
-    });
-  })
-}
-
-const fbOnValueOrderByKeyEndAtLimitToLast = (path, lastId, limit) => {
-  const r = ref(fbdb, path);
-  const q = query(r, orderByKey(), endAt(lastId), limitToLast(limit));
-  return new Promise((resolve) => {
-    onValue(q, (snapshot) => {
-      if(snapshot.val()) {
-        resolve(snapshot.val());
-      }
-      if(snapshot.val() === null) {
-        resolve(false);
-      }
-    });
-  })
-}
-
-const fbOnValueOrderByChildLimitToFirst = (path, orderByChildValue, equalToValue, limit) => {
-  const r = ref(fbdb, path);
-  const q = query(r, orderByChild(orderByChildValue), equalTo(equalToValue), limitToFirst(limit));
-  return new Promise((resolve) => {
-    onValue(q, (snapshot) => {
-      if(snapshot.val()) {
-        resolve(snapshot.val());
-      }
-      if(snapshot.val() === null) {
-        resolve(false);
-      }
-    });
-  })
-}
-
-const fbOnValueOrderByChildEndAtLimitToFirst = (path, orderByChildValue, lastId, limit) => {
-  const r = ref(fbdb, path);
-  const q = query(r, orderByChild(orderByChildValue), startAt(true), endAt(true, lastId), limitToFirst(limit));
-  return new Promise((resolve) => {
-    onValue(q, (snapshot) => {
-      if(snapshot.val()) {
-        resolve(snapshot.val());
-      }
-      if(snapshot.val() === null) {
-        resolve(false);
-      }
-    });
-  })
-}
-
+/**
+ * 
+ * Tag pagination
+ *  
+ */
 const fbOnValueOrderByChildLimitToLast = (path, orderByChildValue, equalToValue, limit) => {
   const r = ref(fbdb, path);
   const q = query(r, orderByChild(orderByChildValue), equalTo(equalToValue), limitToLast(limit));
@@ -111,9 +51,54 @@ const fbOnValueOrderByChildLimitToLast = (path, orderByChildValue, equalToValue,
   })
 }
 
-const fbOnValueOrderByChild = (path, orderByChildValue, equalToValue) => {
+/**
+ * 
+ * Tag pagination
+ *  
+ */
+const fbOnValueOrderByChildEndAtLimitToLast = (path, orderByChildValue, lastId, limit) => {
   const r = ref(fbdb, path);
-  const q = query(r, orderByChild(orderByChildValue), equalTo(equalToValue));
+  const q = query(r, orderByChild(orderByChildValue), endAt(lastId), limitToLast(limit));
+  return new Promise((resolve) => {
+    onValue(q, (snapshot) => {
+      if(snapshot.val()) {
+        resolve(snapshot.val());
+      }
+      if(snapshot.val() === null) {
+        resolve(false);
+      }
+    });
+  }) 
+}
+
+/**
+ * 
+ * Feed, Tags / pagination
+ *  
+ */
+const fbOnValueOrderByKeyLimitToLast = (path, limit) => {
+  const r = ref(fbdb, path);
+  const q = query(r, orderByKey(), limitToLast(limit));
+  return new Promise(resolve => {
+    onValue(q, (snapshot) => {
+      if(snapshot.val()) {
+        resolve(snapshot.val());
+      }
+      if(snapshot.val() === null) {
+        resolve(false);
+      }
+    });
+  })
+}
+
+/**
+ * 
+ * Feed, Tags / pagination next
+ *  
+ */
+const fbOnValueOrderByKeyEndAtLimitToLast = (path, lastId, limit) => {
+  const r = ref(fbdb, path);
+  const q = query(r, orderByKey(), endAt(lastId), limitToLast(limit));
   return new Promise((resolve) => {
     onValue(q, (snapshot) => {
       if(snapshot.val()) {
@@ -129,12 +114,10 @@ const fbOnValueOrderByChild = (path, orderByChildValue, equalToValue) => {
 export {
   fbPush,
   fbUpdate,
+  fbRemove,
   fbSet,
-  fbOnValueOrderByKeyLimitToFirst,
-  fbOnValueOrderByKeyLimitToLast,
-  fbOnValueOrderByKeyEndAtLimitToLast,
-  fbOnValueOrderByChildLimitToFirst,
-  fbOnValueOrderByChildEndAtLimitToFirst,
   fbOnValueOrderByChildLimitToLast,
-  fbOnValueOrderByChild
+  fbOnValueOrderByChildEndAtLimitToLast,
+  fbOnValueOrderByKeyLimitToLast,
+  fbOnValueOrderByKeyEndAtLimitToLast
 }

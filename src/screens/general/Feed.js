@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { appState } from '../app/appSlice';
-import { TagContext } from '../context/TagContext';
+import { appState } from '../../app/appSlice';
+import { TagContext } from '../../context/TagContext';
 import {
   fbOnValueOrderByKeyLimitToLast,
   fbOnValueOrderByKeyEndAtLimitToLast
-} from '../services/firebaseService';
+} from '../../services/firebaseService';
 import {
   Menu,
   Drawer,
   Header
-} from '../components';
+} from '../../components';
 
 const initialLoaded = {
   tagsLoaded: false,
@@ -19,11 +19,11 @@ const initialLoaded = {
 }
 
 const Feed = () => {
-  const { tags } = useContext(TagContext);
+  const contextObj = useContext(TagContext);
   const location = useLocation();
   const navigate = useNavigate();
   const currentAppState = useSelector(appState);
-  const { photoUrl } = currentAppState;
+  const { photoUrl, userId } = currentAppState;
   const [loaded, setLoaded] = useState(initialLoaded);
   const [postTagDetails, setPostTagDetails] = useState([]);
   const [lastId, setLastId] = useState('');
@@ -41,7 +41,7 @@ const Feed = () => {
 
   const getTags = (tagEl) => {
     return tagEl.map((tag, index) => {
-      return <button key={`tag${index}`} className="mb-2.5" onClick={() => loadTag(tag)}>
+      return <button key={`tag${index}`} className="mb-4" onClick={() => loadTag(tag)}>
         <span key={tag} className="border border-emerald-300 text-emerald-300 bg-transparent text-sm font-medium me-2 px-2.5 py-0.5 rounded">
           {tag}
         </span>
@@ -50,7 +50,7 @@ const Feed = () => {
   }
 
   const getPost = async () => {
-    const path = '/userPost/-NrnSwk-t38iZWOB76Lt/post/';
+    const path = `/userPost/${userId}/post/`;
 
     let result = (lastId === '') ? 
       await fbOnValueOrderByKeyLimitToLast(path, 5) :
@@ -108,7 +108,7 @@ const Feed = () => {
         </div>
         <div className="flex-1 text-left text-[#ffffff]">
           <div className="mx-5">
-            <p className="text-base text-[#A9AAC5] leading-9 mb-3" style={{wordBreak: 'break-word'}}>
+            <p onClick={() => navigate(`/feed/${tagEl}/${item.id}`)} className="cursor-pointer text-base text-[#A9AAC5] leading-9 mb-3" style={{wordBreak: 'break-word'}}>
               {body.slice(0, 150 - 1)}...
             </p>
             <p className="text-sm text-[#A9AAC5]">
@@ -143,16 +143,16 @@ const Feed = () => {
       getPost();
     }
     // eslint-disable-next-line
-  }, [loaded, tagsLoaded, postLoaded])
+  }, [tagsLoaded, postLoaded])
 
   useEffect(() => {
     if (tagsLoaded) return;
-    if (tags.length > 0) {
+    if (contextObj.loaded) {
       const newLoaded = {...loaded};
       newLoaded.tagsLoaded = true;
       setLoaded(newLoaded);
     }
-  }, [loaded, tagsLoaded, tags.length])
+  }, [loaded, tagsLoaded, contextObj])
 
 	return (<>
 		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
@@ -163,7 +163,7 @@ const Feed = () => {
           <Header title="Your feed" />
           <div className="min-w-80 pb-7">
             {postLoaded && renderPost()}
-            {!postLoaded && (<div className="flex flex-row text-white mb-5">
+            {!postLoaded && !contextObj.loaded && (<div className="flex flex-row text-white mb-5">
               <div>
                 <div className="flex items-center justify-center rounded-full w-12 h-12 bg-[#40435a]">
                   &nbsp;
@@ -201,7 +201,7 @@ const Feed = () => {
                     No post avail.
                   </p>
                   <p className="text-sm text-[#A9AAC5] opacity-60">
-                    Write your first post.
+                    <a href={null} className="cursor-pointer hover:underline">Write your first post.</a>
                   </p>
                 </div>
               </div>
@@ -211,7 +211,7 @@ const Feed = () => {
                 </div>
               </div>
             </div>)}
-            {(!paginationEnd) && (
+            {(postLoaded && !paginationEnd) && (
               <div className="flex items-center justify-center mb-3">
                 <button type="button" onClick={getPost} className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Load More</button>
               </div>

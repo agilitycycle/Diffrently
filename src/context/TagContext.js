@@ -1,10 +1,14 @@
 import React, { useState, useEffect, createContext } from 'react';
-import { fbOnValueOrderByKeyLimitToFirst } from '../services/firebaseService';
+import { useSelector } from 'react-redux';
+import { fbOnValueOrderByKeyLimitToLast } from '../services/firebaseService';
+import { appState } from '../app/appSlice';
 
 export const TagContext = createContext(null);
 
 const TagContextProvider = (props) => {
   const { Component } = props;
+  const currentAppState = useSelector(appState);
+  const { userId } = currentAppState;
 
   const getPost = (tagNode) => {
     let post = [];
@@ -14,24 +18,34 @@ const TagContextProvider = (props) => {
     return post;
   }
 
-  const getTags = async () => {
+  const getTags = async (userId) => {
     const newTags = {...tags};
     newTags.tags = [];
-    const result = await fbOnValueOrderByKeyLimitToFirst('/userTags/-NrnSwk-t38iZWOB76Lt/tags/', 100);
-    for (let value in result) {
-      const post = getPost(result[value]);
-      newTags.tags.push({
-        tag: value,
-        post
-      });
+    const result = await fbOnValueOrderByKeyLimitToLast(`/userTags/${userId}/tags/`, 100);
+    if (result) {
+      for (let value in result) {
+        const post = getPost(result[value]);
+        newTags.tags.push({
+          tag: value,
+          post
+        });
+      }
     }
     newTags.loaded = true;
+    setTags(newTags);
+  }
+
+  const setLoading = () => {
+    const newTags = Object.assign(tags, {
+      loaded: false
+    })
     setTags(newTags);
   }
 
   const initialState = {
     tags: [],
     loaded: false,
+    loading: setLoading,
     getTags: getTags
   }
 
@@ -39,7 +53,7 @@ const TagContextProvider = (props) => {
 
   useEffect(() => {
     if (tags.loaded) return;
-    getTags();
+    getTags(userId);
     // eslint-disable-next-line
   }, [tags])
 

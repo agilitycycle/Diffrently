@@ -4,9 +4,10 @@ import Feed from './Feed';
 import Post from './Post';
 import Publish from './Publish';
 import Profile from './Profile';
-import Pricing from './Pricing';
 import Tags from './Tags';
 import Tag from './Tag';
+import PostDetails from './PostDetails';
+import Subscribers from './Subscribers';
 import Founders from './Founders';
 import SignIn from './SignIn';
 
@@ -17,9 +18,10 @@ export {
 	Post,
 	Publish,
 	Profile,
-	Pricing,
 	Tags,
 	Tag,
+	PostDetails,
+	Subscribers,
 	Founders,
 	SignIn
 }

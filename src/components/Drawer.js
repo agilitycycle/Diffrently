@@ -28,6 +28,7 @@ const classNames = {
 
 const Drawer = ({ side = 'left' }) => {
   const currentAppState = useSelector(appState);
+  const { admin } = currentAppState;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const open = currentAppState && currentAppState.drawer;
@@ -137,11 +138,35 @@ const Drawer = ({ side = 'left' }) => {
                          <span>Feed</span>
                       </Link>
                     </li>
+                    {admin && (
+                    <>
+                      <li>
+                        <hr />
+                      </li>
+                      <li>
+                        <Link to="/" onClick={drawerMenuItemClicked} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
+                          <span>Admin: Users</span>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/" onClick={drawerMenuItemClicked} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
+                          <span>Admin: User post</span>
+                        </Link>
+                      </li>
+                      <li>
+                        <hr />
+                      </li>
+                    </>
+                    )}
                     <li>
-                      <button type="button" className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-base px-5 py-2.5 text-center me-2 mb-2 text-center">Subscribers</button>
+                      <Link to="/subscribers" onClick={drawerMenuItemClicked} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
+                        <button type="button" className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-base px-5 py-2.5 text-center me-2 mb-2 text-center">Subscribers</button>
+                      </Link>
                     </li>
                     <li>
-                      <button type="button" className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-base px-5 py-2.5 text-center">Founders</button>
+                      <Link to="/founders" onClick={drawerMenuItemClicked} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
+                        <button type="button" className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-base px-5 py-2.5 text-center">Founders</button>
+                      </Link>
                     </li>
                     <li>
                       <button onClick={handleSignOut} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">

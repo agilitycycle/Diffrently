@@ -3,7 +3,7 @@ import {
   Menu,
   Drawer,
   Header
-} from '../components';
+} from '../../components';
 
 const Export = () => {
 	return (<>

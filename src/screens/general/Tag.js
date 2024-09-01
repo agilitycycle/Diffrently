@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { appState } from '../app/appSlice';
-import { TagContext } from '../context/TagContext';
+import { appState } from '../../app/appSlice';
+import { TagContext } from '../../context/TagContext';
 import {
   fbOnValueOrderByChildLimitToLast,
-  fbOnValueOrderByChildEndAtLimitToFirst
-} from '../services/firebaseService';
+  fbOnValueOrderByChildEndAtLimitToLast
+} from '../../services/firebaseService';
 import {
   Menu,
   Drawer,
   Header
-} from '../components';
+} from '../../components';
 
 const initialLoaded = {
   tagsLoaded: false,
@@ -23,7 +23,7 @@ const Tag = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const currentAppState = useSelector(appState);
-  const { photoUrl } = currentAppState;
+  const { photoUrl, userId } = currentAppState;
   const [loaded, setLoaded] = useState(initialLoaded);
   const [postTagDetails, setPostTagDetails] = useState([]);
   const [lastId, setLastId] = useState('');
@@ -44,7 +44,7 @@ const Tag = () => {
   const getTags = (tagEl) => {
     return tagEl.map((tag, index) => {
       const highlightStyles = routeTagName === tag ? 'opacity-40 border border-[#A9AAC5] text-[#A9AAC5]' : 'border border-emerald-300 text-emerald-300';
-      return <button key={`tag${index}`} onClick={() => loadTag(tag)}>
+      return <button key={`tag${index}`} className="mb-4" onClick={() => loadTag(tag)}>
         <span key={tag} className={`${highlightStyles} bg-transparent text-sm font-medium me-2 px-2.5 py-0.5 rounded`}>
           {tag}
         </span>
@@ -53,11 +53,11 @@ const Tag = () => {
   }
 
   const getPost = async () => {
-    const path = '/userPost/-NrnSwk-t38iZWOB76Lt/post/';
+    const path = `/userPost/${userId}/post/`;
 
     let result = (lastId === '') ? 
       await fbOnValueOrderByChildLimitToLast(path, `tag${routeTagName}`, true, 5) :
-      await fbOnValueOrderByChildEndAtLimitToFirst(path, `tag${routeTagName}`, true, lastId, 5);
+      await fbOnValueOrderByChildEndAtLimitToLast(path, `tag${routeTagName}`, lastId, 6);
 
     const currentPostTagDetails = [...postTagDetails];
     
@@ -69,7 +69,13 @@ const Tag = () => {
     if (newPostTagDetails.length > 0) {
       const newId = newPostTagDetails.reverse()[newPostTagDetails.length - 1].id;
 
-      setPostTagDetails(currentPostTagDetails.concat(newPostTagDetails));
+      const merged = currentPostTagDetails.concat(newPostTagDetails.filter(item2 =>
+        !currentPostTagDetails.some(item1 => item1.id === item2.id)
+      ));
+
+      const unique = arr => arr.filter((el, i, array) => array.indexOf(el) === i);
+
+      setPostTagDetails(unique(merged));
 
       switch(true) {
         case newId !== lastId:
@@ -108,7 +114,7 @@ const Tag = () => {
             <p className="text-xl font-bold mb-1">
               <span className="flex items-center text-white">{routeTagName}</span>
             </p>
-            <p className="text-base text-[#A9AAC5] leading-9 mb-3" style={{wordBreak: 'break-word'}}>
+            <p onClick={() => navigate(`/feed/${routeTagName}/${item.id}`)} className="text-base cursor-pointer text-[#A9AAC5] leading-9 mb-3" style={{wordBreak: 'break-word'}}>
               {body.slice(0, 150 - 1)}...
             </p>
             <p className="text-sm text-[#A9AAC5]">
@@ -211,7 +217,7 @@ const Tag = () => {
                 </div>
               </div>
             </div>)}
-            {(!paginationEnd) && (
+            {(!paginationEnd && postTagDetails.length > 4) && (
               <div className="flex items-center justify-center mb-3">
                 <button type="button" onClick={getPost} className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Load More</button>
               </div>

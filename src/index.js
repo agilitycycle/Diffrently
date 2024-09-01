@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { useDispatch, useSelector } from 'react-redux';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { updateAppState, appState } from './app/appSlice';
 import { fbdb } from './app/firebase';
@@ -14,18 +16,24 @@ import { store } from './app/store';
 import { Provider } from 'react-redux';
 import { TagContextHOC } from './context/TagContext';
 import {
+  Payment,
+  Subscriptions,
+  ActiveSubscriptions
+} from './screens/subscriptions';
+import {
 	LandingPage,
 	Export,
 	Feed,
 	Post,
   Publish,
 	Profile,
-	Pricing,
 	Tags,
   Tag,
+  PostDetails,
+  Subscribers,
   Founders,
   SignIn
-} from './screens';
+} from './screens/general';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
@@ -45,13 +53,25 @@ const getUserAuthSession = async () => {
             const node = snapshot.val();
             if (node !== null) {
               userId = Object.keys(node)[0];
-              const { email, photoUrl, displayName } = node[userId]
-              resolve({
-                loggedIn: true,
+              const {
+                email,
+                admin,
                 photoUrl,
                 displayName,
+                activeSubscriptions,
+                freeTrial,
+                credit
+              } = node[userId]
+              resolve({
+                loggedIn: true,
+                userId,
                 email,
-                userId
+                admin,
+                photoUrl,
+                displayName,
+                activeSubscriptions,
+                freeTrial,
+                credit
               });
             }
           })
@@ -93,10 +113,15 @@ const ProtectedRoute = (props) => {
   return loggedIn ? children : null;
 }
 
+const stripePromise = loadStripe(process.env.REACT_APP_PUBLISHABLE_KEY);
+
 const TagContextComponent = (BaseComponent) => {
   const Component = TagContextHOC(BaseComponent);
+
   return <ProtectedRoute>
-      <Component />
+      <Elements stripe={stripePromise}>
+        <Component />
+      </Elements>
     </ProtectedRoute>;
 }
 
@@ -119,7 +144,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/feed/:tag/:postid',
-    element: TagContextComponent(Tag),
+    element: TagContextComponent(PostDetails),
   },
   {
     path: '/post',
@@ -134,12 +159,24 @@ const router = createBrowserRouter([
     element: TagContextComponent(Profile),
   },
   {
-    path: '/pricing',
-    element: TagContextComponent(Pricing),
+    path: '/subscriptions',
+    element: TagContextComponent(Subscriptions),
+  },
+  {
+    path: '/subscriptions/active-subscriptions',
+    element: TagContextComponent(ActiveSubscriptions),
+  },
+  {
+    path: '/subscriptions/payment',
+    element: TagContextComponent(Payment),
   },
   {
     path: '/tags',
     element: TagContextComponent(Tags),
+  },
+  {
+    path: '/subscribers',
+    element: TagContextComponent(Subscribers),
   },
   {
     path: '/founders',

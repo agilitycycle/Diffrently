@@ -1,81 +1,75 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { appState } from '../app/appSlice';
-import { TagContext } from '../context/TagContext';
-import {
-  fbOnValueOrderByChildLimitToLast,
-  fbOnValueOrderByChildEndAtLimitToFirst
-} from '../services/firebaseService';
+import { appState } from '../../app/appSlice';
+import { fbdb } from '../../app/firebase';
+import { TagContext } from '../../context/TagContext';
+import { ref, query, get} from 'firebase/database';
 import {
   Menu,
   Drawer,
   Header
-} from '../components';
+} from '../../components';
 
 const initialLoaded = {
   tagsLoaded: false,
   postLoaded: false
 }
 
-const Founders = () => {
+const PostDetails = () => {
   const { tags } = useContext(TagContext);
   const location = useLocation();
+  const navigate = useNavigate();
   const currentAppState = useSelector(appState);
-  const { photoUrl } = currentAppState;
-  const [loaded, setLoaded] = useState(initialLoaded);
+  const { photoUrl, userId } = currentAppState;
+  const [loaded, setLoaded] = useState({});
   const [postTagDetails, setPostTagDetails] = useState([]);
-  const [lastId, setLastId] = useState('');
-  const [paginationEnd, setPaginationEnd] = useState(false);
   const { pathname } = location;
   const { tagsLoaded, postLoaded } = loaded;
-  const routeTagName = pathname.substring(pathname.lastIndexOf('/') + 1);
+  const routePostId = pathname.substring(pathname.lastIndexOf('/') + 1);
+
+  const loadTag = (tag) => {
+    const newLoaded = {...loaded};
+    newLoaded.postLoaded = false;
+    setLoaded(newLoaded);
+    setPostTagDetails([]);
+    navigate(`/feed/${tag}`);
+  }
 
   const getTags = (tagEl) => {
     return tagEl.map((tag, index) => {
-      const highlightStyles = routeTagName === tag ? 'opacity-40 border border-[#A9AAC5] text-[#A9AAC5]' : 'border border-emerald-300 text-emerald-300';
-      return <Link key={`tag${index}`} to={`/feed/${tag}`}>
+      const highlightStyles = getTagName() === tag ? 'opacity-40 border border-[#A9AAC5] text-[#A9AAC5]' : 'border border-emerald-300 text-emerald-300';
+      return <button key={`tag${index}`} className="mb-4" onClick={() => loadTag(tag)}>
         <span key={tag} className={`${highlightStyles} bg-transparent text-sm font-medium me-2 px-2.5 py-0.5 rounded`}>
           {tag}
         </span>
-      </Link>
+      </button>
     })
   }
 
-  const getPost = async () => {
-    const path = '/userPost/-NrnSwk-t38iZWOB76Lt/post/';
-
-    let result = (lastId === '') ? 
-      await fbOnValueOrderByChildLimitToLast(path, `tag${routeTagName}`, true, 5) :
-      await fbOnValueOrderByChildEndAtLimitToFirst(path, `tag${routeTagName}`, true, lastId, 5);
-
-    const currentPostTagDetails = [...postTagDetails];
-    
-    const newPostTagDetails = [];
-    for (let i in result) {
-      newPostTagDetails.push(Object.assign({ id: i }, result[i]));
-    }
-
-    if (newPostTagDetails.length > 0) {
-      const newId = newPostTagDetails.reverse()[newPostTagDetails.length - 1].id;
-
-      setPostTagDetails(currentPostTagDetails.concat(newPostTagDetails));
-
-      switch(true) {
-        case newId !== lastId:
-          setLastId(newId);
-          break;
-        case newId === lastId:
-          setPaginationEnd(true);
-          break;
-        default:
-          break;
+  const getTagName = () => {
+    for (let key in postTagDetails[0]) {
+      if (pathname.indexOf(key.split('tag')[1]) > -1) {
+        return key.split('tag')[1];
       }
     }
+  }
 
-    if (newPostTagDetails.length === 0) {
-      setPaginationEnd(true);
-    }
+  const getPost = async () => {
+    const path = `/userPost/${userId}/post/${routePostId}`;
+    const userRef = ref(fbdb, path);
+    const q = query(userRef);
+    const result = await get(q)
+      .then((snapshot) => {
+        if (snapshot.val() !== null) {
+          return snapshot.val();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    setPostTagDetails([result]);
 
     const newLoaded = {...loaded};
     newLoaded.postLoaded = true;
@@ -96,15 +90,25 @@ const Founders = () => {
         <div className="flex-1 text-left text-[#ffffff]">
           <div className="mx-5">
             <p className="text-xl font-bold mb-1">
-              <span className="flex items-center text-white">{routeTagName}</span>
+              <span className="flex items-center text-white">{getTagName()}</span>
             </p>
-            <p className="text-base text-[#A9AAC5] leading-9 mb-3" style={{wordBreak: 'break-word'}}>
-              {body.slice(0, 150 - 1)}...
+            <p onClick={() => navigate(`/feed/${routePostId}/${item.id}`)} className="text-base cursor-pointer text-[#A9AAC5] leading-9 mb-3" style={{wordBreak: 'break-word'}}>
+              {body.slice(0, 850)}
             </p>
             <p className="text-sm text-[#A9AAC5]">
               <span className="mr-2 opacity-60">1 day ago</span>
               {getTags(tagEl)}
             </p>
+            {/*
+            <div className="grid justify-items-end">
+              <button type="button" className="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <svg className="w-4 h-4 me-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M13.09 3.294c1.924.95 3.422 1.69 5.472.692a1 1 0 0 1 1.438.9v9.54a1 1 0 0 1-.562.9c-2.981 1.45-5.382.24-7.25-.701a38.739 38.739 0 0 0-.622-.31c-1.033-.497-1.887-.812-2.756-.77-.76.036-1.672.357-2.81 1.396V21a1 1 0 1 1-2 0V4.971a1 1 0 0 1 .297-.71c1.522-1.506 2.967-2.185 4.417-2.255 1.407-.068 2.653.453 3.72.967.225.108.443.216.655.32Z"/>
+                </svg>
+                Report
+              </button>
+            </div>
+            */}
           </div>
         </div>
         <div>
@@ -133,7 +137,7 @@ const Founders = () => {
       getPost();
     }
     // eslint-disable-next-line
-  }, [loaded, tagsLoaded, postLoaded, routeTagName])
+  }, [loaded, tagsLoaded, postLoaded, routePostId])
 
   useEffect(() => {
     if (tagsLoaded) return;
@@ -162,7 +166,7 @@ const Founders = () => {
               <div className="flex-1 text-left text-[#ffffff]">
                 <div className="ml-5">
                   <p className="text-lg font-bold">
-                    <span className="flex items-center text-white">{routeTagName}</span>
+                    <span className="flex items-center text-white">{routePostId}</span>
                   </p>
                   <p className="text-base text-[#A9AAC5] leading-loose">
                     Post loading...
@@ -185,7 +189,7 @@ const Founders = () => {
               <div className="flex-1 text-left text-[#ffffff]">
                 <div className="ml-5">
                   <p className="text-lg font-bold">
-                    <span className="flex items-center text-white">{routeTagName}</span>
+                    <span className="flex items-center text-white">{routePostId}</span>
                   </p>
                   <p className="text-base text-[#A9AAC5] leading-loose">
                     No post avail.
@@ -201,11 +205,6 @@ const Founders = () => {
                 </div>
               </div>
             </div>)}
-            {(!paginationEnd) && (
-              <div className="flex items-center justify-center mb-3">
-                <button type="button" onClick={getPost} className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Load More</button>
-              </div>
-            )}
           </div>
 		    </div>
 		  </div>
@@ -213,4 +212,4 @@ const Founders = () => {
   </>);
 };
 
-export default Founders;
+export default PostDetails;

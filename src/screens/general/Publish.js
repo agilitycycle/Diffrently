@@ -4,7 +4,7 @@ import {
 	Menu,
 	Drawer,
 	Header
-  } from '../components';
+  } from '../../components';
 
 const Publish = () => {
 	const navigate = useNavigate();

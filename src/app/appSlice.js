@@ -5,10 +5,15 @@ const initialState = {
     drawer: false,
     drawerMenuItemClicked: false,
     loggedIn: false,
+    userId: '',
+    email: '',
+    admin: false,
     photoUrl: '',
     displayName: '',
-    email: '',
-    userId: '' 
+    activeSubscriptions: '',
+    freeTrial: false,
+    checkOut: '',
+    credit: ''
   },
 }
 
