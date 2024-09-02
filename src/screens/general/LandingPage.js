@@ -61,7 +61,6 @@ const LandingPage = () => {
             <h3 className="text-2xl text-white text-center leading-snug mb-10">
               Re-imagining tags.
             </h3>
-            {/*
             <div className="text-center">
               <p className="text-lg text-white mb-4 ml-auto mr-auto">
                 Start Free Trial
@@ -70,7 +69,6 @@ const LandingPage = () => {
                 sign in
               </button>
             </div>
-            */}
             <div className="w-9/12 sm:max-w-lg mx-auto mb-16">
               <div className="flex flex-row text-white mb-5">
                 <div>
