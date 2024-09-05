@@ -38,15 +38,6 @@ const Post = () => {
   // eslint-disable-next-line
   const [max, setMax] = useState(4);
 
-  const getCredit = () => {
-    const tags = Number(credit.split('/')[0]);
-    const post = Number(credit.split('/')[1]);
-    return {
-      tags,
-      post
-    }
-  }
-
   const capitalizeFirstLetter = (tagName) => {
     return `${tagName.charAt(0).toUpperCase()}${tagName.slice(1)}`;
   }
@@ -129,8 +120,9 @@ const Post = () => {
   }
 
   const hydrateTag = (tag) => {
+    // remove space, special characters
     return tag.replace(/\w+/g, (a) =>
-    `${a.charAt(0).toUpperCase()}${a.substr(1)}`).replace(/\s/g, '');
+    `${a.charAt(0).toUpperCase()}${a.substr(1)}`).replace(/\s/g, '').replace(/[^\w\s]/gi, '');
   }
 
   const handleChange = (e) => {
@@ -148,13 +140,13 @@ const Post = () => {
   const handlePost = async () => {
     const { body, tags } = postDetails;
     if (body.length < 3) return;
-    if (body.length > 49 && body.length < 851 && getCredit().post > 0) {
+    if (body.length > 49 && body.length < 851 && credit > 0 &&
+      credit >= postDetails.autoTagging.length) {
       // remove credit
-      const tagsCredit = getCredit().tags;
-      let postCredit = getCredit().post - 1;
-      fbSet(`/users/${userId}/credit`, `${tagsCredit}/${postCredit}`);
+      const tagsCredit = credit - postDetails.autoTagging.length;
+      fbSet(`/users/${userId}/credit`, tagsCredit);
       const newAppState = Object.assign({...currentAppState}, {
-        credit: `${tagsCredit}/${postCredit}`
+        credit: tagsCredit
       });
       dispatch(updateAppState(newAppState));
 
@@ -196,24 +188,21 @@ const Post = () => {
   }
 
   const handleAddTag = async () => {
-    // check your not adding a duplicate
+    // testing for space
     let hydrateBody = /\s/.test(tagFormValue) ?
-    tagFormValue.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase()).replace(/\s/g, '') :
-    tagFormValue;
+      tagFormValue.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase()).replace(/\s/g, '') :
+      tagFormValue;
 
+    // remove any special characters
+    hydrateBody = hydrateBody.replace(/[^\w\s]/gi, '');
+      
+    // capitalize first letter
     hydrateBody = capitalizeFirstLetter(hydrateBody);
 
+    // no duplicates
     if (postDetails.tags.some(obj => obj.tag === hydrateBody)) return;
 
-    if (postDetails.tagsLoaded && tagFormValue.length > 2 && getCredit().tags > 0) {
-      // remove credit
-      const tagsCredit = getCredit().tags - 1;
-      let postCredit = getCredit().post;
-      fbSet(`/users/${userId}/credit`, `${tagsCredit}/${postCredit}`);
-      const newAppState = Object.assign({...currentAppState}, {
-        credit: `${tagsCredit}/${postCredit}`
-      });
-      dispatch(updateAppState(newAppState));
+    if (postDetails.tagsLoaded && tagFormValue.length > 2) {
       await setNewTag(hydrateBody);
       setTagFormValue('');
       const newPostDetails = {...postDetails}
@@ -307,7 +296,7 @@ const Post = () => {
             )}
             {(!postDetails.published && postDetails.autoTagging.length > 0) && (
               <button onClick={handlePost} disabled={postDetails.saving} className={`opacity-${postDetails.saving || (postDetails.body.length < 50 || postDetails.body.length > 850 || characterCount < 0) ? '50' : '100'} block rounded-full mb-8 mx-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center`}>
-                {postDetails.saving ? <span>saving...</span> : <span>publish ({getCredit().post})</span>}
+                {postDetails.saving ? <span>saving...</span> : <span>publish ({credit})</span>}
               </button>
             )}
             <p className="sm:mt-0 mb-4 text-gray-500 dark:text-gray-400">
@@ -339,7 +328,7 @@ const Post = () => {
                           <input type="text" value={tagFormValue} onChange={handleNewTag} className="w-full h-[40px] bg-transparent text-white text-lg block inline py-2.5 border-b border-b-sky-100 !outline-none" placeholder="Add a tag" />
                         </div>
                         <div className="flex-none">
-                          <button type="button" onClick={handleAddTag} className="h-[40px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add ({getCredit().tags})</button>
+                          <button type="button" onClick={handleAddTag} className="h-[40px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add</button>
                         </div>
                       </div>
                     </li>
@@ -367,7 +356,7 @@ const Post = () => {
                               <input type="text" value={tagFormValue} onChange={handleNewTag} className="w-full h-[40px] bg-transparent text-white text-lg block inline py-2.5 border-b border-b-sky-100 !outline-none" placeholder="Add a tag" />
                             </div>
                             <div className="flex-none">
-                              <button type="button" onClick={handleAddTag} className="h-[40px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add ({getCredit().tags})</button>
+                              <button type="button" onClick={handleAddTag} disabled={postDetails.tags.length > 25} className="h-[40px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add</button>
                             </div>
                           </div>
                         </li>

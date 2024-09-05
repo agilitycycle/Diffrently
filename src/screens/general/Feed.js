@@ -108,7 +108,7 @@ const Feed = () => {
         </div>
         <div className="flex-1 text-left text-[#ffffff]">
           <div className="mx-5">
-            <p onClick={() => navigate(`/feed/${tagEl}/${item.id}`)} className="cursor-pointer text-base text-[#A9AAC5] leading-9 mb-3" style={{wordBreak: 'break-word'}}>
+            <p onClick={() => navigate(`/feed/${tagEl[0]}/${item.id}`)} className="cursor-pointer text-base text-[#A9AAC5] leading-9 mb-3" style={{wordBreak: 'break-word'}}>
               {body.slice(0, 150 - 1)}...
             </p>
             <p className="text-sm text-[#A9AAC5]">

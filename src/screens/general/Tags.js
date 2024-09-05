@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { TagContext } from '../../context/TagContext';
@@ -9,11 +9,10 @@ import {
   Drawer,
   Header
 } from '../../components';
-import { updateAppState, appState } from '../../app/appSlice';
+import { appState } from '../../app/appSlice';
 
 const Tags = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const currentAppState = useSelector(appState);
   const contextObj = useContext(TagContext);
   const { credit, userId } = currentAppState;
@@ -26,15 +25,6 @@ const Tags = () => {
   const [tagsLoaded, setTagsLoaded] = useState(false);
   const [tagFormValue, setTagFormValue] = useState('');
   const [max, setMax] = useState(4);
-
-  const getCredit = () => {
-    const tags = credit && Number(credit.split('/')[0]) || 0;
-    const post = credit && Number(credit.split('/')[1]) || 0;
-    return {
-      tags,
-      post
-    }
-  }
 
   const capitalizeFirstLetter = (tagName) => {
     return `${tagName.charAt(0).toUpperCase()}${tagName.slice(1)}`;
@@ -58,25 +48,24 @@ const Tags = () => {
   }
 
   const handleAddTag = () => {
-    if (tagsLoaded && tagFormValue.length > 2 && getCredit().tags > 0) {
+    if (tagsLoaded && tagFormValue.length > 2) {
+      // testing for space
       let hydrateBody = /\s/.test(tagFormValue) ?
         tagFormValue.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase()).replace(/\s/g, '') :
         tagFormValue;
+
+      // remove any special characters
+      hydrateBody = hydrateBody.replace(/[^\w\s]/gi, '');
+        
+      // capitalize first letter
       hydrateBody = capitalizeFirstLetter(hydrateBody);
 
+      // no duplicates
       if (contextObj.tags.some(obj => obj.tag === hydrateBody)) return;
 
       // reset context loading
       contextObj.loading();
 
-      // remove credit
-      const tagsCredit = getCredit().tags - 1;
-      let postCredit = getCredit().post;
-      fbSet(`/users/${userId}/credit`, `${tagsCredit}/${postCredit}`);
-      const newAppState = Object.assign({...currentAppState}, {
-        credit: `${tagsCredit}/${postCredit}`
-      });
-      dispatch(updateAppState(newAppState));
       fbSet(`/userTags/${userId}/tags/${hydrateBody}`, true);
       setTagFormValue('');
       setTagsLoaded(false);
@@ -147,36 +136,34 @@ const Tags = () => {
 		    <div className="h-full w-10/12 sm:w-6/12">
           <Header />
 		      <h2 className="text-2xl text-white text-left leading-snug mb-2">
-		      	2. Set up your tags
+		      	2. Set up your tags (lim 25)
 		      </h2>
 			    <h3 className="text-lg text-[#A9AAC5] text-left leading-snug mb-4">
 		      	For auto-tagging
 		      </h3>
-          {credit &&
-            (<div>
-              <div className="space-y-1">
-                <ul className="w-full sm:w-7/12">
-                  <li>
-                    <div className="flex flex-row space-x-4 rtl:space-x-reverse">
-                      <div className="grow mb-8">
-                        <input type="text" value={tagFormValue} onChange={handleNewTag} className="w-full h-[40px] bg-transparent text-white text-lg block inline py-2.5 border-b border-b-sky-100 !outline-none" placeholder="Add a tag" />
-                      </div>
-                      <div className="flex-none">
-                        <button type="button" onClick={handleAddTag} className="h-[40px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add ({getCredit().tags})</button>
-                      </div>
+          <div>
+            <div className="space-y-1">
+              <ul className="w-full sm:w-7/12">
+                <li>
+                  <div className="flex flex-row space-x-4 rtl:space-x-reverse">
+                    <div className="grow mb-8">
+                      <input type="text" value={tagFormValue} onChange={handleNewTag} className="w-full h-[40px] bg-transparent text-white text-lg block inline py-2.5 border-b border-b-sky-100 !outline-none" placeholder="Add a tag" />
                     </div>
-                  </li>
+                    <div className="flex-none">
+                      <button type="button" onClick={handleAddTag} disabled={formTags.length > 25} className="h-[40px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add</button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            {contextObj.tags.length > 0 && (
+              <div className="mb-6 space-y-1 text-gray-500 rounded border border-gray-700">
+                <ul className="px-4 w-full divide-y divide-gray-200 dark:divide-gray-700">
+                  {renderList()}
                 </ul>
               </div>
-              {contextObj.tags.length > 0 && (
-                <div className="mb-6 space-y-1 text-gray-500 rounded border border-gray-700">
-                  <ul className="px-4 w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    {renderList()}
-                  </ul>
-                </div>
-              )}
-            </div>)
-          }
+            )}
+          </div>
           {!credit && (
             <div className="flex flex-row text-white mb-6">
               <div className="flex-1 text-left text-[#ffffff]">

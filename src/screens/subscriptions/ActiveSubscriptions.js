@@ -13,15 +13,6 @@ const ActiveSubScriptions = () => {
   const currentAppState = useSelector(appState);
   const { subscriptions, credit } = currentAppState;
 
-  const getCredit = () => {
-    const tags = credit.split('/')[0];
-    const post = credit.split('/')[1];
-    return {
-      tags,
-      post
-    }
-  }
-
 	return (<>
 		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
 			<Drawer/>
@@ -60,18 +51,9 @@ const ActiveSubScriptions = () => {
                         <p className="text-base text-[#A9AAC5]">
                           <span className="text-2xl font-bold mr-2 relative top-[2px]">
                             {
-                              getCredit().tags
+                              credit
                             }
                           </span> tags left
-                        </p>
-                      </div>
-                      <div className="inline-flex items-center justify-start mb-3">
-                        <p className="text-base text-[#A9AAC5]">
-                          <span className="text-2xl font-bold mr-2 relative top-[2px]">
-                            {
-                              getCredit().post
-                            }
-                          </span> post left
                         </p>
                       </div>
                     </div>

@@ -92,7 +92,7 @@ const PostDetails = () => {
             <p className="text-xl font-bold mb-1">
               <span className="flex items-center text-white">{getTagName()}</span>
             </p>
-            <p onClick={() => navigate(`/feed/${routePostId}/${item.id}`)} className="text-base cursor-pointer text-[#A9AAC5] leading-9 mb-3" style={{wordBreak: 'break-word'}}>
+            <p className="text-base cursor-pointer text-[#A9AAC5] leading-9 mb-3" style={{wordBreak: 'break-word'}}>
               {body.slice(0, 850)}
             </p>
             <p className="text-sm text-[#A9AAC5]">
