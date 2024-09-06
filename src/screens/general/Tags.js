@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { TagContext } from '../../context/TagContext';
-import { fbSet } from '../../services/firebaseService';
+import { fbSet, fbRemove } from '../../services/firebaseService';
 import {
   Menu,
   Drawer,
@@ -37,9 +37,10 @@ const Tags = () => {
   const showLess = () => setMax(4);
 
   const handleDeleteTag = (tag) => {
-    // how to successfully remove tags and post??
-    // remove(ref(fbdb, 'every related post id'));
-    // remove(ref(fbdb, 'id'));
+    fbRemove(`/userTags/${userId}/tags/${tag}`);
+    setTagsLoaded(false);
+    contextObj.loading();
+    contextObj.getTags(userId);
   }
 
   const handleNewTag = (e) => {

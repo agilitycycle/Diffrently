@@ -38,13 +38,11 @@ const Subscriptions = () => {
     fbPush(`/userSubscriptionsHistory/${userId}/subscriptions`, {
       name: 'FREE Trial',
       tags: 5,
-      post: 5,
       dateCreated
     });
     const pushKey = fbPush(`/userSubscriptions/${userId}/subscriptions`, {
       name: 'FREE Trial',
       tags: 5,
-      post: 5,
       dateCreated
     });
     fbUpdate(`/users/${userId}/`, {
@@ -60,7 +58,6 @@ const Subscriptions = () => {
       subscriptions: {
         dateCreated,
         name: 'FREE Trial',
-        post: 5,
         tags: 5
       },
       activeSubscriptions: pushKey,
