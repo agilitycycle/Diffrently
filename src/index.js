@@ -14,7 +14,7 @@ import {
 } from 'react-router-dom';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
-import { TagContextHOC } from './context/TagContext';
+import { CategoryContextHOC } from './context/CategoryContext';
 import {
   Payment,
   Subscriptions,
@@ -23,13 +23,12 @@ import {
 import {
 	LandingPage,
 	Export,
-	Feed,
-	Post,
-  Publish,
+	Category,
+	TagEdit,
 	Profile,
 	Tags,
   Tag,
-  PostDetails,
+  TagDetails,
   Subscribers,
   Founders,
   SignIn
@@ -115,8 +114,8 @@ const ProtectedRoute = (props) => {
 
 const stripePromise = loadStripe(process.env.REACT_APP_PUBLISHABLE_KEY);
 
-const TagContextComponent = (BaseComponent) => {
-  const Component = TagContextHOC(BaseComponent);
+const CategoryContextComponent = (BaseComponent) => {
+  const Component = CategoryContextHOC(BaseComponent);
 
   return <ProtectedRoute>
       <Elements stripe={stripePromise}>
@@ -131,56 +130,52 @@ const router = createBrowserRouter([
     element: <LandingPage />,
   },
   {
-    path: '/export',
-    element: TagContextComponent(Export),
-  },
-  {
-    path: '/feed',
-    element: TagContextComponent(Feed),
-  },
-  {
-    path: '/feed/:tag',
-    element: TagContextComponent(Tag),
-  },
-  {
-    path: '/feed/:tag/:postid',
-    element: TagContextComponent(PostDetails),
-  },
-  {
-    path: '/post',
-    element: TagContextComponent(Post),
-  },
-  {
-    path: '/publish',
-    element: TagContextComponent(Publish),
-  },
-  {
     path: '/profile',
-    element: TagContextComponent(Profile),
-  },
-  {
-    path: '/subscriptions',
-    element: TagContextComponent(Subscriptions),
-  },
-  {
-    path: '/subscriptions/active-subscriptions',
-    element: TagContextComponent(ActiveSubscriptions),
-  },
-  {
-    path: '/subscriptions/payment',
-    element: TagContextComponent(Payment),
+    element: CategoryContextComponent(Profile),
   },
   {
     path: '/tags',
-    element: TagContextComponent(Tags),
+    element: CategoryContextComponent(Tags),
+  },
+  {
+    path: '/tags/:category',
+    element: CategoryContextComponent(Category),
+  },
+  {
+    path: '/tags/:category/:tag',
+    element: CategoryContextComponent(Tag),
+  },
+  {
+    path: '/tags/:category/:tag/:tagdetails',
+    element: CategoryContextComponent(TagDetails),
+  },
+  {
+    path: '/tagedit',
+    element: CategoryContextComponent(TagEdit),
+  },
+  {
+    path: '/export',
+    element: CategoryContextComponent(Export),
+  },
+  {
+    path: '/subscriptions',
+    element: CategoryContextComponent(Subscriptions),
+  },
+  {
+    path: '/subscriptions/active-subscriptions',
+    element: CategoryContextComponent(ActiveSubscriptions),
+  },
+  {
+    path: '/subscriptions/payment',
+    element: CategoryContextComponent(Payment),
   },
   {
     path: '/subscribers',
-    element: TagContextComponent(Subscribers),
+    element: CategoryContextComponent(Subscribers),
   },
   {
     path: '/founders',
-    element: TagContextComponent(Founders),
+    element: CategoryContextComponent(Founders),
   },
   {
     path: '/signin',

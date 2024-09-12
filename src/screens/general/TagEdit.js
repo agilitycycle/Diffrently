@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { CategoryContext } from '../../context/CategoryContext';
 import axios from 'axios';
-import { TagContext } from '../../context/TagContext';
-import { fbSet, fbPush, fbUpdate } from '../../services/firebaseService';
+import { fbSet, fbPush } from '../../services/firebaseService';
 import moment from 'moment';
 import {
   Menu,
@@ -16,8 +16,18 @@ const initialState = {
   body: '',
   error: false,
   errorResponse: '',
-  tags: [],
-  tagsLoaded: false,
+  tags: [
+    {
+      tag: 'Person'
+    },
+    {
+      tag: 'Place'
+    },
+    {
+      tag: 'Thing'
+    }
+  ],
+  selected: [],
   autoTagging: [],
   generating: false,
   saving: false,
@@ -26,17 +36,18 @@ const initialState = {
 
 const maxCharacters = 850;
 
-const Post = () => {
+const TagEdit = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const currentAppState = useSelector(appState);
+  const contextObj = useContext(CategoryContext);
   const { credit, userId } = currentAppState;
-  const { tags, getTags } = useContext(TagContext);
+  const [categoriesLoaded, setCategoriesLoaded] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(undefined);
   const [characterCount, setCharacterCount] = useState(maxCharacters);
   const [postDetails, setPostDetails] = useState(initialState);
   const [tagFormValue, setTagFormValue] = useState('');
-  // eslint-disable-next-line
-  const [max, setMax] = useState(4);
 
   const capitalizeFirstLetter = (tagName) => {
     return `${tagName.charAt(0).toUpperCase()}${tagName.slice(1)}`;
@@ -137,8 +148,9 @@ const Post = () => {
 
   const handlePostAnother = () => setPostDetails(initialState);
 
+  // What happens when I publish post?
   const handlePost = async () => {
-    const { body, tags } = postDetails;
+    const { body } = postDetails;
     if (body.length < 3) return;
     if (body.length > 49 && body.length < 851 && credit > 0 &&
       credit >= postDetails.autoTagging.length) {
@@ -163,6 +175,7 @@ const Post = () => {
 
       const postItem = {
         dateCreated: moment().valueOf(),
+        predefinedTags: JSON.stringify(postDetails.selected),
         body
       }
 
@@ -170,15 +183,8 @@ const Post = () => {
         postItem[`tag${key}`] = true;
       }
 
-      const pushKey = fbPush(`/userPost/${userId}/post/`, postItem);
-
-      for(let i in postDetails.autoTagging) {
-        const tagPost = {};
-        tagPost[pushKey] = true;
-        fbUpdate(`/userTags/${userId}/tags/${postDetails.autoTagging[i]}`, tagPost);
-      }
-
-      await getTags(userId);
+      // fbPush(`/userPost/${userId}/post/`, postItem);
+      fbPush(`/userTags/${userId}/post/${selectedCategory}`, postItem);
     }
   }
 
@@ -202,21 +208,17 @@ const Post = () => {
     // no duplicates
     if (postDetails.tags.some(obj => obj.tag === hydrateBody)) return;
 
-    if (postDetails.tagsLoaded && tagFormValue.length > 2) {
-      await setNewTag(hydrateBody);
-      setTagFormValue('');
-      const newPostDetails = {...postDetails}
-      newPostDetails.tagsLoaded = false;
+    if (tagFormValue.length > 2) {
+      const newTags = [...postDetails.tags];
+      newTags.push({
+        tag: hydrateBody
+      });
+      const newPostDetails = Object.assign({...postDetails}, {
+        tags: newTags
+      });
       setPostDetails(newPostDetails);
-      await getTags(userId);
+      setTagFormValue('');
     }
-  }
-
-  const setNewTag = async (hydrateBody) => {
-    await new Promise((resolve) => {
-      fbSet(`/userTags/${userId}/tags/${hydrateBody}`, true);
-      resolve(true);
-    })
   }
 
   const removeAutoTag = (tagName) => {
@@ -225,50 +227,74 @@ const Post = () => {
     const newPostDetails = Object.assign({...postDetails}, {
       autoTagging: newAutoTagging
     });
+
+    // Remove from selected
+    if ((postDetails.selected && postDetails.selected.some(obj => obj.tag === tagName))) {
+      let newSelected = [...postDetails.selected];
+      newSelected = newSelected.filter(x => x.tag != tagName);
+      newPostDetails.selected = newSelected;
+    }
+
     setPostDetails(newPostDetails);
   }
 
-  const addAutoTag = (tagName) => {
-    const newAutoTagging = [...postDetails.autoTagging];
-    newAutoTagging.push(tagName);
+  const addSelected = (tagName) => {
+    const newSelected = [...postDetails.selected];
+    newSelected.push({
+      tag: tagName
+    });
+    const unique = arr => arr.filter((el, i, array) => array.indexOf(el) === i);
     const newPostDetails = Object.assign({...postDetails}, {
-      autoTagging: newAutoTagging
+      selected: unique(newSelected)
     });
     setPostDetails(newPostDetails);
   }
 
+  const removeSelected = (tagName) => {
+    let newSelected = [...postDetails.selected];
+    newSelected = newSelected.filter(x => x.tag != tagName);
+    const newPostDetails = Object.assign({...postDetails}, {
+      selected: newSelected
+    });
+    setPostDetails(newPostDetails);
+  }
+
+  const setCategoryFormValue = (event) => {
+    const { target } = event;
+    const { value } = target;
+    setSelectedCategory(value);
+  }
+
   const renderClickableTags = () => {
     return postDetails.tags.map((item, index) => {
-      const highlightStyles = 'inline-block border border-blue-500 text-blue-500';
-      return (<span key={`tag${index}`} onClick={() => addAutoTag(item.tag)} className={`${highlightStyles} bg-transparent cursor-pointer text-sm font-medium me-2 mb-2 px-2.5 py-0.5 rounded`}>+ {item.tag}</span>)
+      if ((postDetails.selected && postDetails.selected.some(obj => obj.tag === item.tag))) {
+        return (<span key={`tag${index}`} onClick={() => removeSelected(item.tag)} className="inline-block border border-blue-500 text-blue-500 bg-transparent cursor-pointer text-sm font-medium me-2 mb-2 px-2.5 py-0.5 rounded">- {item.tag}</span>)
+      }
+      return (<span key={`tag${index}`} onClick={() => addSelected(item.tag)} className="inline-block border border-neutral-400 text-neutral-400 bg-transparent cursor-pointer text-sm font-medium me-2 mb-2 px-2.5 py-0.5 rounded">+ {item.tag}</span>)
     })
   }
 
-  const renderAutoTags = () => {
+  const renderGeneratedTags = () => {
     return postDetails.autoTagging.map((item, index) => {
-      return (<span key={`tag${index}`} className="cursor-pointer inline-block border border-emerald-300 text-emerald-300 bg-transparent text-sm font-medium me-2 mb-2 pr-2.5 py-0.5 rounded">
+      const highlight = (postDetails.selected.some(obj => obj.tag === item)) ? 'border-violet-400 text-violet-400' : 'border-emerald-300 text-emerald-300';
+      return (<span key={`tag${index}`} className={`${highlight} cursor-pointer inline-block border bg-transparent text-sm font-medium me-2 mb-2 pr-2.5 py-0.5 rounded`}>
         <a href={null} onClick={() => removeAutoTag(item)} className="pl-2.5 pr-2">x</a> {item}
       </span>)
     }) 
   }
 
-  const renderTags = () => {
-    return postDetails.tags.map((item, index) => {
-      if (index >= max) return false;
-      const highlightStyles = postDetails.autoTagging.includes(item.tag) ? 'border border-emerald-300 text-emerald-300' : 'opacity-70 border border-blue-800 text-blue-800';
-      return (<span key={`tag${index}`} className={`${highlightStyles} bg-transparent text-sm font-medium me-2 px-2.5 py-0.5 rounded`}>{item.tag}</span>)
-    })
-  }
-
   useEffect(() => {
-    if (postDetails.tagsLoaded) return;
-    if (tags.length > 0) {
-      const newPostDetails = {...postDetails}
-      newPostDetails.tags = tags;
-      newPostDetails.tagsLoaded = true;
-      setPostDetails(newPostDetails);
+    if (categoriesLoaded) return;
+    if (contextObj.loaded && contextObj.categories.length < 1) {
+      // no tags avail yet
+      setCategoriesLoaded(true);
     }
-  }, [postDetails, tags])
+    if (contextObj.categories.length > 0) {
+      const newCategories = [...contextObj.categories];
+      setCategories(newCategories);
+      setCategoriesLoaded(true);
+    }
+  }, [contextObj.categories, categoriesLoaded, setCategories])
 
 	return (<>
 		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
@@ -276,7 +302,7 @@ const Post = () => {
 			<Menu/>
 		  <div className="flex items-center justify-center h-full">
 		    <div className="w-[500px] h-full">
-          <Header title="Your feed" />
+          <Header title="Tag edit" />
 		      <div>
             <textarea value={postDetails.body} onChange={handleChange} rows="9" className="resize-none block py-2.5 pr-2.5 mb-20 w-full text-lg text-lg text-white bg-transparent !outline-none" placeholder="Write something..."/>
           </div>
@@ -284,28 +310,73 @@ const Post = () => {
             <div className="sm:mt-0 mb-6 text-gray-500 dark:text-gray-400">
               Max: ({characterCount})
             </div>
+            <div className="mb-6 mt-4 mx-auto block text-gray-500 w-10/12">
+              <select onChange={setCategoryFormValue} className="bg-transparent border border-gray-700 text-neutral-400 text-sm rounded-lg block w-full p-2.5 dark:bg-transparent dark:border-gray-700 dark:text-neutral-400">
+                <option selected>Choose a category</option>
+                {categories.map((item) => {
+                  return (
+                    <option>{item.categoryName}</option>
+                  )
+                })}
+              </select>
+            </div>
+            <div className="p-6 mb-16 mt-4 mx-auto block text-gray-500 rounded border border-gray-700 w-10/12">
+              <div className="space-y-1">
+                <ul className="w-full">
+                  <li>
+                    <div className="flex flex-row space-x-4 rtl:space-x-reverse">
+                      <div className="grow mb-8">
+                        <input type="text" value={tagFormValue} onChange={handleNewTag} className="w-full h-[40px] bg-transparent text-white text-lg block inline py-2.5 border-b border-b-sky-100 !outline-none" placeholder="Help your AI learn" />
+                      </div>
+                      <div className="flex-none">
+                        <button type="button" onClick={handleAddTag} disabled={postDetails.tags.length > 25} className="h-[40px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add tags</button>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              {renderClickableTags()}
+            </div>
+            {/** Feed button **/}
             {postDetails.published && (
-              <button onClick={() => navigate('/feed')} className="block rounded-full mb-8 mx-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center">
-                feed
+              <button onClick={() => navigate('/tags')} className="block rounded-full mb-8 mx-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center">
+                tags
               </button>
             )}
+            {/** Generate **/}
             {(postDetails.autoTagging.length === 0) && (
-              <button onClick={generateTags} disabled={postDetails.generating} className={`opacity-${postDetails.generating || (postDetails.body.length < 50 || postDetails.body.length > 850 || characterCount < 0) ? '50' : '100'} block rounded-full mb-8 mx-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center`}>
+              <button onClick={generateTags} disabled={postDetails.generating || postDetails.selected.length == 0} className={`opacity-${postDetails.generating || (postDetails.body.length < 50 || postDetails.body.length > 850 || characterCount < 0 || postDetails.selected.length == 0) ? '50' : '100'} block rounded-full mb-8 mx-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center`}>
                 {postDetails.generating ? <span>generating...</span> : <span>generate</span>}
               </button>
             )}
+            {/** Publish **/}
             {(!postDetails.published && postDetails.autoTagging.length > 0) && (
-              <button onClick={handlePost} disabled={postDetails.saving} className={`opacity-${postDetails.saving || (postDetails.body.length < 50 || postDetails.body.length > 850 || characterCount < 0) ? '50' : '100'} block rounded-full mb-8 mx-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center`}>
-                {postDetails.saving ? <span>saving...</span> : <span>publish ({credit})</span>}
+              <button onClick={handlePost} disabled={postDetails.saving || selectedCategory === undefined} className={`opacity-${postDetails.saving || (postDetails.body.length < 50 || postDetails.body.length > 850 || characterCount < 0 || selectedCategory === undefined) ? '50' : '100'} block rounded-full mb-8 mx-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center`}>
+                {postDetails.saving ? <span>saving...</span> : <span>publish</span>}
               </button>
             )}
-            <p className="sm:mt-0 mb-4 text-gray-500 dark:text-gray-400">
-              {postDetails.published && (
+            {/** Generate again **/}
+            {!postDetails.published && postDetails.autoTagging.length > 0 && (<>
+              <div className="w-full mb-16 flex flex-col items-center justify-center font-normal text-blue-600 dark:text-blue-500">
+                <div className="text-sm mb-3">
+                  {credit - postDetails.autoTagging.length > 0 && (
+                    <span className="text-neutral-400">Yes, you can publish. ({credit})</span>
+                  )}
+                </div>
+                <div>
+                  <span className="font-sm">Unhappy?</span>&nbsp;<a href={null} onClick={generateTags} className="cursor-pointer underline">Generate again</a>.
+                </div>
+              </div>
+            </>)}
+            {/** Post another **/}
+            {postDetails.published && (
+              <p className="sm:mt-0 mb-4 text-gray-500 dark:text-gray-400">
                 <button onClick={handlePostAnother} className="cursor-pointer inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline">
                   Post another?
                 </button>
-              )}
-            </p>
+              </p>
+            )}
+            {/** Render error **/}
             {!postDetails.published && postDetails.error && (
               <>
                 <div className="p-4 mb-6 text-base text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
@@ -320,59 +391,15 @@ const Post = () => {
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                   </svg>
                 </div>
-                <div className="p-6 mt-4 block text-gray-500 rounded border border-gray-700 w-full">
-                  <ul className="w-full sm:w-7/12">
-                    <li>
-                      <div className="flex flex-row space-x-4 rtl:space-x-reverse">
-                        <div className="grow mb-8">
-                          <input type="text" value={tagFormValue} onChange={handleNewTag} className="w-full h-[40px] bg-transparent text-white text-lg block inline py-2.5 border-b border-b-sky-100 !outline-none" placeholder="Add a tag" />
-                        </div>
-                        <div className="flex-none">
-                          <button type="button" onClick={handleAddTag} className="h-[40px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add</button>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                  {renderClickableTags()}
-                </div>
                 <div>&nbsp;</div>
               </>
             )}
+            {/** Render generated tags **/}
             {postDetails.autoTagging.length > 0 && (
               <div className="pb-8 mt-4">
-                {!postDetails.published && (<>
-                  <div className="w-full flex items-center justify-center font-medium text-blue-600 dark:text-blue-500">
-                    <a href={null} onClick={generateTags} className="cursor-pointer underline">Generate again</a>&nbsp;or add tags
-                    <svg className="w-4 h-4 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                      <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                  </div>
-                  <div className="p-6 mt-4 block text-gray-500 rounded border border-gray-700 w-full">
-                    <div className="space-y-1">
-                      <ul className="w-full sm:w-7/12">
-                        <li>
-                          <div className="flex flex-row space-x-4 rtl:space-x-reverse">
-                            <div className="grow mb-8">
-                              <input type="text" value={tagFormValue} onChange={handleNewTag} className="w-full h-[40px] bg-transparent text-white text-lg block inline py-2.5 border-b border-b-sky-100 !outline-none" placeholder="Add a tag" />
-                            </div>
-                            <div className="flex-none">
-                              <button type="button" onClick={handleAddTag} disabled={postDetails.tags.length > 25} className="h-[40px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add</button>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                    {renderClickableTags()}
-                  </div>
-                </>)}
-                <div className={!postDetails.published ? 'mt-10 mb-2' : 'mt-7 mb-2'}>
-                  {renderAutoTags()}
+                <div className="my-8">
+                  {renderGeneratedTags()}
                 </div>
-              </div>
-            )}
-            {postDetails.autoTagging.length === 0 && !postDetails.error && (
-              <div className="pb-8 mt-4 mb-2">
-                {renderTags()}
               </div>
             )}
 		      </div>
@@ -382,4 +409,4 @@ const Post = () => {
   </>);
 };
 
-export default Post;
+export default TagEdit;

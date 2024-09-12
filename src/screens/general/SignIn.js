@@ -5,6 +5,7 @@ import { updateAppState, appState } from '../../app/appSlice';
 import { auth, provider, fbdb } from '../../app/firebase';
 import { signInWithPopup } from 'firebase/auth';
 import { ref, query, get, push, orderByChild, equalTo } from 'firebase/database';
+import { fbSet } from '../../services/firebaseService';
 import {
   Menu,
   Drawer,
@@ -38,6 +39,12 @@ const SignIn = () => {
                 photoUrl: photoURL,
                 displayName
               }).key;
+
+              // this will be set first time **
+              fbSet(`/userCategories/${userId}/categories`, {
+                name: 'Default',
+                description: 'Default category'
+              });
             } else {
               userId = Object.keys(snapshot.val())[0];
             }

@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { appState } from '../../app/appSlice';
 import { fbdb } from '../../app/firebase';
-import { TagContext } from '../../context/TagContext';
+import { CategoryContext } from '../../context/CategoryContext';
 import { ref, query, get} from 'firebase/database';
 import {
   fbRemove
@@ -15,12 +15,12 @@ import {
 } from '../../components';
 
 const initialLoaded = {
-  tagsLoaded: false,
+  categoriesLoaded: false,
   postLoaded: false
 }
 
-const PostDetails = () => {
-  const { tags } = useContext(TagContext);
+const TagDetails = () => {
+  const { categories } = useContext(CategoryContext);
   const location = useLocation();
   const navigate = useNavigate();
   const currentAppState = useSelector(appState);
@@ -28,7 +28,9 @@ const PostDetails = () => {
   const [loaded, setLoaded] = useState({});
   const [postTagDetails, setPostTagDetails] = useState([]);
   const { pathname } = location;
-  const { tagsLoaded, postLoaded } = loaded;
+  const { categoriesLoaded, postLoaded } = loaded;
+  const categoryRouteSplit = pathname.split('/');
+  const categoryRoute = categoryRouteSplit[categoryRouteSplit.length - 3];
   const routePostId = pathname.substring(pathname.lastIndexOf('/') + 1);
 
   const loadTag = (tag) => {
@@ -36,7 +38,7 @@ const PostDetails = () => {
     newLoaded.postLoaded = false;
     setLoaded(newLoaded);
     setPostTagDetails([]);
-    navigate(`/feed/${tag}`);
+    navigate(`/tags/${categoryRoute}/${tag}`);
   }
 
   const handleDeletePost = (postId) => {
@@ -45,7 +47,7 @@ const PostDetails = () => {
     const removeIndex = newPostTagDetails.findIndex(item => item.id === postId);
     newPostTagDetails.splice(removeIndex, 1);
     setPostTagDetails(newPostTagDetails);
-    navigate(`/feed/${getTagName()}`);
+    navigate(`/tags/${categoryRoute}/${getTagName()}`);
   }
 
   const getTags = (tagEl) => {
@@ -68,7 +70,7 @@ const PostDetails = () => {
   }
 
   const getPost = async () => {
-    const path = `/userPost/${userId}/post/${routePostId}`;
+    const path = `/userTags/${userId}/post/${categoryRoute}/${routePostId}`;
     const userRef = ref(fbdb, path);
     const q = query(userRef);
     const result = await get(q)
@@ -111,16 +113,14 @@ const PostDetails = () => {
               <span className="mr-2 opacity-60">1 day ago</span>
               {getTags(tagEl)}
             </p>
-            {/*
-            <div className="grid justify-items-end">
+            {/*<div className="grid justify-items-end">
               <button type="button" className="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 <svg className="w-4 h-4 me-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M13.09 3.294c1.924.95 3.422 1.69 5.472.692a1 1 0 0 1 1.438.9v9.54a1 1 0 0 1-.562.9c-2.981 1.45-5.382.24-7.25-.701a38.739 38.739 0 0 0-.622-.31c-1.033-.497-1.887-.812-2.756-.77-.76.036-1.672.357-2.81 1.396V21a1 1 0 1 1-2 0V4.971a1 1 0 0 1 .297-.71c1.522-1.506 2.967-2.185 4.417-2.255 1.407-.068 2.653.453 3.72.967.225.108.443.216.655.32Z"/>
                 </svg>
                 Report
               </button>
-            </div>
-            */}
+            </div>*/}
           </div>
         </div>
         <div>
@@ -153,20 +153,20 @@ const PostDetails = () => {
   }, [location]);
 
   useEffect(() => {
-    if (tagsLoaded && !postLoaded) {
+    if (categoriesLoaded && !postLoaded) {
       getPost();
     }
     // eslint-disable-next-line
-  }, [loaded, tagsLoaded, postLoaded, routePostId])
+  }, [loaded, categoriesLoaded, postLoaded, routePostId])
 
   useEffect(() => {
-    if (tagsLoaded) return;
-    if (tags.length > 0) {
+    if (categoriesLoaded) return;
+    if (categories.length > 0) {
       const newLoaded = {...loaded};
-      newLoaded.tagsLoaded = true;
+      newLoaded.categoriesLoaded = true;
       setLoaded(newLoaded);
     }
-  }, [loaded, tagsLoaded, tags.length])
+  }, [loaded, categoriesLoaded, categories.length])
 
 	return (<>
 		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
@@ -176,6 +176,31 @@ const PostDetails = () => {
 		    <div className="h-full w-full sm:w-7/12">
           <Header title="Your feed" />
           <div className="min-w-80 pb-7">
+            <nav className="flex mb-8" aria-label="Breadcrumb">
+              <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+                <li className="inline-flex items-center">
+                  <a href={null} onClick={() => navigate('/tags/')} className="cursor-pointer inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                    <svg className="w-6 h-6 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.583 8.445h.01M10.86 19.71l-6.573-6.63a.993.993 0 0 1 0-1.4l7.329-7.394A.98.98 0 0 1 12.31 4l5.734.007A1.968 1.968 0 0 1 20 5.983v5.5a.992.992 0 0 1-.316.727l-7.44 7.5a.974.974 0 0 1-1.384.001Z"/>
+                    </svg>
+                    Tags
+                  </a>
+                </li>
+                <li aria-current="page">
+                  <div className="flex items-center">
+                    <svg className="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                    </svg>
+                    <span className="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">
+                      {categoryRoute}
+                    </span>
+                  </div>
+                </li>
+              </ol>
+            </nav>
+            <button onClick={() => navigate('/tagedit/')} className="block rounded-full mb-12 text-xl uppercase w-48 h-14 border border-white bg-transparent text-[#fff]">
+              Tag
+            </button>
             {postLoaded && renderPost()}
             {!postLoaded && (<div className="flex flex-row text-white mb-5">
               <div>
@@ -215,7 +240,9 @@ const PostDetails = () => {
                     No post avail.
                   </p>
                   <p className="text-sm text-[#A9AAC5] opacity-60">
-                    Write your first post.
+                    <a href={null} onClick={() => navigate('/tagedit/')} className="cursor-pointer hover:underline">
+                      Write your first post.
+                    </a>
                   </p>
                 </div>
               </div>
@@ -232,4 +259,4 @@ const PostDetails = () => {
   </>);
 };
 
-export default PostDetails;
+export default TagDetails;

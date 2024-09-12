@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 
 const Header = (props) => {
   const { className, title, useLink = true } = props;
-  const headerClss = className || 'text-5xl text-white text-left font-semibold mb-8';
+  const headerClss = className || 'inline-block text-5xl text-white text-left font-semibold mb-8';
 
   if (useLink) {
-    return (<Link to="/feed" className="flex items-center text-white">
+    return (
       <div>
         {
           title && (
@@ -16,10 +16,12 @@ const Header = (props) => {
           )
         }
         <h1 className={headerClss}>
-          Flipbio
+          <Link to="/tags" className="flex items-center text-white">
+            Flipbio
+          </Link>
         </h1>
       </div>
-    </Link>);
+    );
   }
 
   return (
