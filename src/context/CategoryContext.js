@@ -10,6 +10,10 @@ const CategoryContextProvider = (props) => {
   const currentAppState = useSelector(appState);
   const { userId } = currentAppState;
 
+  const hasOrder = (item) => {
+    return item.hasOwnProperty('order');
+  }
+
   const getPost = async (categoryName) => {
     const result = await fbOnValueOrderByKeyLimitToLast(`/userTags/${userId}/post/${categoryName}`, 100);
     if (result) {
@@ -21,20 +25,39 @@ const CategoryContextProvider = (props) => {
   const getCategories = async (userId) => {
     const newCategories = {...categories};
     const postResult = await getPost('Default');
+
     newCategories.categories = [{
       post: postResult,
       categoryName: 'Default'
     }];
     const result = await fbOnValueOrderByKeyLimitToLast(`/userCategories/${userId}/categories/`, 100);
+
     if (result) {
       for (let value in result) {
         const postResult = await getPost(value);
-        newCategories.categories.push({
-          post: postResult,
-          categoryName: value
-        });
+  
+        if (value !== 'Default') {
+          newCategories.categories.push({
+            post: postResult,
+            categoryName: value
+          });
+        }
+
+        // has order
+        if (hasOrder(result[value])) {
+          const order = result[value].order;
+          value !== 'Default' ?
+            newCategories.categories[newCategories.categories.length - 1].order = order :
+            newCategories.categories[0].order = order;
+        }
       }
+
+      if (hasOrder(newCategories.categories[0])) {
+        newCategories.categories = newCategories.categories.sort(({ order:a }, { order:b }) => b - a).reverse();
+      }
+      
     }
+
     newCategories.loaded = true;
     setCategories(newCategories);
   }

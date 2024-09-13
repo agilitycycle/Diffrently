@@ -1,14 +1,38 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { CategoryContext } from '../../context/CategoryContext';
-import { fbSet, fbRemove } from '../../services/firebaseService';
+import { fbSet, fbUpdate, fbRemove } from '../../services/firebaseService';
 import {
   Menu,
   Drawer,
   Header
 } from '../../components';
 import { appState } from '../../app/appSlice';
+
+// reorder results
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
+
+const grid = 8;
+
+const getItemStyle = (draggableStyle) => ({
+  userSelect: 'none',
+  padding: grid * 2,
+  margin: `0 0 ${grid}px 0`,
+  background: '#000423',
+  ...draggableStyle
+});
+
+const getListStyle = () => ({
+  padding: grid
+});
 
 const Tags = () => {
   const navigate = useNavigate();
@@ -34,6 +58,29 @@ const Tags = () => {
 
   const showLess = () => setMax(4);
 
+  const onDragEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
+  
+    const newFormTags = reorder(
+      formTags,
+      result.source.index,
+      result.destination.index
+    );
+
+    newFormTags.map((item, index) => {
+      // update order in firebase
+      fbUpdate(`/userCategories/${userId}/categories/${item.categoryName}`, {
+        order: index,
+        description: ''
+      });
+    })
+
+    setFormTags(newFormTags);
+  }
+  
+
   /**
    * 
    * What happens to existing post?
@@ -41,6 +88,7 @@ const Tags = () => {
    */
   const handleDeleteTag = (category) => {
     fbRemove(`/userCategories/${userId}/categories/${category}`);
+    fbRemove(`/userTags/${userId}/post/${category}`); 
     setCategoriesLoaded(false);
     contextObj.loading();
     contextObj.getCategories(userId);
@@ -89,31 +137,43 @@ const Tags = () => {
       if (index >= max) return false;
       const elementId = `tag${index}`;
       return (
-        <li key={elementId} className="py-4">
-          <div className="flex items-center space-x-4 rtl:space-x-reverse">
-            <div className="inline-flex items-center rounded-md ml-auto w-12 h-12 bg-[#40435a]">
-              &nbsp;
-            </div>
-            <div className="flex-1">
-              <p className="text-base font-medium text-gray-900 truncate dark:text-white mb-0.5">
-                <a href={null} onClick={() => setCategory(item.categoryName)} className="flex items-center text-white">
-                  <span>{item.categoryName} ({item.post})</span>
-                </a>
-              </p>
-              <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                Your tag description...
-              </p>
-            </div>
-            <div className="inline-flex items-center">
-              <button type="button" onClick={() => handleDeleteTag(item.categoryName)}>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5 mr-2 text-rose-900">
-                  <path fillRule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clipRule="evenodd" />
-                </svg>
-              </button>
-              <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-xs px-2 py-1 text-center">Edit</button>
-            </div>
-          </div>
-        </li>
+        <Draggable key={elementId} draggableId={elementId} index={index}>
+          {(provided, snapshot) => (
+            <li
+              className="py-4"
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              style={getItemStyle(
+                provided.draggableProps.style
+              )}
+            >
+              <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                <div className="inline-flex items-center rounded-md ml-auto w-12 h-12 bg-[#40435a]">
+                  &nbsp;
+                </div>
+                <div className="flex-1">
+                  <p className="text-base font-medium text-gray-900 truncate dark:text-white mb-0.5">
+                    <a href={null} onClick={() => setCategory(item.categoryName)} className="flex items-center text-white">
+                      <span>{item.categoryName} ({item.post})</span>
+                    </a>
+                  </p>
+                  <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                    Your tag description...
+                  </p>
+                </div>
+                <div className="inline-flex items-center">
+                  <button type="button" onClick={() => handleDeleteTag(item.categoryName)}>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5 mr-2 text-rose-900">
+                      <path fillRule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+                  <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-xs px-2 py-1 text-center">Edit</button>
+                </div>
+              </div>
+            </li>
+          )}
+        </Draggable>
       )
     })
   }
@@ -169,9 +229,21 @@ const Tags = () => {
             </div>
             {contextObj.categories.length > 0 && (
               <div className="mb-6 space-y-1 text-gray-500 rounded border border-gray-700">
-                <ul className="px-4 w-full divide-y divide-gray-200 dark:divide-gray-700">
-                  {renderList()}
-                </ul>
+                <DragDropContext onDragEnd={onDragEnd}>
+                  <Droppable droppableId="droppable">
+                    {(provided, snapshot) => (
+                      <ul
+                        className="px-4 w-full divide-y divide-gray-200 dark:divide-gray-700"
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        style={getListStyle(snapshot.isDraggingOver)}
+                      >
+                        {renderList()}
+                        {provided.placeholder}
+                      </ul>
+                    )}
+                  </Droppable>
+                </DragDropContext>
               </div>
             )}
           </div>

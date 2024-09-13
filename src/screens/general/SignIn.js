@@ -59,7 +59,7 @@ const SignIn = () => {
             dispatch(updateAppState(newAppState));
 
             // redirect
-            navigate('/feed');
+            navigate('/tags');
           })
           .catch((error) => {
             console.log(error);
