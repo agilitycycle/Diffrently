@@ -247,19 +247,6 @@ const Tags = () => {
               </div>
             )}
           </div>
-          {!credit && (
-            <div className="flex flex-row text-white mb-6">
-              <div className="flex-1 text-left text-[#ffffff]">
-                <div className="block w-full p-6 bg-white border border-gray-700 rounded-lg shadow dark:bg-transparent dark:border-gray-700">
-                  <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">No active subscriptions</h5>
-                  <p className="text-base text-[#A9AAC5] dark:text-[#A9AAC5] leading-loose">{
-                    !currentAppState.freeTrial ? (<a href={null} onClick={() => navigate('/subscriptions')} className="cursor-pointer hover:underline">Consider getting a FREE Trial plan.</a>) :
-                      (<a href={null} onClick={() => navigate('/subscriptions')} className="cursor-pointer hover:underline">Consider getting a Pay as you go plan</a>)
-                  }</p>
-                </div>
-              </div>
-            </div>
-          )}
           {categoriesLoaded && (
             <div className="text-center">
               <div>
@@ -274,6 +261,19 @@ const Tags = () => {
                       Show less
                     </button>
                   )}
+                </div>
+              </div>
+            </div>
+          )}
+          {!credit && (
+            <div className="flex flex-row text-white mb-6">
+              <div className="flex-1 text-left text-[#ffffff]">
+                <div className="block w-full p-6 bg-white border border-gray-700 rounded-lg shadow dark:bg-transparent dark:border-gray-700">
+                  <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">You have 0 credit</h5>
+                  <p className="text-base text-[#A9AAC5] dark:text-[#A9AAC5] leading-loose">{
+                    !currentAppState.freeTrial ? (<a href={null} onClick={() => navigate('/subscriptions')} className="cursor-pointer hover:underline">Consider getting a FREE Trial plan.</a>) :
+                      (<a href={null} onClick={() => navigate('/subscriptions')} className="cursor-pointer hover:underline">Consider getting a Pay as you go plan</a>)
+                  }</p>
                 </div>
               </div>
             </div>

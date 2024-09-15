@@ -41,7 +41,7 @@ const TagEdit = () => {
   const dispatch = useDispatch();
   const currentAppState = useSelector(appState);
   const contextObj = useContext(CategoryContext);
-  const { credit, userId } = currentAppState;
+  const { credit, userId, tagEdit } = currentAppState;
   const [categoriesLoaded, setCategoriesLoaded] = useState(false);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(undefined);
@@ -284,6 +284,12 @@ const TagEdit = () => {
   }
 
   useEffect(() => {
+    if (tagEdit && selectedCategory === undefined) {
+      setSelectedCategory(tagEdit);
+    }
+  }, tagEdit)
+
+  useEffect(() => {
     if (categoriesLoaded) return;
     if (contextObj.loaded && contextObj.categories.length < 1) {
       // no tags avail yet
@@ -311,11 +317,11 @@ const TagEdit = () => {
               Max: ({characterCount})
             </div>
             <div className="mb-6 mt-4 mx-auto block text-gray-500 w-10/12">
-              <select onChange={setCategoryFormValue} className="bg-transparent border border-gray-700 text-neutral-400 text-sm rounded-lg block w-full p-2.5 dark:bg-transparent dark:border-gray-700 dark:text-neutral-400">
-                <option selected>Choose a category</option>
+              <select value={tagEdit || 'Choose a category'} onChange={setCategoryFormValue} className="bg-transparent border border-gray-700 text-neutral-400 text-sm rounded-lg block w-full p-2.5 dark:bg-transparent dark:border-gray-700 dark:text-neutral-400">
+                <option value="Choose a category">Choose a category</option>
                 {categories.map((item) => {
                   return (
-                    <option>{item.categoryName}</option>
+                    <option value={item.categoryName}>{item.categoryName}</option>
                   )
                 })}
               </select>
@@ -351,7 +357,7 @@ const TagEdit = () => {
             )}
             {/** Publish **/}
             {(!postDetails.published && postDetails.autoTagging.length > 0) && (
-              <button onClick={handlePost} disabled={postDetails.saving || selectedCategory === undefined} className={`opacity-${postDetails.saving || (postDetails.body.length < 50 || postDetails.body.length > 850 || characterCount < 0 || selectedCategory === undefined) ? '50' : '100'} block rounded-full mb-8 mx-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center`}>
+              <button onClick={handlePost} disabled={!credit || credit - postDetails.autoTagging.length < 0 || postDetails.saving || selectedCategory === undefined} className={`opacity-${!credit || credit - postDetails.autoTagging.length < 0 || postDetails.saving || (postDetails.body.length < 50 || postDetails.body.length > 850 || characterCount < 0 || selectedCategory === undefined) ? '50' : '100'} block rounded-full mb-8 mx-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center`}>
                 {postDetails.saving ? <span>saving...</span> : <span>publish</span>}
               </button>
             )}
@@ -359,8 +365,14 @@ const TagEdit = () => {
             {!postDetails.published && postDetails.autoTagging.length > 0 && (<>
               <div className="w-full mb-16 flex flex-col items-center justify-center font-normal text-blue-600 dark:text-blue-500">
                 <div className="text-sm mb-3">
-                  {credit - postDetails.autoTagging.length > 0 && (
+                  {credit - postDetails.autoTagging.length >= 0 && (
                     <span className="text-neutral-400">Yes, you can publish. ({credit})</span>
+                  )}
+                  {credit !== 0 && credit - postDetails.autoTagging.length < 0 && (
+                    <span className="text-neutral-400">Please remove some tags, you only have - {credit} credits</span>
+                  )}
+                  {!credit && (
+                    <span className="text-neutral-400">Sorry, you have no credit to publish. (0)</span>
                   )}
                 </div>
                 <div>

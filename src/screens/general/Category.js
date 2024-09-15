@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { appState } from '../../app/appSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateAppState, appState } from '../../app/appSlice';
 import { CategoryContext } from '../../context/CategoryContext';
 import {
   fbRemove,
@@ -23,6 +23,7 @@ const Category = () => {
   const contextObj = useContext(CategoryContext);
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const currentAppState = useSelector(appState);
   const { photoUrl, userId } = currentAppState;
   const [loaded, setLoaded] = useState(initialLoaded);
@@ -104,6 +105,14 @@ const Category = () => {
     const newLoaded = {...loaded};
     newLoaded.postLoaded = true;
     setLoaded(newLoaded);
+  }
+
+  const gotoTagEdit = () => {
+    const newAppState = Object.assign({...currentAppState}, {
+      tagEdit: routeTagName
+    });
+    dispatch(updateAppState(newAppState));
+    navigate('/tagedit/');
   }
 
   const renderPost = () => {
@@ -201,7 +210,7 @@ const Category = () => {
                 </li>
               </ol>
             </nav>
-            <button onClick={() => navigate('/tagedit/')} className="block rounded-full mb-12 text-xl uppercase w-48 h-14 border border-white bg-transparent text-[#fff]">
+            <button onClick={() => gotoTagEdit()} className="block rounded-full mb-12 text-xl uppercase w-48 h-14 border border-white bg-transparent text-[#fff]">
               Tag
             </button>
             {postLoaded && renderPost()}

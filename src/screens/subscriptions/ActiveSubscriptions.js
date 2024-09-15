@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
@@ -12,6 +12,13 @@ const ActiveSubScriptions = () => {
 	const navigate = useNavigate();
   const currentAppState = useSelector(appState);
   const { subscriptions, credit } = currentAppState;
+  const [ percentage, setPercentage ] = useState(undefined);
+
+  useEffect(() => {
+    if (!percentage) {
+      setPercentage(100 * credit / subscriptions.tags);
+    }
+  }, percentage)
 
 	return (<>
 		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
@@ -45,7 +52,7 @@ const ActiveSubScriptions = () => {
                   <div className="w-full flex flex-col mb-5">
                     <div className="flex flex-col items-start justify-start">
                       <div className="w-full mb-8 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-                        <div className="bg-blue-600 h-2.5 rounded-full" style={{width: '45%'}}></div>
+                        <div className="bg-blue-600 h-2.5 rounded-full" style={{width: `${percentage}%`}}></div>
                       </div>
                       <div className="inline-flex items-center justify-start mb-2">
                         <p className="text-base text-[#A9AAC5]">
