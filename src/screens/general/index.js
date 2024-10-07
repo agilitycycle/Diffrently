@@ -1,11 +1,9 @@
 import LandingPage from './LandingPage';
-import Export from './Export';
-import Category from './Category';
-import TagEdit from './TagEdit';
+import Timeline from './Timeline';
+import Post from './Post';
 import Profile from './Profile';
-import Tags from './Tags';
 import Tag from './Tag';
-import TagDetails from './TagDetails';
+import PostDetails from './PostDetails';
 import Subscribers from './Subscribers';
 import Founders from './Founders';
 import SignIn from './SignIn';
@@ -13,12 +11,10 @@ import SignIn from './SignIn';
 export {
 	LandingPage,
 	Profile,
-	Export,
-	Category,
-	TagEdit,
-	Tags,
+	Timeline,
+	Post,
 	Tag,
-	TagDetails,
+	PostDetails,
 	Subscribers,
 	Founders,
 	SignIn

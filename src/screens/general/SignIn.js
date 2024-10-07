@@ -40,11 +40,6 @@ const SignIn = () => {
                 displayName
               }).key;
 
-              // this will be set first time **
-              fbSet(`/userCategories/${userId}/categories`, {
-                name: 'Default',
-                description: 'Default category'
-              });
             } else {
               userId = Object.keys(snapshot.val())[0];
             }
@@ -59,7 +54,7 @@ const SignIn = () => {
             dispatch(updateAppState(newAppState));
 
             // redirect
-            navigate('/tags');
+            navigate('/timeline');
           })
           .catch((error) => {
             console.log(error);

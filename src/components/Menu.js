@@ -6,7 +6,7 @@ const Menu = () => {
 	const currentAppState = useSelector(appState);
 	const dispatch = useDispatch();
 
-	return (<div onClick={() => {
+	return (<div className="w-8 absolute right-5" onClick={() => {
 		const newAppState = {...currentAppState};
 		newAppState.drawer = !newAppState.drawer;
 		dispatch(updateAppState(newAppState));

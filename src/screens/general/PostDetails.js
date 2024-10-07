@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateAppState, appState } from '../../app/appSlice';
+import { useSelector } from 'react-redux';
+import { createAvatar } from '@dicebear/core';
+import { identicon } from '@dicebear/collection';
+import { appState } from '../../app/appSlice';
 import { fbdb } from '../../app/firebase';
-import { CategoryContext } from '../../context/CategoryContext';
 import { ref, query, get} from 'firebase/database';
 import {
-  fbRemove
+  fbRemove,
+  fbOnValueOrderByKeyLimitToLast
 } from '../../services/firebaseService';
 import {
   Menu,
@@ -15,23 +17,20 @@ import {
 } from '../../components';
 
 const initialLoaded = {
-  categoriesLoaded: false,
+  tagCategoryLoaded: false,
   postLoaded: false
 }
 
-const TagDetails = () => {
-  const { categories } = useContext(CategoryContext);
+const PostDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const currentAppState = useSelector(appState);
   const { photoUrl, userId } = currentAppState;
   const [loaded, setLoaded] = useState({});
   const [postTagDetails, setPostTagDetails] = useState([]);
+  const [tagCategories, setTagCategories] = useState(undefined);
   const { pathname } = location;
-  const { categoriesLoaded, postLoaded } = loaded;
-  const categoryRouteSplit = pathname.split('/');
-  const categoryRoute = categoryRouteSplit[categoryRouteSplit.length - 3];
+  const { tagCategoryLoaded, postLoaded } = loaded;
   const routePostId = pathname.substring(pathname.lastIndexOf('/') + 1);
 
   const loadTag = (tag) => {
@@ -39,7 +38,7 @@ const TagDetails = () => {
     newLoaded.postLoaded = false;
     setLoaded(newLoaded);
     setPostTagDetails([]);
-    navigate(`/tags/${categoryRoute}/${tag}`);
+    navigate(`/timeline/${tag}`);
   }
 
   const handleDeletePost = (postId) => {
@@ -48,12 +47,16 @@ const TagDetails = () => {
     const removeIndex = newPostTagDetails.findIndex(item => item.id === postId);
     newPostTagDetails.splice(removeIndex, 1);
     setPostTagDetails(newPostTagDetails);
-    navigate(`/tags/${categoryRoute}/${getTagName()}`);
+    navigate(`/timeline/${getTagName()}`);
+  }
+
+  const handleDynamicTags = (tag) => {
+    navigate(`/timeline/${tag}`);
   }
 
   const getTags = (tagEl) => {
     return tagEl.map((tag, index) => {
-      const highlightStyles = getTagName() === tag ? 'opacity-40 border border-[#A9AAC5] text-[#A9AAC5]' : 'border border-emerald-300 text-emerald-300';
+      const highlightStyles = getTagName() === tag ? 'border border-emerald-600 text-emerald-600' : 'opacity-40 border border-[#A9AAC5] text-[#A9AAC5]';
       return <button key={`tag${index}`} className="mb-4" onClick={() => loadTag(tag)}>
         <span key={tag} className={`${highlightStyles} bg-transparent text-sm font-medium me-2 px-2.5 py-0.5 rounded`}>
           {tag}
@@ -71,7 +74,7 @@ const TagDetails = () => {
   }
 
   const getPost = async () => {
-    const path = `/userTags/${userId}/post/${categoryRoute}/${routePostId}`;
+    const path = `/userTimeline/${userId}/post/${routePostId}`;
     const userRef = ref(fbdb, path);
     const q = query(userRef);
     const result = await get(q)
@@ -91,12 +94,44 @@ const TagDetails = () => {
     setLoaded(newLoaded);
   }
 
-  const gotoTagEdit = () => {
-    const newAppState = Object.assign({...currentAppState}, {
-      tagEdit: categoryRoute
-    });
-    dispatch(updateAppState(newAppState));
-    navigate('/tagedit/');
+  const getTagCategory = async () => {
+    const path = `/userTagFrequency/${userId}`;
+
+    const tagCategories = await fbOnValueOrderByKeyLimitToLast(path, 25);
+
+    if (tagCategories) {
+      setTagCategories(tagCategories);
+    }
+
+    const newLoaded = {...loaded};
+    newLoaded.tagCategoryLoaded = true;
+    setLoaded(newLoaded);
+  }
+
+  const renderThumbnail = (categoryName) => {
+    const avatar = createAvatar(identicon, {
+        size: 48,
+        seed: categoryName
+      }).toDataUri();
+  
+    return <img src={avatar} alt="Avatar" style={{width: '48px'}} />
+  }
+
+  const renderTagCategories = () => {
+    let tags = []
+    for (let i in tagCategories) {
+      tags.push(i.replace('tag',''));
+    }
+
+    return <div className="mb-9">
+      {tags.map((tag, index) => {
+        return <button key={`tag${index}`} className="mb-4" onClick={() => handleDynamicTags(tag)}>
+          <span className="opacity-40 border border-[#A9AAC5] text-[#A9AAC5] bg-transparent text-sm font-medium me-2 px-2.5 py-0.5 rounded">
+            {tag}
+          </span>
+        </button>
+      })}
+    </div>
   }
 
   const renderPost = () => {
@@ -113,7 +148,9 @@ const TagDetails = () => {
         <div className="flex-1 text-left text-[#ffffff]">
           <div className="mx-5">
             <p className="text-xl font-bold mb-1">
-              <span className="flex items-center text-white">{getTagName()}</span>
+              <span className="flex items-center text-white">
+                {item.title || item.primaryTag}
+              </span>
             </p>
             <p className="text-base cursor-pointer text-[#A9AAC5] leading-9 mb-3" style={{wordBreak: 'break-word'}}>
               {body.slice(0, 850)}
@@ -133,8 +170,8 @@ const TagDetails = () => {
           </div>
         </div>
         <div>
-          <div className="flex items-center justify-center rounded-md mb-2 ml-auto w-12 h-12 bg-[#40435a]">
-            &nbsp;
+          <div className="flex items-center justify-center rounded-md mb-2 ml-auto w-12 h-12 border border-gray-700 bg-transparent">
+            {renderThumbnail(item.primaryTag)}
           </div>
           <div className="text-center">
             <a href={null} className="cursor-pointer text-sm font-medium text-blue-500 hover:underline mb-2">edit</a>
@@ -157,25 +194,18 @@ const TagDetails = () => {
   }
 
   useEffect(() => {
-    setLoaded(initialLoaded);
-    setPostTagDetails([]);
-  }, [location]);
+    if (!tagCategoryLoaded) {
+      getTagCategory();
+    }
+    // eslint-disable-next-line
+  }, [tagCategoryLoaded])
 
   useEffect(() => {
-    if (categoriesLoaded && !postLoaded) {
+    if (!postLoaded) {
       getPost();
     }
     // eslint-disable-next-line
-  }, [loaded, categoriesLoaded, postLoaded, routePostId])
-
-  useEffect(() => {
-    if (categoriesLoaded) return;
-    if (categories.length > 0) {
-      const newLoaded = {...loaded};
-      newLoaded.categoriesLoaded = true;
-      setLoaded(newLoaded);
-    }
-  }, [loaded, categoriesLoaded, categories.length])
+  }, [loaded, postLoaded])
 
 	return (<>
 		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
@@ -188,28 +218,17 @@ const TagDetails = () => {
             <nav className="flex mb-8" aria-label="Breadcrumb">
               <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                 <li className="inline-flex items-center">
-                  <a href={null} onClick={() => navigate('/tags/')} className="cursor-pointer inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                    <svg className="w-6 h-6 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.583 8.445h.01M10.86 19.71l-6.573-6.63a.993.993 0 0 1 0-1.4l7.329-7.394A.98.98 0 0 1 12.31 4l5.734.007A1.968 1.968 0 0 1 20 5.983v5.5a.992.992 0 0 1-.316.727l-7.44 7.5a.974.974 0 0 1-1.384.001Z"/>
-                    </svg>
-                    Tags
+                  <a href={null} onClick={() => navigate('/timeline')} className="cursor-pointer inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                    <svg className="w-5 h-5 me-2.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM64 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L96 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/></svg>
+                    Timeline
                   </a>
-                </li>
-                <li aria-current="page">
-                  <div className="flex items-center">
-                    <svg className="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                    </svg>
-                    <span className="ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">
-                      {categoryRoute}
-                    </span>
-                  </div>
                 </li>
               </ol>
             </nav>
-            <button onClick={() => gotoTagEdit()} className="block rounded-full mb-12 text-xl uppercase w-48 h-14 border border-white bg-transparent text-[#fff]">
-              Tag
+            <button onClick={() => navigate('/post')} className="block rounded-full mb-10 text-xl uppercase w-48 h-14 border border-white bg-transparent text-[#fff]">
+              Post
             </button>
+            {tagCategories && (renderTagCategories())}
             {postLoaded && renderPost()}
             {!postLoaded && (<div className="flex flex-row text-white mb-5">
               <div>
@@ -220,7 +239,7 @@ const TagDetails = () => {
               <div className="flex-1 text-left text-[#ffffff]">
                 <div className="ml-5">
                   <p className="text-lg font-bold">
-                    <span className="flex items-center text-white">{routePostId}</span>
+                    <span className="flex items-center text-white">Title</span>
                   </p>
                   <p className="text-base text-[#A9AAC5] leading-loose">
                     Post loading...
@@ -229,7 +248,7 @@ const TagDetails = () => {
                 </div>
               </div>
               <div>
-                <div className="flex items-center justify-center rounded-md ml-auto w-12 h-12 bg-[#40435a]">
+                <div className="flex items-center justify-center rounded-md ml-auto w-12 h-12 border border-gray-700 bg-transparent">
                   &nbsp;
                 </div>
               </div>
@@ -249,14 +268,14 @@ const TagDetails = () => {
                     No post avail.
                   </p>
                   <p className="text-sm text-[#A9AAC5] opacity-60">
-                    <a href={null} onClick={() => navigate('/tagedit/')} className="cursor-pointer hover:underline">
+                    <a href={null} onClick={() => navigate('/post/')} className="cursor-pointer hover:underline">
                       Write your first post.
                     </a>
                   </p>
                 </div>
               </div>
               <div>
-                <div className="flex items-center justify-center rounded-md ml-auto w-12 h-12 bg-[#40435a]">
+                <div className="flex items-center justify-center rounded-md ml-auto w-12 h-12 border border-gray-700 bg-transparent">
                   &nbsp;
                 </div>
               </div>
@@ -268,4 +287,4 @@ const TagDetails = () => {
   </>);
 };
 
-export default TagDetails;
+export default PostDetails;

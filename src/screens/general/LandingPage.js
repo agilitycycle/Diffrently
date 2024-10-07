@@ -15,30 +15,15 @@ import JohnDaltonImage from '../../assets/john-dalton.png';
 const LandingPage = () => {
 	const navigate = useNavigate();
 
-  // <div style={{
-  //   backgroundImage: `url(${FlipBioProfileImage})`,
-  //   backgroundSize: '102%',
-  //   backgroundPosition: 'center'
-  //   }} className="w-72 h-72 mx-auto mb-10 rounded-full">
-  // </div>
-  // <h2 className="text-lg text-white text-center leading-snug mb-3">
-  //   <b>Hello</b>, I'm James - Creator of FlipBio
-  // </h2>
-  // <div className="text-center">
-  //   <a href="/" className="font-medium text-sm text-blue-600 dark:text-blue-500 hover:underline pb-10">
-  //     Terms and conditions
-  //   </a>
-  // </div>
-
 	return (<>
-		<div className="flex flex-col pt-5 px-5 bg-[#000423]">
+		<div className="flex flex-col px-5 bg-[#000423]">
 		  <div className="flex items-center justify-center">
 		    <div>
 
 		    </div>
 		  </div>
 	  </div>
-    <div className="flex flex-col pt-7 px-5 bg-[#000423]">
+    <div className="flex flex-col px-5 bg-[#000423]">
       <div className="flex items-center justify-center h-full">
         <div className="h-full w-full sm:w-7/12">
           <Header useLink={false} />

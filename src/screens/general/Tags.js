@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { createAvatar } from '@dicebear/core';
+import { identicon } from '@dicebear/collection';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { CategoryContext } from '../../context/CategoryContext';
 import { fbSet, fbUpdate, fbRemove } from '../../services/firebaseService';
@@ -46,6 +48,7 @@ const Tags = () => {
   ]);
   const [categoriesLoaded, setCategoriesLoaded] = useState(false);
   const [categoriesFormValue, setCategoriesFormValue] = useState('');
+  const [tagCategoryEdit, setTagCategoryEdit] = useState(undefined);
   const [max, setMax] = useState(4);
 
   const capitalizeFirstLetter = (categoryName) => {
@@ -128,8 +131,23 @@ const Tags = () => {
     }
   }
 
+  const handleEditCategory = (index) => {
+    index === tagCategoryEdit ?
+      setTagCategoryEdit(undefined) :
+      setTagCategoryEdit(index);
+  }
+
   const setCategory = (categoryName) => {
     navigate(`/tags/${categoryName}`);
+  }
+
+  const renderThumbnail = (categoryName) => {
+    const avatar = createAvatar(identicon, {
+        size: 48,
+        seed: categoryName
+      }).toDataUri();
+  
+    return <img src={avatar} alt="Avatar" style={{width: '48px'}} />
   }
 
 	const renderList = () => {
@@ -138,7 +156,7 @@ const Tags = () => {
       const elementId = `tag${index}`;
       return (
         <Draggable key={elementId} draggableId={elementId} index={index}>
-          {(provided, snapshot) => (
+          {(provided) => (
             <li
               className="py-4"
               ref={provided.innerRef}
@@ -149,8 +167,8 @@ const Tags = () => {
               )}
             >
               <div className="flex items-center space-x-4 rtl:space-x-reverse">
-                <div className="inline-flex items-center rounded-md ml-auto w-12 h-12 bg-[#40435a]">
-                  &nbsp;
+                <div className="inline-flex items-center rounded-md ml-auto w-12 h-12 border border-gray-700 bg-transparent">
+                  {renderThumbnail(item.categoryName)}
                 </div>
                 <div className="flex-1">
                   <p className="text-base font-medium text-gray-900 truncate dark:text-white mb-0.5">
@@ -168,9 +186,60 @@ const Tags = () => {
                       <path fillRule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clipRule="evenodd" />
                     </svg>
                   </button>
-                  <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-xs px-2 py-1 text-center">Edit</button>
+                  {tagCategoryEdit !== index && (
+                    <button onClick={() => handleEditCategory(index)} type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-xs px-2 py-1 text-center">Edit</button>
+                  )}
+                  {tagCategoryEdit === index && (
+                    <button onClick={() => handleEditCategory(index)} type="button" className="text-gray-400 bg-gray-800 font-medium rounded-lg text-xs px-2 py-1 text-centershadow-lg shadow-gray-600/50 dark:shadow-lg dark:shadow-gray-900/80">Done</button>
+                  )}
                 </div>
               </div>
+              {tagCategoryEdit === index && (
+                <div className="mt-6 p-4 border border-gray-800">
+                  <div className="flex flex-row space-x-4 rtl:space-x-reverse mb-4">
+                    <div className="grow">
+                      <input type="text" value="" onChange={() => {}} className="w-full h-[25px] bg-transparent text-white text-base block inline py-4 border-b border-b-sky-100 !outline-none" placeholder="Add a description" />
+                    </div>
+                  </div>
+                  <div className="flex flex-row gap-x-4">
+                    <div className="rounded-md w-8 h-8 border border-gray-700 bg-transparent">
+                      {renderThumbnail(item.categoryName)}
+                    </div>
+                    <div className="relative rounded-md w-8 h-8 border border-gray-700 bg-transparent">
+                      <label htmlFor="FileUpload" className="bottom-0 right-0 absolute cursor-pointer text-lg text-gray-400 text-center w-8 h-8">
+                        <div className="relative">
+                          <input
+                            id="FileUpload"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={() => {}}
+                            type="file"
+                          />
+                          <div className="flex items-center justify-center w-8 h-8">
+                            <span>+</span>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                    <div className="relative rounded-md w-8 h-8 border border-gray-700 bg-transparent">
+                      <label htmlFor="FileUpload" className="bottom-0 right-0 absolute cursor-pointer text-lg text-gray-400 text-center w-8 h-8">
+                        <div className="relative">
+                          <input
+                            id="FileUpload"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={() => {}}
+                            type="file"
+                          />
+                          <div className="flex items-center justify-center w-8 h-8">
+                            <span>+</span>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              )}
             </li>
           )}
         </Draggable>
@@ -207,10 +276,10 @@ const Tags = () => {
 		    <div className="h-full w-10/12 sm:w-6/12">
           <Header />
 		      <h2 className="text-2xl text-white text-left leading-snug mb-2">
-		      	Set up your categories
+		      	Set up categories
 		      </h2>
 			    <h3 className="text-lg text-[#A9AAC5] text-left leading-snug mb-4">
-		      	Organise your tags
+		      	Organise tags
 		      </h3>
           <div>
             <div className="space-y-1">
@@ -252,9 +321,9 @@ const Tags = () => {
               <div>
                 <div className="flex items-center justify-center mt-10">
                   {max < 100 && (
-                      <button onClick={loadMore} className="font-medium text-sm text-blue-600 dark:text-blue-500 hover:underline pb-10">
-                        Load more
-                      </button>
+                    <button onClick={loadMore} className="font-medium text-sm text-blue-600 dark:text-blue-500 hover:underline pb-10">
+                      Load more
+                    </button>
                   )}
                   {max > 4 && (
                     <button onClick={showLess} className="font-medium text-sm text-blue-600 dark:text-blue-500 hover:underline pb-10">

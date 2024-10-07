@@ -16,9 +16,16 @@ const ActiveSubScriptions = () => {
 
   useEffect(() => {
     if (!percentage) {
-      setPercentage(100 * credit / subscriptions.tags);
+      if (credit > subscriptions.tags) {
+        setPercentage(100)
+      }
+      if (credit < subscriptions.tags) {
+        setPercentage(100 * credit / subscriptions.tags);
+      } 
     }
   }, percentage)
+
+  console.log(percentage)
 
 	return (<>
 		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">

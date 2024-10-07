@@ -22,13 +22,11 @@ import {
 } from './screens/subscriptions';
 import {
 	LandingPage,
-	Export,
-	Category,
-	TagEdit,
+	Timeline,
+	Post,
 	Profile,
-	Tags,
   Tag,
-  TagDetails,
+  PostDetails,
   Subscribers,
   Founders,
   SignIn
@@ -134,28 +132,20 @@ const router = createBrowserRouter([
     element: CategoryContextComponent(Profile),
   },
   {
-    path: '/tags',
-    element: CategoryContextComponent(Tags),
+    path: '/timeline',
+    element: CategoryContextComponent(Timeline),
   },
   {
-    path: '/tags/:category',
-    element: CategoryContextComponent(Category),
-  },
-  {
-    path: '/tags/:category/:tag',
+    path: '/timeline/:tag',
     element: CategoryContextComponent(Tag),
   },
   {
-    path: '/tags/:category/:tag/:tagdetails',
-    element: CategoryContextComponent(TagDetails),
+    path: '/timeline/:tag/:postdetails',
+    element: CategoryContextComponent(PostDetails),
   },
   {
-    path: '/tagedit',
-    element: CategoryContextComponent(TagEdit),
-  },
-  {
-    path: '/export',
-    element: CategoryContextComponent(Export),
+    path: '/post',
+    element: CategoryContextComponent(Post),
   },
   {
     path: '/subscriptions',

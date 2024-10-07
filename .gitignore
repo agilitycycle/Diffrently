@@ -14,6 +14,19 @@
 # production
 /build
 
+#cert
+.cert
+
+# firebase
+functions
+.firebaserc
+database-debug.log
+database.rules.json
+firebase-debug.log
+firebase.json
+storage.rules
+ui-debug.log
+
 # misc
 .DS_Store
 .env.local
