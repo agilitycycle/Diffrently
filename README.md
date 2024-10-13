@@ -6,7 +6,7 @@ Curate NEW content with flipbio using OpenAI tecnology.
 
 ## FREE to use under GPLv3 license
 
-Help improve the open source version by using it freely under the GPLv3 license and if you make any modifications, those modificaitons (if acceptable) must be added back to the source code.
+Help improve the open source version by using it freely under the GPLv3 license. Any and all modifications must be added back to the source code.
 
 ## Or purchase a one-time commercial license
 
@@ -44,5 +44,6 @@ Start the server
 
 ## Acknowledgements
 
+ - [OpenAI](https://openai.com)
  - [Firebase](https://firebase.google.com)
  - [React](https://react.dev)
