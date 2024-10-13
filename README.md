@@ -1,18 +1,22 @@
 # Flipbio
 
-Start Auto-Tagging your content today.
+Curate NEW content with flipbio using OpenAI tecnology.
 
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+[![GPL3 License](https://img.shields.io/badge/license-GPLv3-blue)](https://choosealicense.com/licenses/gpl-3.0/)
 
-## 🚀 About Me
+## FREE to use under GPLv3 license
 
-Founder at Agility Cycle | Learn AI Auto-Tags | Join our FREE Subscription Service. • Unlock your cost. Buy me a coffee. ☕ 😱
+Help improve the open source version by using it freely under the GPLv3 license and if you make any modifications, those modificaitons (if acceptable) must be added back to the source code.
 
-## Authors
+## Or purchase a one-time commercial license
 
-- [@jamesstar89](https://www.github.com/jamesstar89)
+1. Open Source Front-End library
+2. Firebase function code
+3. AWS Lambda code
 
-## Run Locally
+## Run locally
+
+**Note: Must set up Firebase acc. first.**
 
 Clone the project
 
@@ -38,39 +42,7 @@ Start the server
   npm run start
 ```
 
-
-## API Reference
-
-#### Get all items
-
-```http
-  GET /api/items
-```
-
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. Your API key |
-
-#### Get item
-
-```http
-  GET /api/items/${id}
-```
-
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id of item to fetch |
-
-#### add(num1, num2)
-
-Takes two numbers and returns the sum.
-
-
-
-
 ## Acknowledgements
 
  - [Firebase](https://firebase.google.com)
  - [React](https://react.dev)
- - [Capacitor](https://capacitorjs.com)
- - [Readme](https://readme.so)

@@ -1,295 +1,249 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import ReactPlayer from 'react-player';
-import { Header } from '../../components';
-import FlipBioProfileImage from '../../assets/fb-profile-1000.png';
-import helloWordVideo from '../../assets/hello-world.mp4';
-import OpenAi from '../../assets/openai.png';
-import SundarCeo from '../../assets/sundar-ceo.png';
-import Suggestion from '../../assets/suggestion.png';
-import MobileFirst from '../../assets/mobile-first.png';
-import GalileoGalileiImage from '../../assets/galileo-galilei.png';
-import IsaacNewtonImage from '../../assets/isaac-newton.png';
-import JohnDaltonImage from '../../assets/john-dalton.png';
+import { Header, CardMini } from '../../components';
 
 const LandingPage = () => {
-	const navigate = useNavigate();
+
+  const getTags = () => {
+    const tagEl = [
+      'Asheville', 'CBSNews', 'Carolinas', 'Casualties',
+      'Catastrophe', 'ClimateChange', 'EffecDeaths', 'ExtremeWeatherEvent',
+      'Flood', 'HumanitarianCrisis', 'HurricaneHelene', 'MeganDrye',
+      'Micah', 'NaturalCalamity', 'NaturalDisaster', 'NorthCarolina',
+      'Rescue', 'StormDamage', 'Tragedy'
+    ];
+    return tagEl.map((tag, index) => {
+      return <button key={`tag${index}`} className="mb-2">
+        <span key={tag} className="opacity-40 border border-[#A9AAC5] text-[#A9AAC5] bg-transparent text-sm font-medium me-3 px-2.5 py-1.5 rounded">
+          {tag}
+        </span>
+      </button>
+    })
+  }
+
+  const renderMiniCard = () => {
+    const props = {
+      item: {
+        primaryTag: 'HurricaneHelene'
+      }
+    }
+    return (<CardMini {...props} />)
+  }
+
+  const renderSocialMediaIcons = () => {
+    return(<div className="flex items-center justify-center">
+      <svg className="opacity-25 w-[40px] h-[40px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+        <path fill-rule="evenodd" d="M13.135 6H15V3h-1.865a4.147 4.147 0 0 0-4.142 4.142V9H7v3h2v9.938h3V12h2.021l.592-3H12V6.591A.6.6 0 0 1 12.592 6h.543Z" clip-rule="evenodd"/>
+      </svg>
+      <svg className="opacity-25 w-[42px] h-[42px] mr-3 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+        <path fill="currentColor" fill-rule="evenodd" d="M3 8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8Zm5-3a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H8Zm7.597 2.214a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2h-.01a1 1 0 0 1-1-1ZM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-5 3a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z" clip-rule="evenodd"/>
+      </svg>
+      <svg className="opacity-25 w-[42px] h-[42px] mr-3 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+        <path fill-rule="evenodd" d="M21.7 8.037a4.26 4.26 0 0 0-.789-1.964 2.84 2.84 0 0 0-1.984-.839c-2.767-.2-6.926-.2-6.926-.2s-4.157 0-6.928.2a2.836 2.836 0 0 0-1.983.839 4.225 4.225 0 0 0-.79 1.965 30.146 30.146 0 0 0-.2 3.206v1.5a30.12 30.12 0 0 0 .2 3.206c.094.712.364 1.39.784 1.972.604.536 1.38.837 2.187.848 1.583.151 6.731.2 6.731.2s4.161 0 6.928-.2a2.844 2.844 0 0 0 1.985-.84 4.27 4.27 0 0 0 .787-1.965 30.12 30.12 0 0 0 .2-3.206v-1.516a30.672 30.672 0 0 0-.202-3.206Zm-11.692 6.554v-5.62l5.4 2.819-5.4 2.801Z" clip-rule="evenodd"/>
+      </svg>
+      <svg className="opacity-25 w-[38px] h-[38px] mr-3 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M13.795 10.533 20.68 2h-3.073l-5.255 6.517L7.69 2H1l7.806 10.91L1.47 22h3.074l5.705-7.07L15.31 22H22l-8.205-11.467Zm-2.38 2.95L9.97 11.464 4.36 3.627h2.31l4.528 6.317 1.443 2.02 6.018 8.409h-2.31l-4.934-6.89Z"/>
+      </svg>
+      <svg className="opacity-25 w-[46px] h-[46px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+        <path fill-rule="evenodd" d="M12.51 8.796v1.697a3.738 3.738 0 0 1 3.288-1.684c3.455 0 4.202 2.16 4.202 4.97V19.5h-3.2v-5.072c0-1.21-.244-2.766-2.128-2.766-1.827 0-2.139 1.317-2.139 2.676V19.5h-3.19V8.796h3.168ZM7.2 6.106a1.61 1.61 0 0 1-.988 1.483 1.595 1.595 0 0 1-1.743-.348A1.607 1.607 0 0 1 5.6 4.5a1.601 1.601 0 0 1 1.6 1.606Z" clip-rule="evenodd"/>
+        <path d="M7.2 8.809H4V19.5h3.2V8.809Z"/>
+      </svg>
+    </div>)
+  }
 
 	return (<>
-		<div className="flex flex-col px-5 bg-[#000423]">
-		  <div className="flex items-center justify-center">
-		    <div>
-
-		    </div>
-		  </div>
-	  </div>
     <div className="flex flex-col px-5 bg-[#000423]">
       <div className="flex items-center justify-center h-full">
         <div className="h-full w-full sm:w-7/12">
-          <Header useLink={false} />
-		      <h2 className="text-6xl text-white text-left leading-snug w-full md:w-3/4 mb-8">
-		      	Start auto-tagging your content today.
-		      </h2>
-          <div className="text-[#fff]">
-            <p className="text-6xl pt-2 mb-4 md:mb-6 text-center font-sans font-thin">
-              Hi,
-            </p>
-            <p className="text-3xl mb-10 text-center font-sans font-extralight">
-              my name is James (<a href="https://www.agilitycycle.com" target="_blank">@agilitycycle</a>).
-            </p>
-            <div style={{
-              backgroundImage: `url(${FlipBioProfileImage})`,
-              backgroundSize: '102%',
-              backgroundPosition: 'center'
-              }} className="w-80 h-80 mx-auto mb-10 rounded-full">
+          <Header className="inline-block text-6xl text-white text-left font-light mt-8 mb-10" useLink />
+          <div className="flex flex-col md:flex-row justify-between mb-16 text-4xl text-white font-sans font-thin">
+            <div className="flex items-center justify-center mb-10">
+              Write something...
             </div>
-            <h3 className="text-2xl text-white text-center leading-snug mb-10">
-              Re-imagining tags.
-            </h3>
+            <div>
+              {renderMiniCard()}
+            </div>
+          </div>
+          <div className="flex flex-col text-center mb-10 text-4xl text-white font-sans font-thin">
+            <div className="mb-10">
+              Generate image
+            </div>
+            <div>
+              <img className="w-11/12 m-auto" src="https://firebasestorage.googleapis.com/v0/b/flipbio-1712c.appspot.com/o/images%2F-NrnSwk-t38iZWOB76Lt%2Fimage1728438644559.jpg?alt=media" />
+            </div>
+          </div>
+          <div className="flex flex-col mb-16 text-3xl text-white font-sans font-thin">
+            <div className="text-center mb-5">
+              Generate tags
+            </div>
             <div className="text-center">
-              <p className="text-lg text-white mb-4 ml-auto mr-auto">
-                Start Free Trial
-              </p>
-              <button onClick={() => navigate('/signin')} className="rounded-full mb-20 ml-auto mr-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center">
-                sign in
-              </button>
+              {getTags()}
             </div>
-            <div className="w-9/12 sm:max-w-lg mx-auto mb-16">
-              <div className="flex flex-row text-white mb-5">
-                <div>
-                  <div className="flex items-center justify-center rounded-full w-12 h-12 bg-[#40435a] border border-[#707070]"
-                    style={{
-                      backgroundImage: `url(${FlipBioProfileImage})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                      backgroundRepeat: 'no-repeat',
-                      opacity: '0.5'
-                    }}>
-                    &nbsp;
+          </div>
+          <div className="flex flex-col mb-16 text-3xl text-white font-sans font-thin">
+            <div className="mb-5 leading-relaxed text-center">
+              Export your content to popular social network platforms
+            </div>
+            <div>
+              {renderSocialMediaIcons()}
+            </div>
+          </div>
+          <div className="mb-10 text-center text-1xl text-white font-sans font-thin leading-relaxed">
+            Want to use Flipbio commercially, PM james@agilitycycle.com to purchase a one-time commercial license.
+          </div>
+          <div className="mb-16 text-center text-1xl text-white font-sans font-thin leading-relaxed">
+            Flipbio is 99.99% of the time in sync with the cloud database.
+          </div>
+          <div className="mb-10 text-center text-3xl text-white font-sans font-thin">
+            Subscriptions
+          </div>
+          <div>
+            {/* Subscription 1 */}
+            <div className="flex flex-col sm:flex-row gap-x-4 justify-center mb-4">
+              <div className="flex flex-col items-start justify-between mx-auto w-11/12 lg:w-7/12 gap-6 overflow-hidden rounded-2xl mb-5 border p-6 border-[#707070] bg-transparent">
+                <div className="inline-flex flex-col items-start justify-start gap-6">
+                  <div className="flex flex-col items-start justify-start">
+                    <p className="text-lg text-white font-normal">FREE Trial - $0 (one-time)</p>
+                  </div>
+                  <div className="flex flex-col gap-6">
+                    <div className="flex flex-col items-start justify-start">
+                      <div className="inline-flex items-center justify-start gap-3">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="stroke-white">
+                          <path
+                            d="M7.40274 9.33332L9.73734 11.6667L17.5 3.75M16.9975 8.2176C17.4019 9.90307 17.2206 11.6793 16.4848 13.2438C15.7489 14.8083 14.5039 16.0641 12.9619 16.7974C11.4199 17.5306 9.67622 17.696 8.02809 17.2651C6.37996 16.8343 4.9293 15.834 3.92329 14.4346C2.91727 13.0352 2.41815 11.3235 2.51095 9.59091C2.60376 7.85832 3.28276 6.21216 4.43225 4.9329C5.58175 3.65365 7.13063 2.82044 8.81497 2.57527C10.4993 2.33008 12.2149 2.6881 13.6694 3.5883">
+                          </path>
+                        </svg>
+                        <p className="text-base text-[#A9AAC5]">25 tags / 5 images</p>
+                      </div>
+                      <div className="inline-flex items-center justify-start gap-3">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="stroke-white">
+                          <path
+                            d="M7.40274 9.33332L9.73734 11.6667L17.5 3.75M16.9975 8.2176C17.4019 9.90307 17.2206 11.6793 16.4848 13.2438C15.7489 14.8083 14.5039 16.0641 12.9619 16.7974C11.4199 17.5306 9.67622 17.696 8.02809 17.2651C6.37996 16.8343 4.9293 15.834 3.92329 14.4346C2.91727 13.0352 2.41815 11.3235 2.51095 9.59091C2.60376 7.85832 3.28276 6.21216 4.43225 4.9329C5.58175 3.65365 7.13063 2.82044 8.81497 2.57527C10.4993 2.33008 12.2149 2.6881 13.6694 3.5883">
+                          </path>
+                        </svg>
+                        <p className="text-base text-[#A9AAC5]">Publish / export 1-2 post</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex-1 text-left text-[#555774]">
-                  <div className="ml-5">
-                    <p className="text-lg font-bold">Galileo Galilei</p>
-                    <p className="text-sm">Your tag description</p>
-                    <p className="text-sm">1 day ago</p>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex items-center justify-center rounded-md ml-auto w-12 h-12 bg-[#40435a] border border-[#707070]"
-                    style={{
-                      backgroundImage: `url(${GalileoGalileiImage})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                      backgroundRepeat: 'no-repeat',
-                      opacity: '0.5'
-                    }}
-                  >
-                    &nbsp;
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-row text-white opacity-50 mb-5">
-                <div>
-                  <div className="flex items-center justify-center rounded-full w-12 h-12 bg-[#40435a] border border-[#707070]"
-                    style={{
-                      backgroundImage: `url(${FlipBioProfileImage})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                      backgroundRepeat: 'no-repeat',
-                      opacity: '0.5'
-                    }}>
-                    &nbsp;
-                  </div>
-                </div>
-                <div className="flex-1 text-left text-[#555774]">
-                  <div className="ml-5">
-                    <p className="text-lg font-bold">Isaac Newton</p>
-                    <p className="text-sm">Your tag description</p>
-                    <p className="text-sm">1 day ago</p>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex items-center justify-center rounded-md ml-auto w-12 h-12 bg-[#40435a] border border-[#707070]"
-                    style={{
-                      backgroundImage: `url(${IsaacNewtonImage})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                      backgroundRepeat: 'no-repeat',
-                      opacity: '0.5'
-                    }}>
-                    &nbsp;
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-row text-white opacity-20">
-                <div>
-                  <div className="flex items-center justify-center rounded-full w-12 h-12 bg-[#40435a] border border-[#707070]"
-                    style={{
-                      backgroundImage: `url(${FlipBioProfileImage})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                      backgroundRepeat: 'no-repeat',
-                      opacity: '0.5'
-                    }}>
-                    &nbsp;
-                  </div>
-                </div>
-                <div className="flex-1 text-left text-[#555774]">
-                  <div className="ml-5">
-                    <p className="text-lg font-bold">John Dalton</p>
-                    <p className="text-sm">Your tag description</p>
-                    <p className="text-sm">1 day ago</p>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex items-center justify-center rounded-md ml-auto w-12 h-12 bg-[#40435a] border border-[#707070]"
-                    style={{
-                      backgroundImage: `url(${JohnDaltonImage})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                      backgroundRepeat: 'no-repeat',
-                      opacity: '0.5'
-                    }}>
-                    &nbsp;
-                  </div>
-                </div>
+                <button type="button"
+                  className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle text-sm font-semibold leading-none transition-all duration-300 ease-in-out disabled:cursor-not-allowed bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 stroke-white px-6 text-white h-[42px] min-w-[42px] gap-2 w-full disabled:bg-slate-100 disabled:stroke-slate-400 disabled:text-slate-400 disabled:hover:bg-slate-100">
+                  <span>Sign in to add</span>
+                </button>
               </div>
             </div>
-            <p className="text-4xl sm:text-5xl mb-10 text-center font-sans font-thin">
-              I am developing a Personal Auto-Tag Assistant app online, and will be available to those who sign up and subscribe to a monthly subscription.
-            </p>
-            <p className="text-xl mb-10 text-center font-sans font-extralight leading-relaxed">
-              The good news, is if you back me, you will be the first to help us in generating the first bundle of Auto-Generated tags.
-            </p>
-            <p className="text-3xl mb-10 text-center font-sans font-bold">
-              Tagging examples:
-            </p>
-            <ol className="text-4xl mb-10 text-center font-sans font-thin leading-normal list-decimal list-inside">
-              <li>Instagram</li>
-              <li>LivingForJesus</li>
-              <li>Speaking</li>
-            </ol>
-            <p className="text-xl mb-10 text-center font-sans font-thin leading-relaxed">
-              With each new tag generated, it will help us to learn more about the potential of AI. Your tags and profile will be celebrated under a special URL called, <span className="font-medium">"Founders"</span>
-            </p>
-            <p className="text-2xl mb-10 text-center font-sans font-light leading-relaxed">
-              Think of the possibilities...
-            </p>
-            <p className="text-xl mb-10 text-center font-sans font-thin leading-relaxed">
-              Writers write and, bloggers blog while leaving the self organising part to Flipbio's Personal Auto-Tag Assistant online.
-            </p>
+            {/* Subscription 2 */}
+            <div className="flex flex-col sm:flex-row gap-x-4 justify-center mb-4">
+              <div className="flex flex-col items-start justify-between mx-auto w-11/12 lg:w-7/12 gap-6 overflow-hidden rounded-2xl mb-5 border p-6 border-[#707070] bg-transparent">
+                <div className="inline-flex flex-col items-start justify-start gap-6">
+                  <div className="flex flex-col items-start justify-start">
+                    <p className="text-lg text-white font-normal">Pay as you go - $5</p>
+                  </div>
+                  <div className="flex flex-col gap-6">
+                    <div className="flex flex-col items-start justify-start">
+                      <div className="inline-flex items-center justify-start gap-3">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="stroke-white">
+                          <path
+                            d="M7.40274 9.33332L9.73734 11.6667L17.5 3.75M16.9975 8.2176C17.4019 9.90307 17.2206 11.6793 16.4848 13.2438C15.7489 14.8083 14.5039 16.0641 12.9619 16.7974C11.4199 17.5306 9.67622 17.696 8.02809 17.2651C6.37996 16.8343 4.9293 15.834 3.92329 14.4346C2.91727 13.0352 2.41815 11.3235 2.51095 9.59091C2.60376 7.85832 3.28276 6.21216 4.43225 4.9329C5.58175 3.65365 7.13063 2.82044 8.81497 2.57527C10.4993 2.33008 12.2149 2.6881 13.6694 3.5883">
+                          </path>
+                        </svg>
+                        <p className="text-base text-[#A9AAC5]">5 generated images</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button type="button"
+                  className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle text-sm font-semibold leading-none transition-all duration-300 ease-in-out disabled:cursor-not-allowed bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 stroke-white px-6 text-white h-[42px] min-w-[42px] gap-2 w-full disabled:bg-slate-100 disabled:stroke-slate-400 disabled:text-slate-400 disabled:hover:bg-slate-100">
+                  <span>Sign in to add</span>
+                </button>
+              </div>
+            </div>
+            {/* Subscription 3 */}
+            <div className="flex flex-col sm:flex-row gap-x-4 justify-center mb-4">
+              <div className="flex flex-col items-start justify-between mx-auto w-11/12 lg:w-7/12 gap-6 overflow-hidden rounded-2xl mb-5 border p-6 border-[#707070] bg-transparent">
+                <div className="inline-flex flex-col items-start justify-start gap-6">
+                  <div className="flex flex-col items-start justify-start">
+                    <p className="text-lg text-white font-normal">Pay as you go - $25</p>
+                  </div>
+                  <div className="flex flex-col gap-6">
+                    <div className="flex flex-col items-start justify-start">
+                      <div className="inline-flex items-center justify-start gap-3">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="stroke-white">
+                          <path
+                            d="M7.40274 9.33332L9.73734 11.6667L17.5 3.75M16.9975 8.2176C17.4019 9.90307 17.2206 11.6793 16.4848 13.2438C15.7489 14.8083 14.5039 16.0641 12.9619 16.7974C11.4199 17.5306 9.67622 17.696 8.02809 17.2651C6.37996 16.8343 4.9293 15.834 3.92329 14.4346C2.91727 13.0352 2.41815 11.3235 2.51095 9.59091C2.60376 7.85832 3.28276 6.21216 4.43225 4.9329C5.58175 3.65365 7.13063 2.82044 8.81497 2.57527C10.4993 2.33008 12.2149 2.6881 13.6694 3.5883">
+                          </path>
+                        </svg>
+                        <p className="text-base text-[#A9AAC5]">25 tags / 25 images</p>
+                      </div>
+                      <div className="inline-flex items-center justify-start gap-3">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="stroke-white">
+                          <path
+                            d="M7.40274 9.33332L9.73734 11.6667L17.5 3.75M16.9975 8.2176C17.4019 9.90307 17.2206 11.6793 16.4848 13.2438C15.7489 14.8083 14.5039 16.0641 12.9619 16.7974C11.4199 17.5306 9.67622 17.696 8.02809 17.2651C6.37996 16.8343 4.9293 15.834 3.92329 14.4346C2.91727 13.0352 2.41815 11.3235 2.51095 9.59091C2.60376 7.85832 3.28276 6.21216 4.43225 4.9329C5.58175 3.65365 7.13063 2.82044 8.81497 2.57527C10.4993 2.33008 12.2149 2.6881 13.6694 3.5883">
+                          </path>
+                        </svg>
+                        <p className="text-base text-[#A9AAC5]">Publish / export 4-5 post</p>
+                      </div>
+                      <div className="inline-flex items-center justify-start gap-3">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="stroke-white">
+                          <path
+                            d="M7.40274 9.33332L9.73734 11.6667L17.5 3.75M16.9975 8.2176C17.4019 9.90307 17.2206 11.6793 16.4848 13.2438C15.7489 14.8083 14.5039 16.0641 12.9619 16.7974C11.4199 17.5306 9.67622 17.696 8.02809 17.2651C6.37996 16.8343 4.9293 15.834 3.92329 14.4346C2.91727 13.0352 2.41815 11.3235 2.51095 9.59091C2.60376 7.85832 3.28276 6.21216 4.43225 4.9329C5.58175 3.65365 7.13063 2.82044 8.81497 2.57527C10.4993 2.33008 12.2149 2.6881 13.6694 3.5883">
+                          </path>
+                        </svg>
+                        <p className="text-base text-[#A9AAC5]">Functions</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button type="button"
+                  className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle text-sm font-semibold leading-none transition-all duration-300 ease-in-out disabled:cursor-not-allowed bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 stroke-white px-6 text-white h-[42px] min-w-[42px] gap-2 w-full disabled:bg-slate-100 disabled:stroke-slate-400 disabled:text-slate-400 disabled:hover:bg-slate-100">
+                  <span>Sign in to add</span>
+                </button>
+              </div>
+            </div>
+            {/* Subscription 4 */}
+            <div className="flex flex-col sm:flex-row gap-x-4 justify-center mb-4">
+              <div className="flex flex-col items-start justify-between mx-auto w-11/12 lg:w-7/12 gap-6 overflow-hidden rounded-2xl mb-5 border p-6 border-[#707070] bg-transparent">
+                <div className="inline-flex flex-col items-start justify-start gap-6">
+                  <div className="flex flex-col items-start justify-start">
+                    <p className="text-lg text-white font-normal">Pay as you go - $125</p>
+                  </div>
+                  <div className="flex flex-col gap-6">
+                    <div className="flex flex-col items-start justify-start">
+                      <div className="inline-flex items-center justify-start gap-3">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="stroke-white">
+                          <path
+                            d="M7.40274 9.33332L9.73734 11.6667L17.5 3.75M16.9975 8.2176C17.4019 9.90307 17.2206 11.6793 16.4848 13.2438C15.7489 14.8083 14.5039 16.0641 12.9619 16.7974C11.4199 17.5306 9.67622 17.696 8.02809 17.2651C6.37996 16.8343 4.9293 15.834 3.92329 14.4346C2.91727 13.0352 2.41815 11.3235 2.51095 9.59091C2.60376 7.85832 3.28276 6.21216 4.43225 4.9329C5.58175 3.65365 7.13063 2.82044 8.81497 2.57527C10.4993 2.33008 12.2149 2.6881 13.6694 3.5883">
+                          </path>
+                        </svg>
+                        <p className="text-base text-[#A9AAC5]">500 tags / 100 images</p>
+                      </div>
+                      <div className="inline-flex items-center justify-start gap-3">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="stroke-white">
+                          <path
+                            d="M7.40274 9.33332L9.73734 11.6667L17.5 3.75M16.9975 8.2176C17.4019 9.90307 17.2206 11.6793 16.4848 13.2438C15.7489 14.8083 14.5039 16.0641 12.9619 16.7974C11.4199 17.5306 9.67622 17.696 8.02809 17.2651C6.37996 16.8343 4.9293 15.834 3.92329 14.4346C2.91727 13.0352 2.41815 11.3235 2.51095 9.59091C2.60376 7.85832 3.28276 6.21216 4.43225 4.9329C5.58175 3.65365 7.13063 2.82044 8.81497 2.57527C10.4993 2.33008 12.2149 2.6881 13.6694 3.5883">
+                          </path>
+                        </svg>
+                        <p className="text-base text-[#A9AAC5]">Publish / export 15-25 post</p>
+                      </div>
+                      <div className="inline-flex items-center justify-start gap-3">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="stroke-white">
+                          <path
+                            d="M7.40274 9.33332L9.73734 11.6667L17.5 3.75M16.9975 8.2176C17.4019 9.90307 17.2206 11.6793 16.4848 13.2438C15.7489 14.8083 14.5039 16.0641 12.9619 16.7974C11.4199 17.5306 9.67622 17.696 8.02809 17.2651C6.37996 16.8343 4.9293 15.834 3.92329 14.4346C2.91727 13.0352 2.41815 11.3235 2.51095 9.59091C2.60376 7.85832 3.28276 6.21216 4.43225 4.9329C5.58175 3.65365 7.13063 2.82044 8.81497 2.57527C10.4993 2.33008 12.2149 2.6881 13.6694 3.5883">
+                          </path>
+                        </svg>
+                        <p className="text-base text-[#A9AAC5]">Functions</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button type="button"
+                  className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle text-sm font-semibold leading-none transition-all duration-300 ease-in-out disabled:cursor-not-allowed bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 stroke-white px-6 text-white h-[42px] min-w-[42px] gap-2 w-full disabled:bg-slate-100 disabled:stroke-slate-400 disabled:text-slate-400 disabled:hover:bg-slate-100">
+                  <span>Sign in to add</span>
+                </button>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center justify-center mb-16">
-            <ReactPlayer className="react-player" url={helloWordVideo} playing muted loop />
-          </div>
-          <div className="text-[#fff] mt-4">
-            <p className="text-5xl mb-10 text-center font-sans font-extralight">
-              Background story...
-            </p>
-            <img src={MobileFirst} className="border border-zinc-400 mb-10" />
-            <p className="text-xl mb-10 text-center font-sans font-extralight leading-relaxed">
-              I like to write but not everyone wants to spend time organising their content. Imagine having a Personal Assistant who knows exactly what you want.
-            </p>
-            <p className="text-xl mb-10 text-center font-sans font-extralight leading-relaxed">
-              And so I began to dabble with OpenAI and realised the potential of services like ChatGPT and how effective it could be.
-            </p>
-            <p className="text-xl mb-10 text-center font-sans font-extralight leading-relaxed">
-              And so I created Flipbio, SaaS Platform, AI Auto-Tagging service.
-            </p>
-            <p className="text-xl mb-10 text-center font-sans font-extralight leading-relaxed">
-              Its also Open Source (MIT License).
-            </p>
-            <img src={Suggestion} className="mx-auto border border-zinc-400 mb-10" />
-            <p className="text-5xl mb-10 text-center font-sans font-extralight">
-              Why?
-            </p>
-            <p className="text-xl mb-10 text-center font-sans font-extralight leading-relaxed">
-              I think Auto-Tagging offers a new way of delivering content other than the usual social networking platforms. It's simple, fresh, and innovative.
-            </p>
-            <ol className="text-4xl mb-10 text-center font-sans font-thin leading-normal list-decimal list-inside">
-              <li>You write</li>
-              <li>It organises</li>
-              <li>You save time!!</li>
-            </ol>
-            <p className="text-xl mb-10 text-center font-sans font-thin leading-relaxed">
-              It also gave me an opportunity to investigate AI (Artificial Intelligence).
-            </p>
-            <img src={SundarCeo} className="mb-10" />
-            <p className="text-3xl mb-10 text-center font-sans font-bold">
-              Plan and Schedule
-            </p>
-            <p className="text-xl mb-10 text-center font-sans font-extralight leading-relaxed">
-              The first stage of this project is to finish and launch the AI Auto-Tagging service which is approximately 40% through in progress at the moment. Backers will be given the opportunity to help populate the Auto-Tagging ecosystem with tens to hundreds of tags.
-            </p>
-            <p className="text-xl mb-10 text-center font-sans font-extralight leading-relaxed">
-              BTW: Any generated tags will need to be child friendly as it is in the public domain. Any tags which are unfriendly will be flagged down immediately, regardless you are a backer or not.
-            </p>
-            <p className="text-xl mb-10 text-center font-sans font-extralight leading-relaxed">
-              Once launched, Flipbio will cost, as Auto-Tagging isn't free, there will be a paid subscription option for those who want to be part of this new hemisphere.
-            </p>
-            <p className="text-xl mb-10 text-center font-sans font-extralight leading-relaxed">
-              It might even be a great platform to show kids what AI can do (future generations).
-            </p>
-            <p className="text-6xl mb-10 text-center font-sans font-extralight leading-relaxed">
-              "AI is a tool. The choice about how it gets deployed is ours."
-            </p>
-            <p className="text-5xl mb-10 text-center font-sans font-extralight">
-              Development stages
-            </p>
-            <p className="text-xl mb-10 text-center font-sans font-extralight leading-relaxed">
-              This development stage only includes the generation of new tags not AI training. AI training will need to be part of stages 2 & 3 (requires further testing)
-            </p>
-            <p className="text-5xl mb-10 text-center font-sans font-extralight">
-              AI specifications
-            </p>
-            <p className="text-xl mb-10 text-center font-sans font-extralight leading-relaxed">
-              I will be using OpenAI, and chat model, gpt-3.5-turbo.
-            </p>
-            <p className="text-xl mb-10 text-center font-sans font-extralight leading-relaxed">
-              The AI responses are then saved to Firebase, however, the user still retains control over all of their content, whether it stays published or not.
-            </p>
-            <p className="text-xl mb-10 text-center font-sans font-extralight leading-relaxed">
-              All content in the public domain can be set to private again. All content can be deleted forever if the user wishes to do so.
-            </p>
-            <img src={OpenAi} className="mb-10 border border-zinc-400 mb-10" />
-            <p className="text-3xl mb-10 text-center font-sans font-bold">
-              Tag examples
-            </p>
-            <ol className="text-4xl mb-10 text-center font-sans font-thin leading-normal list-decimal list-inside">
-              <li>MiyamotoMusashi</li>
-              <li>KingJamesBible</li>
-              <li>Christianity</li>
-              <li>Wedding</li>
-              <li>Esther</li>
-            </ol>
-            <p className="text-5xl mb-10 text-center font-sans font-extralight">
-              Product Roadmap
-            </p>
-            <p className="text-xl mb-10 text-center font-sans font-light leading-relaxed">
-              <span className="font-medium">File:</span> <a href="https://drive.google.com/file/d/1a5u6YrbkwpQSxyfo8GFuOQeT_j-EzWoos" target="_blank" className="break-all">https://drive.google.com/file/d/1a5u6YrbkwpQSxyfo8GFuOQeT_j-EzWoos</a>
-            </p>
-            <p className="text-5xl mb-10 text-center font-sans font-extralight">
-              Open Source
-            </p>
-            <p className="text-xl mb-10 text-center font-sans font-light leading-relaxed">
-              <span className="font-medium">Source:</span> <a href="https://github.com/jamesstar89/flipbio-app" target="_blank">https://github.com/jamesstar89/flipbio-app</a>
-            </p>
-            <p className="text-5xl mb-10 text-center font-sans font-extralight">
-              Sign up
-            </p>
-            <p className="text-xl mb-10 text-center font-sans font-extralight leading-relaxed">
-              If you would like to sign up, the best way is to back my project, and help me reach 6K. If you become a backer then I will send you regular updates as well as an appointed time for when you can sign in.
-            </p>
-            <p className="text-xl mb-16 text-center font-sans font-thin leading-relaxed">
-              Think of all the "tags" you could save!!
-            </p>
-            <p className="mb-6 text-4xl font-extrabold tracking-tight leading-none text-center text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-              Create unlimited Tags.
-            </p>
-            <p className="mb-16 text-4xl font-extrabold tracking-tight leading-none text-center text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-              Flipbio. 6K.
-            </p>
+          <div className="text-[#A9AAC5] text-sm text-center mb-10 font-sans font-thin">
+            © Copyright Flipbio. All rights reserved.
           </div>
         </div>
       </div>

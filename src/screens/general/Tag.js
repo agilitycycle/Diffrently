@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { createAvatar } from '@dicebear/core';
-import { identicon } from '@dicebear/collection';
 import { appState } from '../../app/appSlice';
 import {
   fbRemove,
@@ -13,7 +11,9 @@ import {
 import {
   Menu,
   Drawer,
-  Header
+  Header,
+  CardSmaller,
+  ModalExport
 } from '../../components';
 
 const initialLoaded = {
@@ -26,6 +26,8 @@ const Tag = () => {
   const navigate = useNavigate();
   const currentAppState = useSelector(appState);
   const { photoUrl, userId } = currentAppState;
+  const [open, setOpen] = useState(false);
+  const [postItem, setPostItem] = useState(undefined);
   const [loaded, setLoaded] = useState(initialLoaded);
   const [postTagDetails, setPostTagDetails] = useState([]);
   const [tagCategories, setTagCategories] = useState(undefined);
@@ -45,7 +47,7 @@ const Tag = () => {
   }
 
   const handleDeletePost = (postId) => {
-    fbRemove(`/userPost/${userId}/post/${postId}`);
+    fbRemove(`/userTimeline/${userId}/post/${postId}`);
     const newPostTagDetails = [...postTagDetails];
     const removeIndex = newPostTagDetails.findIndex(item => item.id === postId);
     newPostTagDetails.splice(removeIndex, 1);
@@ -146,62 +148,20 @@ const Tag = () => {
     </div>
   }
 
-  const renderThumbnail = (categoryName) => {
-    const avatar = createAvatar(identicon, {
-        size: 48,
-        seed: categoryName
-      }).toDataUri();
-  
-    return <img src={avatar} alt="Avatar" style={{width: '48px'}} />
-  }
-
   const renderPost = () => {
     if (postTagDetails.length < 1) return;
-    return postTagDetails.map((item, index) => {
-      const { body } = item;
-      const tagEl = Object.keys(item).filter(a => a.indexOf('tag') > -1).map(b => b.replace('tag', ''));
-      return (<div key={`tag${index}`} className="flex flex-row text-white mb-12 sm:mb-24">
-        <div>
-          <div className="flex items-center justify-center rounded-full w-12 h-12 bg-[#40435a]" style={renderProfileStyle()}>
-            &nbsp;
-          </div>
-        </div>
-        <div className="flex-1 text-left text-[#ffffff]">
-          <div className="mx-5">
-            <p className="text-xl font-bold mb-1">
-              <span className="flex items-center text-white">{tagRoute}</span>
-            </p>
-            <p onClick={() => navigate(`/timeline/${tagRoute}/${item.id}`)} className="text-base cursor-pointer text-[#A9AAC5] leading-9 mb-3" style={{wordBreak: 'break-word'}}>
-              {body.slice(0, 150 - 1)}...
-            </p>
-            <p className="text-sm text-[#A9AAC5]">
-              <span className="mr-2 opacity-60">1 day ago</span>
-              {getTags(tagEl)}
-            </p>
-          </div>
-        </div>
-        <div>
-          <div className="flex items-center justify-center rounded-md mb-2 ml-auto w-12 h-12 border border-gray-700 bg-transparent">
-            {renderThumbnail(item.primaryTag)}
-          </div>
-          <div className="text-center">
-            <a href={null} className="cursor-pointer text-sm font-medium text-blue-500 hover:underline mb-2">edit</a>
-          </div>
-          <button type="button" className="mx-auto block" onClick={() => handleDeletePost(item.id)}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5 text-rose-900">
-              <path fillRule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clipRule="evenodd" />
-            </svg>
-          </button>
-        </div>
-      </div>)
+    return postTagDetails.map(item => {
+      const props = {
+        item,
+        photoUrl,
+        loadTag,
+        handleDeletePost,
+        setPostItem,
+        setOpen,
+        getTags
+      }
+      return (<CardSmaller {...props} />)
     })
-  }
-
-  const renderProfileStyle = () => {
-    return {
-      backgroundImage: `url(${photoUrl})`,
-      backgroundSize: 'contain'
-    };
   }
 
   useEffect(() => {
@@ -219,11 +179,12 @@ const Tag = () => {
   }, [loaded, postLoaded])
 
 	return (<>
+    <ModalExport open={open} setOpen={setOpen} postItem={postItem} />
 		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
 			<Drawer/>
 			<Menu/>
 		  <div className="flex items-center justify-center h-full">
-		    <div className="h-full w-full sm:w-7/12">
+		    <div className="h-full w-full max-w-[500px] sm:w-8/12">
           <Header title="Your feed" />
           <div className="min-w-80 pb-7">
             <nav className="flex mb-8" aria-label="Breadcrumb">

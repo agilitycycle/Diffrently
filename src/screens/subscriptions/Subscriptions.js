@@ -139,7 +139,7 @@ const Subscriptions = () => {
                             </svg>
                           </button>
                       </div>
-                  </form>
+                    </form>
                   </div>
                 </div>
                 <div className="flex flex-col gap-6">
@@ -175,6 +175,7 @@ const Subscriptions = () => {
                 </div>
               </div>
               <button type="button"
+                disabled
                 onClick={() => navigate('/subscriptions/payment')}
                 className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle text-sm font-semibold leading-none transition-all duration-300 ease-in-out disabled:cursor-not-allowed bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 stroke-white px-6 text-white h-[42px] min-w-[42px] gap-2 w-full disabled:bg-slate-100 disabled:stroke-slate-400 disabled:text-slate-400 disabled:hover:bg-slate-100">
                 <span>Add</span>
@@ -198,18 +199,18 @@ const Subscriptions = () => {
                     <form className="max-w-xs">
                       <label htmlFor="counter-input" className="block mb-1 text-sm font-medium text-gray-900 dark:text-white">Choose quantity:</label>
                       <div className="relative flex items-center">
-                          <button type="button" onClick={() => handleQuantity(-1)} id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-600 dark:border-slate-700 hover:bg-slate-300 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
-                            <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
-                            </svg>
-                          </button>
-                          <input type="text" id="counter-input" data-input-counter className="flex-shrink-0 text-gray-900 dark:text-white border-0 bg-transparent text-sm font-normal focus:outline-none focus:ring-0 max-w-[2.5rem] text-center" placeholder="" value={quantity} required />
-                          <button type="button" onClick={() => handleQuantity(+1)} id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-600 dark:border-slate-700 hover:bg-slate-300 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
-                            <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
-                            </svg>
-                          </button>
-                      </div>
+                        <button type="button" onClick={() => handleQuantity(-1)} id="decrement-button" data-input-counter-decrement="counter-input" className="flex-shrink-0 bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-600 dark:border-slate-700 hover:bg-slate-300 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                          <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h16"/>
+                          </svg>
+                        </button>
+                        <input type="text" id="counter-input" data-input-counter className="flex-shrink-0 text-gray-900 dark:text-white border-0 bg-transparent text-sm font-normal focus:outline-none focus:ring-0 max-w-[2.5rem] text-center" placeholder="" value={quantity} required />
+                        <button type="button" onClick={() => handleQuantity(+1)} id="increment-button" data-input-counter-increment="counter-input" className="flex-shrink-0 bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-600 dark:border-slate-700 hover:bg-slate-300 inline-flex items-center justify-center border border-gray-300 rounded-md h-5 w-5 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                          <svg className="w-2.5 h-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 1v16M1 9h16"/>
+                          </svg>
+                        </button>
+                    </div>
                   </form>
                   </div>
                 </div>
@@ -230,6 +231,7 @@ const Subscriptions = () => {
                 </div>
               </div>
               <button type="button"
+                disabled
                 onClick={() => navigate('/subscriptions/payment')}
                 className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle text-sm font-semibold leading-none transition-all duration-300 ease-in-out disabled:cursor-not-allowed bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 stroke-white px-6 text-white h-[42px] min-w-[42px] gap-2 w-full disabled:bg-slate-100 disabled:stroke-slate-400 disabled:text-slate-400 disabled:hover:bg-slate-100">
                 <span>Add</span>

@@ -62,7 +62,7 @@ const Post = () => {
   const generateTags = () => {
     const { body, tags } = postDetails;
     if (body.length < 3) return;
-    if (body.length > 49) {
+    if (body.length > 35) {
       // remove credit
       setPostDetails(Object.assign({...postDetails}, {
         published: false,
@@ -167,7 +167,7 @@ const Post = () => {
   const handlePost = async () => {
     const { body } = postDetails;
     if (body.length < 3) return;
-    if (body.length > 49 && body.length < 851 && credit > 0 &&
+    if (body.length > 35 && body.length < 851 && credit > 0 &&
       credit >= postDetails.autoTagging.length) {
       // remove credit
       const tagsCredit = credit - postDetails.autoTagging.length;
@@ -185,23 +185,20 @@ const Post = () => {
         saving: true
       });
 
-      const image = `images/${userId}/image${Date.now()}.jpg`
-
       const postItem = {
         dateCreated: moment().valueOf(),
         predefinedTags: JSON.stringify(postDetails.selected),
         primaryTag: primaryTagFormValue,
         title: titleFormValue,
-        image,
         body
       }
 
       if (generatedImage) {
+        const image = `images/${userId}/image${Date.now()}.jpg`;
         const storageRef = sRef(fbStorage, image);
         const buffer = new Buffer.Buffer(generatedImage, 'base64');
-        const blob = new Blob([buffer], {
-          type: 'image/jpeg',
-        });
+        const blob = new Blob([buffer], { type: 'image/jpeg' });
+        postItem.image = image;
         await uploadBytes(storageRef, blob);
       }
 
@@ -499,7 +496,7 @@ const Post = () => {
             )}
             {/** Generate **/}
             {(postDetails.autoTagging.length === 0) && (
-              <button onClick={generateTags} disabled={postDetails.generating || postDetails.selected.length == 0} className={`opacity-${postDetails.generating || (postDetails.body.length < 50 || postDetails.body.length > 850 || characterCount < 0 || postDetails.selected.length == 0) ? '50' : '100'} block rounded-full mb-8 mx-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center`}>
+              <button onClick={generateTags} disabled={postDetails.generating || postDetails.selected.length == 0} className={`opacity-${postDetails.generating || (postDetails.body.length < 36 || postDetails.body.length > 850 || characterCount < 0 || postDetails.selected.length == 0) ? '50' : '100'} block rounded-full mb-8 mx-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center`}>
                 {postDetails.generating ? <span>generating...</span> : <span>generate</span>}
               </button>
             )}
@@ -531,8 +528,8 @@ const Post = () => {
             </>)}
             {/** Post another **/}
             {postDetails.published && (
-              <p className="sm:mt-0 mb-4 text-gray-500 dark:text-gray-400">
-                <button onClick={handlePostAnother} className="cursor-pointer inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline">
+              <p className="sm:mt-0 text-gray-500 dark:text-gray-400">
+                <button onClick={handlePostAnother} className="cursor-pointer mb-16 inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline">
                   Post another?
                 </button>
               </p>
