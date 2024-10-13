@@ -46,7 +46,7 @@ const CardMini = (props) => {
           {renderThumbnail(item.primaryTag)}
         </div>
         <div>
-          <div className="rounded-full w-[40px] h-[40px] bg-[#40435a]">
+          <div className="rounded-full w-[40px] h-[40px] bg-[#40435a]" style={{backgroundImage: 'url(\'https://firebasestorage.googleapis.com/v0/b/flipbio-1712c.appspot.com/o/profile%2F-NrnSwk-t38iZWOB76Lt%2Fprofile.png?alt=media\')', backgroundSize: 'contain'}}>
             &nbsp;
           </div>
         </div>

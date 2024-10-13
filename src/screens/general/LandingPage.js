@@ -79,6 +79,17 @@ const LandingPage = () => {
               {getTags()}
             </div>
           </div>
+          <div className="pt-8 pb-6 px-12 pe-12 mb-16 text-blue-800 border border-blue-300 rounded-lg bg-transparent dark:text-blue-400 dark:border-blue-800" role="alert">
+            <h3 className="text-2xl font-medium text-center mb-6">Donate to Samaritan's Purse</h3>
+            <div className="mt-2 mb-12 text-2xl text-center font-thin leading-relaxed">
+              Samaritan's Purse is responding to both Hurricane Helene and Hurricane Milton, with multiple disaster relief bases in North Carolina and Florida.
+            </div>
+            <div className="flex justify-center mb-2">
+              <a href="https://www.samaritanspurse.org/disaster/hurricane-helene" target="_blank" className="text-white text-1xl bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg px-3 py-1.5 w-full sm:w-2/12 me-2 inline-flex items-center justify-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Give
+              </a>
+            </div>
+          </div>
           <div className="flex flex-col mb-16 text-3xl text-white font-sans font-thin">
             <div className="mb-5 leading-relaxed text-center">
               Export your content to popular social network platforms

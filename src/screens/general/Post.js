@@ -240,21 +240,22 @@ const Post = () => {
     // new tag
     if (newImageTagFormValue.length > 1) {
       const newTags = [...postDetails.tags];
-      newTags.push({
-        tag: newImageTagFormValue
-      });
-
-      // selected
       const newSelected = [...postDetails.selected];
+
       if (!postDetails.tags.some(obj => obj.tag === newImageTagFormValue)) {
+        newTags.push({
+          tag: newImageTagFormValue
+        });
+
         newSelected.push({
           tag: newImageTagFormValue
         });
       }
+      
       const unique = arr => arr.filter((el, i, array) => array.indexOf(el) === i);
 
       const newPostDetails = Object.assign({...postDetails}, {
-        tags: newTags,
+        tags: unique(newTags),
         selected: unique(newSelected),
         generatingImage: true
       });

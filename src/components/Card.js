@@ -72,7 +72,7 @@ const Card = (props) => {
     }}>&nbsp;</a>
     <div className="p-5">
       <div className="flex justify-between">
-        <h5 onClick={() => navigate(`/timeline/${tagEl[0]}/${item.id}`)} className="cursor-pointer mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           {item.title || item.primaryTag}
         </h5>
         <div>
@@ -84,7 +84,7 @@ const Card = (props) => {
           <a href={null} onClick={() => handleDeletePost()} className="cursor-pointer text-sm font-medium text-rose-600 hover:underline mb-2">delete</a>
         </div>
       </div>
-      <p onClick={() => navigate(`/timeline/${tagEl[0]}/${item.id}`)} className="cursor-pointer mb-8 font-normal text-base text-[#A9AAC5] leading-9" style={{wordBreak: 'break-word'}}>
+      <p className="mb-8 font-normal text-base text-[#A9AAC5] leading-9" style={{wordBreak: 'break-word'}}>
         {postLength === 850 ? body.slice(0, 850) : `${body.slice(0, 150 - 1)}...`}
       </p>
       <p className="mb-8 text-sm text-[#A9AAC5]">

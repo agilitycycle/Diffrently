@@ -5,13 +5,12 @@ const Header = (props) => {
   const { className, useLink = false } = props;
   const headerClss = className || 'inline-block text-6xl text-white text-left font-light my-8';
 
+  // use sign in
   if (useLink) {
     return (
       <div className="flex items-center justify-between w-full">
         <h1 className={headerClss}>
-          <Link to="/timeline" className="flex items-center text-white">
-            fb
-          </Link>
+          fb
         </h1>
         <div className="text-white text-2xl font-sans font-thin">
           Sign in
@@ -22,7 +21,9 @@ const Header = (props) => {
 
   return (
     <h1 className={headerClss}>
-      fb
+      <Link to="/timeline" className="flex items-center text-white">
+        fb
+      </Link>
     </h1>);
 }
 
