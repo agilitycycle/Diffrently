@@ -80,7 +80,7 @@ const LandingPage = () => {
             </div>
           </div>
           <div className="pt-8 pb-7 px-12 pe-12 mb-16 text-blue-800 border border-blue-300 rounded-lg bg-transparent dark:text-blue-400 dark:border-blue-800" role="alert">
-            <h3 className="text-3xl font-light text-center mb-6">Donate - Samaritan's Purse</h3>
+            <h3 className="text-3xl font-thin text-center mb-6">Donate - Samaritan's Purse</h3>
             <div className="mt-2 mb-12 text-2xl text-center font-thin leading-relaxed">
               Samaritan's Purse is responding to both Hurricane Helene and Hurricane Milton, with multiple disaster relief bases in North Carolina and Florida.
             </div>
