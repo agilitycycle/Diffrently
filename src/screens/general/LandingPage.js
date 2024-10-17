@@ -54,8 +54,8 @@ const LandingPage = () => {
     <div className="flex flex-col px-5 bg-[#000423]">
       <div className="flex items-center justify-center h-full">
         <div className="h-full w-full sm:w-7/12">
-          <Header className="inline-block text-6xl text-white text-left font-light mt-8 mb-10" useLink />
-          <div className="flex flex-col md:flex-row justify-between mb-16 text-4xl text-white font-sans font-thin">
+          <Header className="leading-none inline-block text-4xl sm:text-6xl text-white text-left font-light my-9" useLink />
+          <div className="flex flex-col md:flex-row justify-between mt-6 mb-16 text-4xl text-white font-sans font-thin">
             <div className="flex items-center justify-center mb-10">
               Write something...
             </div>
@@ -92,17 +92,56 @@ const LandingPage = () => {
           </div>
           <div className="flex flex-col mb-16 text-3xl text-white font-sans font-thin">
             <div className="mb-5 leading-relaxed text-center">
-              Export your content to popular social network platforms
+              What can I curate with Different?
+            </div>
+            <div>
+              <div className="w-9/12 m-auto grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div>
+                  <ul className="text-base font-sans font-extalight">
+                    <li>Books</li>
+                    <li>Biographies</li>
+                    <li>Blurbs</li>
+                    <li>Blogs</li>
+                    <li>Stories</li>
+                    <li>Writings</li>
+                  </ul>
+                </div>
+                <div>
+                  <ul className="text-base font-sans font-extalight">
+                    <li>Geography</li>
+                    <li>Mappings</li>
+                    <li>Disasters</li>
+                    <li>History</li>
+                    <li>Images</li>
+                    <li>Post</li>
+                  </ul>
+                </div>
+                <div>
+                  <ul className="text-base font-sans font-extalight">
+                    <li>Expository sermon outlines</li>
+                    <li>Indoor exercises</li>
+                    <li>Insights</li>
+                    <li>Locations</li>
+                    <li>Places</li>
+                    <li>Things</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col mb-16 text-3xl text-white font-sans font-thin">
+            <div className="mb-5 leading-relaxed text-center">
+              Export your content to popular Social Media platforms
             </div>
             <div>
               {renderSocialMediaIcons()}
             </div>
           </div>
-          <div className="mb-10 text-center text-1xl text-white font-sans font-thin leading-relaxed">
-            Want to use Flipbio commercially, PM james@agilitycycle.com to purchase a one-time commercial license.
+          <div className="mb-10 text-center text-base text-white font-sans font-extralight leading-relaxed">
+            Want to use Different. commercially, PM james@agilitycycle.com to purchase a one-time commercial license.
           </div>
-          <div className="mb-16 text-center text-1xl text-white font-sans font-thin leading-relaxed">
-            Flipbio is 99.99% of the time in sync with the cloud database.
+          <div className="mb-16 text-center text-base text-white font-sans font-extralight leading-relaxed">
+            Different. is 99.99% of the time in sync with the cloud database.
           </div>
           <div className="mb-10 text-center text-3xl text-white font-sans font-thin">
             Subscriptions
@@ -142,12 +181,54 @@ const LandingPage = () => {
                 </button>
               </div>
             </div>
+            {/* Monthly subscription */}
+            <div className="flex flex-col sm:flex-row gap-x-4 justify-center mb-4">
+              <div className="flex flex-col items-start justify-between mx-auto w-11/12 lg:w-7/12 gap-6 overflow-hidden rounded-2xl mb-5 border p-6 border-[#707070] bg-transparent">
+                <div className="inline-flex flex-col items-start justify-start gap-6">
+                  <div className="flex flex-col items-start justify-start">
+                    <p className="text-lg text-white font-normal">Monthly - $25 NZD</p>
+                  </div>
+                  <div className="flex flex-col gap-6">
+                    <div className="flex flex-col items-start justify-start">
+                      <div className="inline-flex items-center justify-start gap-3">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="stroke-white">
+                          <path
+                            d="M7.40274 9.33332L9.73734 11.6667L17.5 3.75M16.9975 8.2176C17.4019 9.90307 17.2206 11.6793 16.4848 13.2438C15.7489 14.8083 14.5039 16.0641 12.9619 16.7974C11.4199 17.5306 9.67622 17.696 8.02809 17.2651C6.37996 16.8343 4.9293 15.834 3.92329 14.4346C2.91727 13.0352 2.41815 11.3235 2.51095 9.59091C2.60376 7.85832 3.28276 6.21216 4.43225 4.9329C5.58175 3.65365 7.13063 2.82044 8.81497 2.57527C10.4993 2.33008 12.2149 2.6881 13.6694 3.5883">
+                          </path>
+                        </svg>
+                        <p className="text-base text-[#A9AAC5]">250 tags / 25 images</p>
+                      </div>
+                      <div className="inline-flex items-center justify-start gap-3">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="stroke-white">
+                          <path
+                            d="M7.40274 9.33332L9.73734 11.6667L17.5 3.75M16.9975 8.2176C17.4019 9.90307 17.2206 11.6793 16.4848 13.2438C15.7489 14.8083 14.5039 16.0641 12.9619 16.7974C11.4199 17.5306 9.67622 17.696 8.02809 17.2651C6.37996 16.8343 4.9293 15.834 3.92329 14.4346C2.91727 13.0352 2.41815 11.3235 2.51095 9.59091C2.60376 7.85832 3.28276 6.21216 4.43225 4.9329C5.58175 3.65365 7.13063 2.82044 8.81497 2.57527C10.4993 2.33008 12.2149 2.6881 13.6694 3.5883">
+                          </path>
+                        </svg>
+                        <p className="text-base text-[#A9AAC5]">Publish / export 15-25 post</p>
+                      </div>
+                      <div className="inline-flex items-center justify-start gap-3">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="stroke-white">
+                          <path
+                            d="M7.40274 9.33332L9.73734 11.6667L17.5 3.75M16.9975 8.2176C17.4019 9.90307 17.2206 11.6793 16.4848 13.2438C15.7489 14.8083 14.5039 16.0641 12.9619 16.7974C11.4199 17.5306 9.67622 17.696 8.02809 17.2651C6.37996 16.8343 4.9293 15.834 3.92329 14.4346C2.91727 13.0352 2.41815 11.3235 2.51095 9.59091C2.60376 7.85832 3.28276 6.21216 4.43225 4.9329C5.58175 3.65365 7.13063 2.82044 8.81497 2.57527C10.4993 2.33008 12.2149 2.6881 13.6694 3.5883">
+                          </path>
+                        </svg>
+                        <p className="text-base text-[#A9AAC5]">Functions</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button type="button"
+                  className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle text-sm font-semibold leading-none transition-all duration-300 ease-in-out disabled:cursor-not-allowed bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 stroke-white px-6 text-white h-[42px] min-w-[42px] gap-2 w-full disabled:bg-slate-100 disabled:stroke-slate-400 disabled:text-slate-400 disabled:hover:bg-slate-100">
+                  <span>Sign in to add</span>
+                </button>
+              </div>
+            </div>
             {/* Subscription 2 */}
             <div className="flex flex-col sm:flex-row gap-x-4 justify-center mb-4">
               <div className="flex flex-col items-start justify-between mx-auto w-11/12 lg:w-7/12 gap-6 overflow-hidden rounded-2xl mb-5 border p-6 border-[#707070] bg-transparent">
                 <div className="inline-flex flex-col items-start justify-start gap-6">
                   <div className="flex flex-col items-start justify-start">
-                    <p className="text-lg text-white font-normal">Pay as you go - $5</p>
+                    <p className="text-lg text-white font-normal">Extra - $5 NZD <span className="text-sm text-[#A9AAC5] ml-2.5 inline">(must have a mo. subscription)</span></p>
                   </div>
                   <div className="flex flex-col gap-6">
                     <div className="flex flex-col items-start justify-start">
@@ -173,7 +254,7 @@ const LandingPage = () => {
               <div className="flex flex-col items-start justify-between mx-auto w-11/12 lg:w-7/12 gap-6 overflow-hidden rounded-2xl mb-5 border p-6 border-[#707070] bg-transparent">
                 <div className="inline-flex flex-col items-start justify-start gap-6">
                   <div className="flex flex-col items-start justify-start">
-                    <p className="text-lg text-white font-normal">Pay as you go - $25</p>
+                    <p className="text-lg text-white font-normal">Booster - $25 NZD <span className="text-sm text-[#A9AAC5] ml-2.5 inline">(must have a mo. subscription)</span></p>
                   </div>
                   <div className="flex flex-col gap-6">
                     <div className="flex flex-col items-start justify-start">
@@ -215,7 +296,7 @@ const LandingPage = () => {
               <div className="flex flex-col items-start justify-between mx-auto w-11/12 lg:w-7/12 gap-6 overflow-hidden rounded-2xl mb-5 border p-6 border-[#707070] bg-transparent">
                 <div className="inline-flex flex-col items-start justify-start gap-6">
                   <div className="flex flex-col items-start justify-start">
-                    <p className="text-lg text-white font-normal">Pay as you go - $125</p>
+                    <p className="text-lg text-white font-normal">Flying Comet - $125 NZD <span className="text-sm text-[#A9AAC5] ml-2.5 inline">(must have a mo. subscription)</span></p>
                   </div>
                   <div className="flex flex-col gap-6">
                     <div className="flex flex-col items-start justify-start">
@@ -225,7 +306,7 @@ const LandingPage = () => {
                             d="M7.40274 9.33332L9.73734 11.6667L17.5 3.75M16.9975 8.2176C17.4019 9.90307 17.2206 11.6793 16.4848 13.2438C15.7489 14.8083 14.5039 16.0641 12.9619 16.7974C11.4199 17.5306 9.67622 17.696 8.02809 17.2651C6.37996 16.8343 4.9293 15.834 3.92329 14.4346C2.91727 13.0352 2.41815 11.3235 2.51095 9.59091C2.60376 7.85832 3.28276 6.21216 4.43225 4.9329C5.58175 3.65365 7.13063 2.82044 8.81497 2.57527C10.4993 2.33008 12.2149 2.6881 13.6694 3.5883">
                           </path>
                         </svg>
-                        <p className="text-base text-[#A9AAC5]">500 tags / 100 images</p>
+                        <p className="text-base text-[#A9AAC5]">500 tags / 50 images</p>
                       </div>
                       <div className="inline-flex items-center justify-start gap-3">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="stroke-white">
@@ -253,7 +334,7 @@ const LandingPage = () => {
               </div>
             </div>
           </div>
-          <div className="text-[#A9AAC5] text-sm text-center mb-10 font-sans font-thin">
+          <div className="text-[#A9AAC5] text-sm text-center mb-10 font-sans font-extralight">
             © Copyright Flipbio. All rights reserved.
           </div>
         </div>

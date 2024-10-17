@@ -418,7 +418,7 @@ const Post = () => {
                 </div>
                 <div className="rounded-t-lg h-[245px] bg-cover bg-center" style={{
                   backgroundImage: `url('${generatedImage && 'data:image/jpeg;base64,' + generatedImage ||
-                    'https://static.vecteezy.com/system/resources/previews/030/722/546/non_2x/transportation-drive-race-automobile-speed-motion-blur-vehicle-car-automotive-auto-fast-luxury-modern-free-photo.jpg'
+                    'https://picsum.photos/id/18/300/200'
                   }')`
                 }}>
                   &nbsp;
@@ -427,11 +427,11 @@ const Post = () => {
               <div className="p-5">
                 <a href={null}>
                   <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                    {titleFormValue || 'Header placeholder'}
+                    {titleFormValue || 'Title'}
                   </h5>
                 </a>
                 <p className="mb-8 font-normal text-gray-700 dark:text-gray-400">
-                  {postDetails.body.length > 0 ? postDetails.body : 'Post here...'}
+                  {postDetails.body.length > 0 ? postDetails.body : 'Write something...'}
                 </p>
                 {/** Render generated tags **/}
                 {postDetails.autoTagging.length > 0 && (

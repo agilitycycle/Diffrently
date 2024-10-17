@@ -128,22 +128,18 @@ const Drawer = ({ side = 'left' }) => {
                         <span>Timeline</span>
                       </Link>
                     </li>
-                    {/*<li>
-                      <Link to="/tags" onClick={drawerMenuItemClicked} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
-                        <span>Live</span>
-                        <svg className="w-4 h-4 ml-3 text-gray-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M349.4 44.6c5.9-13.7 1.5-29.7-10.6-38.5s-28.6-8-39.9 1.8l-256 224c-10 8.8-13.6 22.9-8.9 35.3S50.7 288 64 288l111.5 0L98.6 467.4c-5.9 13.7-1.5 29.7 10.6 38.5s28.6 8 39.9-1.8l256-224c10-8.8 13.6-22.9 8.9-35.3s-16.6-20.7-30-20.7l-111.5 0L349.4 44.6z"/></svg>
-                      </Link>
-                    </li>*/}
                     <li>
                       <Link to="/subscribers" onClick={drawerMenuItemClicked} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
-                        <button type="button" className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-base px-5 py-2.5 text-center me-2 mb-2 text-center">Subscribers</button>
+                        <button type="button" className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-base px-5 py-2.5 text-center me-2 text-center">
+                          Fizz time
+                        </button>
                       </Link>
                     </li>
-                    <li>
+                    {/*<li>
                       <Link to="/founders" onClick={drawerMenuItemClicked} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
                         <button type="button" className="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-base px-5 py-2.5 text-center">Founders</button>
                       </Link>
-                    </li>
+                    </li>*/}
                     <li>
                       <button onClick={handleSignOut} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
                         <span>Sign out</span>

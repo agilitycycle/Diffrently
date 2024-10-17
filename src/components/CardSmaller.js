@@ -56,8 +56,10 @@ const CardSmaller = (props) => {
     <div className="flex justify-between mt-5 ml-5">
       <div className="flex items-center justify-center bg-transparent border border-gray-700 p-2 rounded-md">
         <div className="mr-2">
-          <img src={`${item.image && renderImage(item.image) || 'https://www.amormeus.org/web/wp-content/uploads/2018/05/Solemnity-of-the-Ascension-of-the-Lord-Jesus-Christ-into-Heaven.jpg'}`}
-            className="h-[40px] rounded" />
+          <div className="w-[40px] h-[40px] rounded" style={{
+            backgroundImage: `url('${item.image && renderImage(item.image) || 'https://www.amormeus.org/web/wp-content/uploads/2018/05/Solemnity-of-the-Ascension-of-the-Lord-Jesus-Christ-into-Heaven.jpg'}')`,
+            backgroundSize: 'cover'
+          }}></div>
         </div>
         <div className="mr-2">
           {renderThumbnail(item.primaryTag)}

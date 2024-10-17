@@ -62,7 +62,7 @@ const CardMini = (props) => {
         Helene has killed at least 161 people, CBS News confirmed. The storm appears to have inflicted its worst damage in the Carolinas...
       </p>
       <p className="mb-8 text-sm text-[#A9AAC5]">
-        <div className="mb-4 opacity-60 text-[#A9AAC5]">
+        <div className="mb-4 opacity-60 font-extralight text-[#A9AAC5]">
           1 day ago
         </div>
         <button className="mb-4">
