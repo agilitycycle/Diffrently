@@ -35,7 +35,7 @@ const renderSocialMediaIcons = () => {
 const CardMini = (props) => {
   const { item } = props;
 
-  return (<div className="relative w-[400px] mx-auto bg-transparent border border-gray-200 rounded-lg shadow dark:bg-transparent dark:border-gray-700">
+  return (<div className="relative w-full sm:w-[400px] mx-auto bg-transparent border border-gray-200 rounded-lg shadow dark:bg-transparent dark:border-gray-700">
     <div className="flex justify-between mt-5 ml-5">
       <div className="flex items-center justify-center bg-transparent border border-gray-700 p-2 rounded-md">
         <div className="mr-2">

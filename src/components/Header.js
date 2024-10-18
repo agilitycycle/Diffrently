@@ -1,7 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const appName = 'Different.';
+const appName = 'Diffrently.';
+
+/**
+ * 
+ * @diffrently
+ * 
+ */
 
 const Header = (props) => {
   const { className, useLink = false } = props;
@@ -23,7 +29,7 @@ const Header = (props) => {
 
   return (
     <h1 className={headerClss}>
-      <Link to="/timeline" className="flex items-center text-white">
+      <Link to="/timeline" className="flex items-center justify-center text-white">
         {appName}
       </Link>
     </h1>);
