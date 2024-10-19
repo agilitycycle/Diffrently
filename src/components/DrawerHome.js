@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAuth, signOut } from 'firebase/auth';
 import { updateAppState, appState } from '../app/appSlice';
 import { clsx } from 'clsx';
 
@@ -26,54 +25,28 @@ const classNames = {
   bottom: 'inset-x-0 bottom-0'
 };
 
-/**
- * 
- * https://medium.com/@ebrimajallow20/firebase-email-notification-part-ii-nodemailer-19f0be1c67ca
- * 
- */
-
-const Drawer = ({ side = 'left' }) => {
+const DrawerHome = ({ side = 'left' }) => {
   const currentAppState = useSelector(appState);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const open = currentAppState && currentAppState.drawer;
+  const open = currentAppState && currentAppState.drawerHome;
 
   const drawerMenuItemClicked = () => {
     const newAppState = {...currentAppState};
-    newAppState.drawerMenuItemClicked = !newAppState.drawerMenuItemClicked;
+    newAppState.drawerHomeMenuItemClicked = !newAppState.drawerHomeMenuItemClicked;
     dispatch(updateAppState(newAppState));
   }
 
   const toggleDrawer = () => {
     const newAppState = {...currentAppState};
-    newAppState.drawer = !newAppState.drawer;
-    if (!newAppState.drawer) {
-      newAppState.drawerMenuItemClicked = false;
+    newAppState.drawerHome = !newAppState.drawerHome;
+    if (!newAppState.drawerHome) {
+      newAppState.drawerHomeMenuItemClicked = false;
     }
     dispatch(updateAppState(newAppState));
   }
 
-  const handleSignOut = () => {
-    const auth = getAuth();
-    const newDrawerState = !currentAppState.drawerMenuItemClicked;
-    signOut(auth).then(() => {
-      const newAppState = Object.assign({...currentAppState}, {
-        drawerMenuItemClicked: newDrawerState,
-        loggedIn: false,
-        photoUrl: '',
-        displayName: '',
-        email: '',
-        userId: ''
-      });
-      dispatch(updateAppState(newAppState));
-      navigate('/');
-    }).catch((error) => {
-      console.log(error);
-    });
-  }
-
   useEffect(() => {
-    if (currentAppState.drawerMenuItemClicked) {
+    if (currentAppState.drawerHomeMenuItemClicked) {
       setTimeout(() => toggleDrawer(), 25)
     }
   }, [currentAppState]);
@@ -124,33 +97,24 @@ const Drawer = ({ side = 'left' }) => {
                 <div className="py-4 overflow-y-auto">
                   <ul className="space-y-2 font-medium">
                     <li>
-                      <Link to="/profile" onClick={drawerMenuItemClicked} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
-                        <span>Profile</span>
+                      <Link to="/why-diffrently" onClick={drawerMenuItemClicked} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
+                        <span>Why Diffrently</span>
                       </Link>
                     </li>
                     <li>
-                      <Link to="/timeline" onClick={drawerMenuItemClicked} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
-                        <span>Timeline</span>
+                      <Link to="/pricing" onClick={drawerMenuItemClicked} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
+                        <span>Pricing</span>
                       </Link>
                     </li>
                     <li>
-                      <Link to="/" onClick={drawerMenuItemClicked} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
-                        <span>Parachute</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/subscribers" onClick={drawerMenuItemClicked} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
-                        <button type="button" className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-base px-5 py-2.5 text-center me-2 text-center">
-                          Fizz time
-                        </button>
-                      </Link>
-                    </li>
-                    <li>
-                      <button onClick={handleSignOut} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
-                        <span>Sign out</span>
+                      <button onClick={() => {}} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
+                        <span>Sign in</span>
                       </button>
                     </li>
                   </ul>
+                  <div className="mt-6 p-3 mb-4 text-sm text-blue-800 rounded bg-slate-100 border border-blue-500" role="alert">
+                    <span className="font-medium">Important</span> You will not be able to sign in until some of the major changes have been completed.
+                  </div>
                 </div>
               </div>
             </div>
@@ -161,4 +125,4 @@ const Drawer = ({ side = 'left' }) => {
   );
 };
 
-export default Drawer;
+export default DrawerHome;

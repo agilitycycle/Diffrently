@@ -1,4 +1,5 @@
 import Drawer from './Drawer';
+import DrawerHome from './DrawerHome';
 import Header from './Header';
 import Card from './Card';
 import CardMini from './CardMini';
@@ -9,6 +10,7 @@ import ModalExport from './ModalExport';
 
 export {
 	Drawer,
+  DrawerHome,
 	Header,
   Card,
   CardMini,

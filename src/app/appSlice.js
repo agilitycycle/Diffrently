@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   value: {
+    drawerHome: false,
+    drawerHomeMenuItemClicked: false,
     drawer: false,
     drawerMenuItemClicked: false,
     loggedIn: false,

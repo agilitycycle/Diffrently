@@ -1,5 +1,10 @@
 import React from 'react';
-import { Header, CardMini } from '../../components';
+import {
+  Menu,
+  DrawerHome,
+  Header,
+  CardMini
+} from '../../components';
 
 const LandingPage = () => {
 
@@ -69,9 +74,11 @@ const LandingPage = () => {
 
 	return (<>
     <div className="flex flex-col px-5 bg-[#000423]">
+      <DrawerHome/>
+      <Menu/>
       <div className="flex items-center justify-center h-full">
         <div className="h-full w-full sm:w-7/12">
-          <Header className="flex items-center leading-none inline-block text-4xl sm:text-6xl text-white text-left font-light my-9" useLink />
+          <Header useLink="/" className="flex items-center leading-none inline-block text-4xl sm:text-5xl text-white text-left font-light mt-5 mb-14" />
           <div className="flex flex-col md:flex-row justify-between mt-6 mb-16 text-4xl text-white font-sans font-thin">
             <div className="flex items-center justify-center mb-10">
               Write something...
@@ -321,7 +328,7 @@ const LandingPage = () => {
             </div>
           </div>
           <div className="text-gray-400 text-sm text-center mb-10 font-sans font-extralight">
-            © Copyright Flipbio. All rights reserved.
+            © Copyright Diffrently. All rights reserved.
           </div>
         </div>
       </div>

@@ -26,9 +26,9 @@ function getSubscriptions (activeSubscriptions, userId) {
 function* sagaWatch () {
   if (!called) {
     called = true;
-    /** check currentAppState */
     const currentAppState = yield select(appState);
-    const { activeSubscriptions, userId } = currentAppState;
+    const { activeSubscriptions, loggedIn, userId } = currentAppState;
+    if (!loggedIn) return; // do no sagas
     const subscriptions = yield call(getSubscriptions, activeSubscriptions, userId);
     const newAppState = Object.assign({...currentAppState}, {
       subscriptions

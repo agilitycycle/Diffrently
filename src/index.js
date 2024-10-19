@@ -22,6 +22,8 @@ import {
 } from './screens/subscriptions';
 import {
 	LandingPage,
+	WhyDiffrently,
+	Pricing,
 	Timeline,
 	Post,
 	Profile,
@@ -126,6 +128,14 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <LandingPage />,
+  },
+  {
+    path: '/why-diffrently',
+    element: <WhyDiffrently />,
+  },
+  {
+    path: '/pricing',
+    element: <Pricing />,
   },
   {
     path: '/profile',
