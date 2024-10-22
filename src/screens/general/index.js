@@ -1,25 +1,31 @@
 import LandingPage from './LandingPage';
 import WhyDiffrently from './WhyDiffrently';
 import Pricing from './Pricing';
+import Dashboard from './Dashboard';
+import Profile from './Profile';
 import Timeline from './Timeline';
 import Post from './Post';
-import Profile from './Profile';
 import Tag from './Tag';
+import PostEdit from './PostEdit';
 import PostDetails from './PostDetails';
-import Subscribers from './Subscribers';
-import Founders from './Founders';
+import CreateDropzone from './CreateDropzone';
+import Parachute from './Parachute';
+import FizzTime from './FizzTime';
 import SignIn from './SignIn';
 
 export {
 	LandingPage,
 	WhyDiffrently,
 	Pricing,
+	Dashboard,
 	Profile,
 	Timeline,
 	Post,
-	Tag,
-	PostDetails,
-	Subscribers,
-	Founders,
-	SignIn
+  Tag,
+  PostEdit,
+  PostDetails,
+  CreateDropzone,
+  Parachute,
+  FizzTime,
+  SignIn
 }

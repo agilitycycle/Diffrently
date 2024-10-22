@@ -117,14 +117,6 @@ const Profile = () => {
             <div className="mb-10">
               <input type="text" defaultValue={email} className="bg-transparent text-white text-lg block w-fit p-2.5 border-b !outline-none" placeholder="Email Address" disabled />
             </div>
-            <div className="flex items-center mb-5">
-              <input checked={activeSubscriptions !== ''} id="checked-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-              <label htmlFor="checked-checkbox" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Subscribed</label>
-            </div>
-            <div className="flex items-center mb-10">
-              <input disabled id="checked-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-              <label htmlFor="checked-checkbox" className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Founder</label>
-            </div>
             <div className="mb-2.5">
               <Link to="/subscriptions" className="font-medium text-sm text-blue-600 dark:text-blue-500 hover:underline pb-10 mb-20">
                 Subscriptions
@@ -135,9 +127,6 @@ const Profile = () => {
                 Active Subscriptions ({activeSubscriptions ? 1 : 0})
               </Link>
             </div>
-            {/*
-            <button type="button" className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">Blocked</button>
-            */}
           </div>
 		    </div>
 		  </div>

@@ -50,13 +50,16 @@ const Pricing = () => {
               Commercial or Open Source
             </div>
             <p className="mb-4 text-2xl text-gray-500 md:text-xl dark:text-gray-400 font-extralight leading-relaxed">
-              Purchase a one-time commercial licence or use the free Open Source option.
+              Purchase a one-time commercial licence or use the free <a href="https://github.com/agilitycycle/Diffrently" target="_blank" className="underline">Open Source</a> option.
             </p>
             <p className="text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">
-              Diffrently offers two kinds of licenses; Open Source and free minus backend code and the other is a commercial license in which all code is accessible.
+              Diffrently offers two kinds of licenses; <a href="https://github.com/agilitycycle/Diffrently" target="_blank" className="underline">Open Source</a> and free minus the backend code and the other is a commercial license in which all code is available.
             </p>
             <p className="text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">
-              Schools get Diffrently at a reduced cost.
+              Note: If new feats become available after purchase of a commercial license, you can opt to pay for the new code.
+            </p>  
+            <p className="text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">
+              Learning organisations such as schools can benefit from a reduced cost while introducing the benefits of AI in the classroom.
             </p>
             <p>&nbsp;</p>
           </div>

@@ -24,13 +24,15 @@ import {
 	LandingPage,
 	WhyDiffrently,
 	Pricing,
+	Dashboard,
+	Profile,
 	Timeline,
 	Post,
-	Profile,
   Tag,
   PostDetails,
-  Subscribers,
-  Founders,
+  CreateDropzone,
+  Parachute,
+  FizzTime,
   SignIn
 } from './screens/general';
 import './index.css';
@@ -138,6 +140,10 @@ const router = createBrowserRouter([
     element: <Pricing />,
   },
   {
+    path: '/dashboard',
+    element: CategoryContextComponent(Dashboard),
+  },
+  {
     path: '/profile',
     element: CategoryContextComponent(Profile),
   },
@@ -170,12 +176,16 @@ const router = createBrowserRouter([
     element: CategoryContextComponent(Payment),
   },
   {
-    path: '/subscribers',
-    element: CategoryContextComponent(Subscribers),
+    path: '/create-dropzone',
+    element: CategoryContextComponent(CreateDropzone),
   },
   {
-    path: '/founders',
-    element: CategoryContextComponent(Founders),
+    path: '/parachute',
+    element: CategoryContextComponent(Parachute),
+  },
+  {
+    path: '/fizztime',
+    element: CategoryContextComponent(FizzTime),
   },
   {
     path: '/signin',

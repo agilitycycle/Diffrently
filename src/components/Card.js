@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import { createAvatar } from '@dicebear/core';
 import { identicon } from '@dicebear/collection';
@@ -47,7 +46,6 @@ const renderSocialMediaIcons = () => {
 }
 
 const Card = (props) => {
-  const navigate = useNavigate();
   const { item, photoUrl, loadTag, handleDeletePost, setPostItem, setOpen, getTags, postLength } = props;
   const { body, dateCreated } = item;
   const tagEl = Object.keys(item).filter(a => a.indexOf('tag') > -1).map(b => b.replace('tag', ''));

@@ -10,7 +10,7 @@ const appName = 'Diffrently.';
  */
 
 const Header = (props) => {
-  const { className, useLink = '/timeline' } = props;
+  const { className, useLink = '/dashboard' } = props;
   const headerClss = className || 'inline-block leading-none text-4xl text-white text-left font-light mt-5 mb-9';
 
   return (
