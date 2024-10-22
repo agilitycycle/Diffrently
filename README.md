@@ -4,6 +4,8 @@ Curate NEW content with flipbio using OpenAI tecnology.
 
 [![GPL3 License](https://img.shields.io/badge/license-GPLv3-blue)](https://choosealicense.com/licenses/gpl-3.0/)
 
+![Alt text](public/diffrently-landing-page.png)
+
 # Diffrently Roadmap
 
 ## Features
