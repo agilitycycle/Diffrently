@@ -4,6 +4,16 @@ Curate NEW content with flipbio using OpenAI tecnology.
 
 [![GPL3 License](https://img.shields.io/badge/license-GPLv3-blue)](https://choosealicense.com/licenses/gpl-3.0/)
 
+# Diffrently Roadmap
+
+## Features
+
+ * [ ] Social Logins (Facebook, Twitter)
+ * [ ] Post edit the Diffrently way
+ * [ ] Stripe Payment
+ * [ ] Parachute / Dropzone
+ * [ ] Fizz Time
+
 ## FREE to use under GPLv3 license
 
 Help improve the open source version by using it freely under the GPLv3 license. All modifications must be added back to the source code.
@@ -47,3 +57,4 @@ Start the server
  - [OpenAI](https://openai.com)
  - [Firebase](https://firebase.google.com)
  - [React](https://react.dev)
+ - [Netlify](https://netlify.com)

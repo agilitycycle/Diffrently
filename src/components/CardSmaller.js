@@ -96,11 +96,16 @@ const CardSmaller = (props) => {
           getTags(tagEl)
         )}
         {!getTags && (
-          <button className="mb-4" onClick={() => loadTag(tagEl[0])}>
-            <span className="opacity-40 border border-[#A9AAC5] text-[#A9AAC5] bg-transparent text-sm font-medium me-2 px-2.5 py-0.5 rounded">
-              {tagEl.length} tags
+          <>
+            <button className="mb-4" onClick={() => loadTag(tagEl[0])}>
+              <span className="opacity-40 border border-[#A9AAC5] text-[#A9AAC5] bg-transparent text-sm font-medium me-2.5 px-2.5 py-0.5 rounded">
+                {tagEl.length} tags
+              </span>
+            </button>
+            <span className="bg-blue-100 text-slate-300 text-sm font-normal me-2 px-2.5 py-0.5 rounded dark:bg-indigo-800 dark:text-slate-300">
+              Trending
             </span>
-          </button>
+          </>
         )}
       </p>
       {/*
