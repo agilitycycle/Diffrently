@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Menu,
   Drawer,
@@ -16,14 +16,13 @@ const CreateDropzone = () => {
           <Header />
           <div className="w-10/12 text-center">
             <div>
-              <input value="" onChange={() => {}} maxlength="25" className="block py-2.5 pr-2.5 mb-5 w-full text-lg text-lg text-white bg-transparent !outline-none" placeholder="Dropzone (25)"/>
+              <input value="" onChange={() => {}} maxlength="25" className="block py-2.5 pr-2.5 mb-1.5 w-full text-lg text-white bg-transparent !outline-none" placeholder="Dropzone (25)"/>
+              <input value="" onChange={() => {}} maxlength="25" className="block py-2.5 pr-2.5 mb-5 w-full text-base text-white bg-transparent !outline-none" placeholder="A representation image of..."/>
             </div>
-            <div className="flex mb-10">
-              <div className="text-white mr-10">
-                Picture
-              </div>
-              <div>
-                <button type="button" onClick={() => {}} className="h-[32px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 pt-.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+            <div className="relative w-fit flex items-center mb-9 border border-[#A9AAC5]/40 rounded-lg px-12 py-5 sm:px-20">
+              <img className="w-20 h-20 object-cover object-center rounded-full" src="https://picsum.photos/id/18/300/200" />
+              <div className="flex justify-center">
+                <button type="button" onClick={() => {}} className="h-[25px] text-gray-800 bg-white/80 focus:ring-4 focus:ring-blue-300 font-normal rounded-lg text-sm ml-5 px-3 focus:outline-none dark:focus:ring-blue-800">
                   Generate
                 </button>
               </div>
