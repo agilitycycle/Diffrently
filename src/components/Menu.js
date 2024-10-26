@@ -7,7 +7,7 @@ const Menu = () => {
   const { loggedIn } = currentAppState;
 	const dispatch = useDispatch();
 
-	return (<div className="w-8 absolute right-5" onClick={() => {
+	return (<div className="w-8 absolute z-50 right-5" onClick={() => {
 		const newAppState = {...currentAppState};
     (!loggedIn) ?
       newAppState.drawerHome = !newAppState.drawerHome :

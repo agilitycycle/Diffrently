@@ -136,7 +136,7 @@ const LandingPage = () => {
           </div>
           <div>
             <a href="https://github.com/agilitycycle/Diffrently" target="_blank">
-              <img className="mx-auto mb-16 w-[95px]" src={GithubImage} />
+              <img className="mx-auto mb-16 w-[85px]" src={GithubImage} />
             </a>
           </div>
           <div className="mb-10 text-center text-base text-gray-400 font-sans font-extralight leading-relaxed">

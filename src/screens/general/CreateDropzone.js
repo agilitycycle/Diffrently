@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Menu,
   Drawer,
@@ -22,7 +22,7 @@ const CreateDropzone = () => {
             <div className="relative w-fit flex items-center mb-9 border border-[#A9AAC5]/40 rounded-lg px-12 py-5 sm:px-20">
               <img className="w-20 h-20 object-cover object-center rounded-full" src="https://picsum.photos/id/18/300/200" />
               <div className="flex justify-center">
-                <button type="button" onClick={() => {}} className="h-[25px] text-gray-800 bg-white/80 focus:ring-4 focus:ring-blue-300 font-normal rounded-lg text-sm ml-5 px-3 focus:outline-none dark:focus:ring-blue-800">
+                <button type="button" onClick={() => {}} className="h-[25px] bg-gray-700/30 text-white/50 focus:ring-4 focus:ring-blue-300 font-normal rounded-lg text-sm ml-5 px-3 focus:outline-none dark:focus:ring-blue-800">
                   Generate
                 </button>
               </div>

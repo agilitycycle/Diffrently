@@ -26,6 +26,10 @@ Help improve the open source version by using it freely under the GPLv3 license.
 2. Firebase function code
 3. AWS Lambda code
 
+## Storybook
+
+https://storybook.flipbio.co
+
 ## Run locally
 
 **Note: Must set up Firebase acc. first.**
