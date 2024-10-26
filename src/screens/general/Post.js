@@ -11,7 +11,8 @@ import moment from 'moment';
 import {
   Menu,
   Drawer,
-  Header
+  Header,
+  Fullscreen
 } from '../../components';
 import { updateAppState, appState } from '../../app/appSlice';
 
@@ -48,6 +49,7 @@ const Post = () => {
   const { credit, userId } = currentAppState;
   const [characterCount, setCharacterCount] = useState(characters);
   const [postDetails, setPostDetails] = useState(initialState);
+  const [fullScreen, setFullScreen] = useState(false);
   const [tagFormValue, setTagFormValue] = useState('');
   const [titleFormValue, setTitleFormValue] = useState('');
   const [primaryTagFormValue, setPrimaryTagFormValue] = useState('');
@@ -319,6 +321,10 @@ const Post = () => {
     }
   }
 
+  const toggleFullscreen = () => {
+    setFullScreen(!fullScreen);
+  }
+
   const removeAutoTag = (tagName) => {
     let newAutoTagging = [...postDetails.autoTagging];
     newAutoTagging = newAutoTagging.filter(e => e !== tagName);
@@ -383,10 +389,19 @@ const Post = () => {
     }
   }, [generatedImage])
 
+  // https://www.tailwindtoolbox.com/components/fullscreen-modal
+
 	return (<>
 		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
 			<Drawer/>
 			<Menu/>
+      <Fullscreen
+        fullScreen={fullScreen}
+        setFullScreen={setFullScreen}
+        handleChange={handleChange}
+        body={postDetails.body}
+        characterCount={characterCount}
+      />
 		  <div className="flex items-center justify-center h-full">
 		    <div className="w-[500px] h-full">
           <Header />
@@ -394,8 +409,15 @@ const Post = () => {
             <div>
               <input value={titleFormValue} onChange={handleTitle} maxlength="25" className="block py-2.5 pr-2.5 mb-5 w-full text-lg text-lg text-white bg-transparent !outline-none" placeholder="Title (25)"/>
             </div>
-            <div>
-              <TextareaAutosize onChange={handleChange} value={postDetails.body} minRows={3} maxRows={15} className="resize-none block py-2.5 pr-2.5 mb-20 w-full text-lg text-lg text-white bg-transparent !outline-none" placeholder="Write something..."/>
+            <div className="relative">
+              <TextareaAutosize onChange={handleChange} value={postDetails.body} minRows={3} maxRows={15} className="resize-none block py-2.5 pr-2.5 mb-20 w-full h-fit text-lg text-lg text-white bg-transparent !outline-none" placeholder="Write something..."/>
+              <button onClick={() => toggleFullscreen()} className="border border-gray-400/35 absolute top-3.5 right-1 rounded cursor-pointer">
+                <div className="p-[2px]">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-3.5 h-3.5 fill-gray-400/45">
+                    <path d="M200 32L56 32C42.7 32 32 42.7 32 56l0 144c0 9.7 5.8 18.5 14.8 22.2s19.3 1.7 26.2-5.2l40-40 79 79-79 79L73 295c-6.9-6.9-17.2-8.9-26.2-5.2S32 302.3 32 312l0 144c0 13.3 10.7 24 24 24l144 0c9.7 0 18.5-5.8 22.2-14.8s1.7-19.3-5.2-26.2l-40-40 79-79 79 79-40 40c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8l144 0c13.3 0 24-10.7 24-24l0-144c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2l-40 40-79-79 79-79 40 40c6.9 6.9 17.2 8.9 26.2 5.2s14.8-12.5 14.8-22.2l0-144c0-13.3-10.7-24-24-24L312 32c-9.7 0-18.5 5.8-22.2 14.8s-1.7 19.3 5.2 26.2l40 40-79 79-79-79 40-40c6.9-6.9 8.9-17.2 5.2-26.2S209.7 32 200 32z"/>
+                  </svg>
+                </div>
+              </button>
             </div>
             <div className="sm:mt-0 mb-6 text-gray-500 dark:text-gray-400">
               (<span className={characterCount > 850 ? 'text-red-700' : ''}>{characterCount}</span>/850)

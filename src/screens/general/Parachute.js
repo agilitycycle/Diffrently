@@ -36,19 +36,19 @@ const Parachute = () => {
                     </div>
                     <div className="relative group border border-gray-700 bg-transparent py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md">
                       <img className="w-20 h-20 object-cover object-center rounded-full" src="https://picsum.photos/id/18/300/200" />
-                      <h4 className="text-white text-2xl font-bold capitalize text-center">MBSG Prayers</h4>
+                      <h4 className="text-white text-xl font-bold capitalize text-center">MBSG Prayers</h4>
                       <p className="text-white/50">5 members</p>
                       <p className="absolute top-2 text-white/20 inline-flex items-center text-xs">2 Online <span className="ml-2 w-2 h-2 block bg-green-500 rounded-full group-hover:animate-pulse"></span></p>
                     </div>
                     <div className="relative group border border-gray-700 bg-transparent py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md">
                       <img className="w-20 h-20 object-cover object-center rounded-full" src="https://picsum.photos/id/18/300/200" />
-                      <h4 className="text-white text-2xl font-bold capitalize text-center">MBSG News</h4>
+                      <h4 className="text-white text-xl font-bold capitalize text-center">MBSG News</h4>
                       <p className="text-white/50">4 members</p>
                       <p className="absolute top-2 text-white/20 inline-flex items-center text-xs">1 Online <span className="ml-2 w-2 h-2 block bg-green-500 rounded-full group-hover:animate-pulse"></span></p>
                     </div>
                     <div className="relative group border border-gray-700 bg-transparent py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md">
                       <img className="w-20 h-20 object-cover object-center rounded-full" src="https://picsum.photos/id/18/300/200" />
-                      <h4 className="text-white text-2xl font-bold capitalize text-center">Prayers</h4>
+                      <h4 className="text-white text-xl font-bold capitalize text-center">Prayers</h4>
                       <p className="text-white/50">5 members</p>
                       <p className="absolute top-2 text-white/20 inline-flex items-center text-xs">2 Online <span className="ml-2 w-2 h-2 block bg-green-500 rounded-full group-hover:animate-pulse"></span></p>
                     </div>

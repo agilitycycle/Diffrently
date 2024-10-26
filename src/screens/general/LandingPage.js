@@ -5,6 +5,7 @@ import {
   Header,
   CardMini
 } from '../../components';
+import GithubImage from '../../assets/github-mark-white.svg';
 
 const LandingPage = () => {
 
@@ -109,10 +110,13 @@ const LandingPage = () => {
               Samaritan's Purse is responding to both Hurricane Helene and Hurricane Milton, with multiple disaster relief bases in North Carolina and Florida.
             </div>
             <div className="flex justify-center mb-2">
-              <a href="https://www.samaritanspurse.org/disaster/hurricane-helene" target="_blank" className="text-white text-1xl bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg px-3 py-1.5 w-full sm:w-2/12 me-2 inline-flex items-center justify-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              <a href="https://www.samaritanspurse.org/disaster/hurricane-helene" target="_blank" className="text-white text-base bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg px-3 py-1.5 w-full sm:w-2/12 me-2 inline-flex items-center justify-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 Give
               </a>
             </div>
+          </div>
+          <div className="mb-14">
+            <iframe className="border border-[#A9AAC5]/40 rounded-xl mx-auto w-full sm:w-4/5 h-[285px] md:h-[425px] xl:h-[700px]" src="https://www.youtube.com/embed/9M0fPsfTJwU?si=LWouqko0vKpb0gjD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
           </div>
           <div className="flex flex-col mb-14 text-3xl text-white font-sans font-thin">
             <div className="mb-5 leading-relaxed text-center">
@@ -130,6 +134,11 @@ const LandingPage = () => {
               {renderSocialMediaIcons()}
             </div>
           </div>
+          <div>
+            <a href="https://github.com/agilitycycle/Diffrently" target="_blank">
+              <img className="mx-auto mb-16 w-[95px]" src={GithubImage} />
+            </a>
+          </div>
           <div className="mb-10 text-center text-base text-gray-400 font-sans font-extralight leading-relaxed">
             Want to use Diffrently. commercially, PM james@agilitycycle.com to purchase a one-time commercial license.
           </div>
@@ -137,12 +146,12 @@ const LandingPage = () => {
             Diffrently. is 99.99% of the time in sync with the cloud database.
           </div>
           <div className="mb-10 text-center text-3xl text-white font-sans font-thin">
-            Subscriptions
+            Pricing
           </div>
-          <div>
-            {/* Subscription 1 */}
-            <div className="flex flex-col sm:flex-row gap-x-4 justify-center mb-4">
-              <div className="flex flex-col items-start justify-between mx-auto w-11/12 lg:w-7/12 gap-6 overflow-hidden rounded-2xl mb-5 border p-6 border-[#707070] bg-transparent">
+          <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-6 mb-12 lg:mb-16">
+            {/* Free trial */}
+            <div className="flex flex-col sm:flex-row gap-x-4 justify-center">
+              <div className="flex flex-col items-start justify-between mx-auto w-full gap-6 overflow-hidden rounded-2xl mb-5 lg:mb-1 border p-6 border-[#707070] bg-transparent">
                 <div className="inline-flex flex-col items-start justify-start gap-6">
                   <div className="flex flex-col items-start justify-start">
                     <p className="text-lg text-white font-normal">FREE Trial - $0 (one-time)</p>
@@ -169,14 +178,14 @@ const LandingPage = () => {
                   </div>
                 </div>
                 <button type="button"
-                  className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle text-sm font-semibold leading-none transition-all duration-300 ease-in-out disabled:cursor-not-allowed bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 stroke-white px-6 text-white h-[42px] min-w-[42px] gap-2 w-full disabled:bg-slate-100 disabled:stroke-slate-400 disabled:text-slate-400 disabled:hover:bg-slate-100">
-                  <span>Sign in to add</span>
+                  className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle text-sm font-semibold leading-none disabled:cursor-not-allowed bg-white/80 text-[#000423] min-w-[42px] gap-2 w-3/12 sm:w-8/12 disabled:bg-slate-100 disabled:stroke-slate-400 disabled:text-slate-400 disabled:hover:bg-slate-100">
+                  <span>Try</span>
                 </button>
               </div>
             </div>
-            {/* Monthly subscription */}
-            <div className="flex flex-col sm:flex-row gap-x-4 justify-center mb-4">
-              <div className="flex flex-col items-start justify-between mx-auto w-11/12 lg:w-7/12 gap-6 overflow-hidden rounded-2xl mb-5 border p-6 border-[#707070] bg-transparent">
+            {/* Purchase */}
+            <div className="flex flex-col sm:flex-row gap-x-4 justify-center">
+              <div className="flex flex-col items-start justify-between mx-auto w-full gap-6 overflow-hidden rounded-2xl mb-5 lg:mb-1 border p-6 border-[#707070] bg-transparent">
                 <div className="inline-flex flex-col items-start justify-start gap-6">
                   <div className="flex flex-col items-start justify-start">
                     <p className="text-lg text-white font-normal">Monthly - $25 NZD</p>
@@ -211,14 +220,14 @@ const LandingPage = () => {
                   </div>
                 </div>
                 <button type="button"
-                  className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle text-sm font-semibold leading-none transition-all duration-300 ease-in-out disabled:cursor-not-allowed bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 stroke-white px-6 text-white h-[42px] min-w-[42px] gap-2 w-full disabled:bg-slate-100 disabled:stroke-slate-400 disabled:text-slate-400 disabled:hover:bg-slate-100">
-                  <span>Sign in to add</span>
+                  className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle text-sm font-semibold leading-none disabled:cursor-not-allowed bg-white/80 text-[#000423] min-w-[42px] gap-2 w-3/12 sm:w-8/12 disabled:bg-slate-100 disabled:stroke-slate-400 disabled:text-slate-400 disabled:hover:bg-slate-100">
+                  <span>Purchase</span>
                 </button>
               </div>
             </div>
-            {/* Subscription 2 */}
-            <div className="flex flex-col sm:flex-row gap-x-4 justify-center mb-4">
-              <div className="flex flex-col items-start justify-between mx-auto w-11/12 lg:w-7/12 gap-6 overflow-hidden rounded-2xl mb-5 border p-6 border-[#707070] bg-transparent">
+            {/* Purchase */}
+            <div className="flex flex-col sm:flex-row gap-x-4 justify-center">
+              <div className="flex flex-col items-start justify-between mx-auto w-full gap-6 overflow-hidden rounded-2xl mb-5 lg:mb-1 border p-6 border-[#707070] bg-transparent">
                 <div className="inline-flex flex-col items-start justify-start gap-6">
                   <div className="flex flex-col items-start justify-start">
                     <p className="text-lg text-white font-normal">Extra - $5 NZD <span className="text-sm text-gray-400 ml-2.5 inline">(must have a mo. subscription)</span></p>
@@ -237,14 +246,14 @@ const LandingPage = () => {
                   </div>
                 </div>
                 <button type="button"
-                  className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle text-sm font-semibold leading-none transition-all duration-300 ease-in-out disabled:cursor-not-allowed bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 stroke-white px-6 text-white h-[42px] min-w-[42px] gap-2 w-full disabled:bg-slate-100 disabled:stroke-slate-400 disabled:text-slate-400 disabled:hover:bg-slate-100">
-                  <span>Sign in to add</span>
+                  className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle text-sm font-semibold leading-none disabled:cursor-not-allowed bg-white/80 text-[#000423] min-w-[42px] gap-2 w-3/12 sm:w-8/12 disabled:bg-slate-100 disabled:stroke-slate-400 disabled:text-slate-400 disabled:hover:bg-slate-100">
+                  <span>Purchase</span>
                 </button>
               </div>
             </div>
-            {/* Subscription 3 */}
-            <div className="flex flex-col sm:flex-row gap-x-4 justify-center mb-4">
-              <div className="flex flex-col items-start justify-between mx-auto w-11/12 lg:w-7/12 gap-6 overflow-hidden rounded-2xl mb-5 border p-6 border-[#707070] bg-transparent">
+            {/* Purchase */}
+            <div className="flex flex-col sm:flex-row gap-x-4 justify-center">
+              <div className="flex flex-col items-start justify-between mx-auto w-full gap-6 overflow-hidden rounded-2xl mb-5 lg:mb-1 border p-6 border-[#707070] bg-transparent">
                 <div className="inline-flex flex-col items-start justify-start gap-6">
                   <div className="flex flex-col items-start justify-start">
                     <p className="text-lg text-white font-normal">Booster - $25 NZD <span className="text-sm text-gray-400 ml-2.5 inline">(must have a mo. subscription)</span></p>
@@ -279,14 +288,14 @@ const LandingPage = () => {
                   </div>
                 </div>
                 <button type="button"
-                  className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle text-sm font-semibold leading-none transition-all duration-300 ease-in-out disabled:cursor-not-allowed bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 stroke-white px-6 text-white h-[42px] min-w-[42px] gap-2 w-full disabled:bg-slate-100 disabled:stroke-slate-400 disabled:text-slate-400 disabled:hover:bg-slate-100">
-                  <span>Sign in to add</span>
+                  className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle text-sm font-semibold leading-none disabled:cursor-not-allowed bg-white/80 text-[#000423] min-w-[42px] gap-2 w-3/12 sm:w-8/12 disabled:bg-slate-100 disabled:stroke-slate-400 disabled:text-slate-400 disabled:hover:bg-slate-100">
+                  <span>Purchase</span>
                 </button>
               </div>
             </div>
-            {/* Subscription 4 */}
-            <div className="flex flex-col sm:flex-row gap-x-4 justify-center mb-4">
-              <div className="flex flex-col items-start justify-between mx-auto w-11/12 lg:w-7/12 gap-6 overflow-hidden rounded-2xl mb-5 border p-6 border-[#707070] bg-transparent">
+            {/* Purchase */}
+            <div className="flex flex-col sm:flex-row gap-x-4 justify-center">
+              <div className="flex flex-col items-start justify-between mx-auto w-full gap-6 overflow-hidden rounded-2xl mb-5 lg:mb-1 border p-6 border-[#707070] bg-transparent">
                 <div className="inline-flex flex-col items-start justify-start gap-6">
                   <div className="flex flex-col items-start justify-start">
                     <p className="text-lg text-white font-normal">Flying Comet - $125 NZD <span className="text-sm text-gray-400 ml-2.5 inline">(must have a mo. subscription)</span></p>
@@ -321,8 +330,8 @@ const LandingPage = () => {
                   </div>
                 </div>
                 <button type="button"
-                  className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle text-sm font-semibold leading-none transition-all duration-300 ease-in-out disabled:cursor-not-allowed bg-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700 stroke-white px-6 text-white h-[42px] min-w-[42px] gap-2 w-full disabled:bg-slate-100 disabled:stroke-slate-400 disabled:text-slate-400 disabled:hover:bg-slate-100">
-                  <span>Sign in to add</span>
+                  className="group inline-flex items-center justify-center whitespace-nowrap rounded-lg py-2 align-middle text-sm font-semibold leading-none disabled:cursor-not-allowed bg-white/80 text-[#000423] min-w-[42px] gap-2 w-3/12 sm:w-8/12 disabled:bg-slate-100 disabled:stroke-slate-400 disabled:text-slate-400 disabled:hover:bg-slate-100">
+                  <span>Purchase</span>
                 </button>
               </div>
             </div>
