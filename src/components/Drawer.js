@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuth, signOut } from 'firebase/auth';
 import { updateAppState, appState } from '../app/appSlice';
+import { Menu } from './';
 import { clsx } from 'clsx';
 
 const openClassNames = {
@@ -117,14 +118,19 @@ const Drawer = ({ side = 'left' }) => {
             >
               <div
                 className={clsx(
-                  'flex flex-col h-full w-64 bg-white p-10 shadow-xl bg-blue-400'
+                  'flex flex-col h-full w-64 bg-white p-5 shadow-xl bg-blue-400'
                 )}
               >
-                <h5 className="text-base font-semibold text-gray-500 uppercase dark:text-gray-400">Menu</h5>
+                <div className="flex">
+                  <Menu className="mt-[1px]" />
+                  <div className="grow">
+                    <h5 className="text-base font-medium text-gray-500 uppercase dark:text-gray-400">Menu</h5>
+                  </div>
+                </div>
                 <div className="py-4 overflow-y-auto">
                   <ul className="space-y-2 font-medium">
                     <li>
-                      <Link to="/profile" onClick={drawerMenuItemClicked} className="flex items-center pt-2 pb-2 text-gray-900 dark:text-black">
+                      <Link to="/profile" onClick={drawerMenuItemClicked} className="flex items-center mt-8 pt-2 pb-2 text-gray-900 dark:text-black">
                         <span>Profile</span>
                       </Link>
                     </li>

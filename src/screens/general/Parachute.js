@@ -12,12 +12,11 @@ const Parachute = () => {
   const navigate = useNavigate();
 
 	return (<>
-		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
-			<Drawer/>
-			<Menu/>
+		<div className="flex flex-col p-5 h-screen bg-[#000423]">
+			<Drawer />
+      <Header />
 		  <div className="flex items-center justify-center h-full">
 		    <div className="h-full w-full max-w-[900px]">
-          <Header />
           <div className="min-w-80 pb-7 text-white font-sm">
             <div className="mt-9">
               <div className="flex-1 flex flex-col space-y-5 lg:space-y-0 lg:flex-row max-w-6xl sm:rounded-2xl">

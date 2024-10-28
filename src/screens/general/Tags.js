@@ -269,12 +269,11 @@ const Tags = () => {
   }, [contextObj.categories, categoriesLoaded, setFormTags])
 
 	return (<>
-		<div className="flex flex-col px-5 h-screen bg-[#000423]">
-			<Drawer/>
-			<Menu/>
+		<div className="flex flex-col p-5 h-screen bg-[#000423]">
+			<Drawer />
+      <Header />
 		  <div className="flex items-center justify-center h-full">
 		    <div className="h-full w-10/12 sm:w-6/12">
-          <Header />
 		      <h2 className="text-2xl text-white text-left leading-snug mb-2">
 		      	Set up categories
 		      </h2>

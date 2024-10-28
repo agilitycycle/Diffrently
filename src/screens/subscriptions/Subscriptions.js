@@ -69,12 +69,11 @@ const Subscriptions = () => {
   }
 
 	return (<>
-		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
-			<Drawer/>
-			<Menu/>
+		<div className="flex flex-col p-5 h-screen bg-[#000423]">
+			<Drawer />
+      <Header />
 		  <div className="flex items-center justify-center h-full">
 		    <div className="h-full w-full sm:w-7/12 sm:h-auto">
-          <Header />
           <h2 className="text-2xl text-white text-left leading-snug mb-8">
             Choose your plan
           </h2>

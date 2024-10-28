@@ -8,12 +8,11 @@ import {
 const WhyDiffrently = () => {
 
 	return (<>
-		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
-      <DrawerHome/>
-      <Menu/>
+		<div className="flex flex-col p-5 h-screen bg-[#000423]">
+      <DrawerHome />
+      <Header useLink="/" />
       <div className="flex items-center justify-center h-full">
         <div className="h-full w-full sm:w-7/12">
-          <Header useLink="/" className="flex items-center leading-none inline-block text-4xl sm:text-5xl text-white text-left font-light mt-5 mb-14" />
           <div>
             <div className="flex flex-col md:flex-row justify-between mt-6 text-4xl text-white font-sans font-thin">
               <div className="flex items-center mb-10">

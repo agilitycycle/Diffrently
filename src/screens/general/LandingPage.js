@@ -74,12 +74,14 @@ const LandingPage = () => {
   }
 
 	return (<>
-    <div className="flex flex-col px-5 bg-[#000423]">
-      <DrawerHome/>
-      <Menu/>
+    <div className="flex flex-col p-5 bg-[#000423]">
+      <DrawerHome />
+      <Header useLink="/" invisible />
       <div className="flex items-center justify-center h-full">
         <div className="h-full w-full sm:w-7/12">
-          <Header useLink="/" className="flex items-center leading-none inline-block text-4xl sm:text-5xl text-white text-left font-light mt-5 mb-14" />
+          <div className="hidden sm:flex items-center justify-center h-96 text-white text-9xl mb-24 font-extralight">
+            Diffrently.
+          </div>
           <div className="flex flex-col md:flex-row justify-between mt-6 mb-16 text-4xl text-white font-sans font-thin">
             <div className="flex items-center justify-center mb-10">
               Write something...

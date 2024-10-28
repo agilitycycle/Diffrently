@@ -66,13 +66,12 @@ const SignIn = () => {
   }
 
 	return (<>
-		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
-			<Drawer/>
-			<Menu/>
+		<div className="flex flex-col p-5 h-screen bg-[#000423]">
+			<Drawer />
+      <Header useLink="/" />
 		  <div className="flex items-center justify-center h-full">
 		    <div className="h-full sm:h-auto">
-          <Header />
-		      <h2 className="text-2xl text-white text-left leading-snug mb-8">
+          <h2 className="text-2xl text-white text-left leading-snug mb-8">
 		      	1. Login to continue
 		      </h2>
 		      <div className="text-center">

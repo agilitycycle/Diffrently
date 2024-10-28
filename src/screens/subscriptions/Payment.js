@@ -61,12 +61,11 @@ const Payment = () => {
   }
 
 	return (
-		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
-			<Drawer/>
-			<Menu/>
+		<div className="flex flex-col p-5 h-screen bg-[#000423]">
+			<Drawer />
+      <Header />
 		  <div className="flex items-center justify-center h-full">
 		    <div className="w-[500px] h-full sm:h-auto">
-          <Header />
           <div className="w-full rounded-lg text-[#fff] font-semibold border border-gray-200 bg-white p-4 mb-5 shadow-sm dark:border-gray-700 dark:bg-[#0d1026] sm:p-6 lg:max-w-xl lg:p-8">
             <div className="flex flex-rows">
               <div className="flex-auto">

@@ -180,12 +180,11 @@ const Tag = () => {
 
 	return (<>
     <ModalExport open={open} setOpen={setOpen} postItem={postItem} />
-		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
-			<Drawer/>
-			<Menu/>
+		<div className="flex flex-col p-5 h-screen bg-[#000423]">
+			<Drawer />
+      <Header />
 		  <div className="flex items-center justify-center h-full">
 		    <div className="h-full w-full max-w-[500px] sm:w-8/12">
-          <Header />
           <div className="min-w-80 pb-7">
             <nav className="flex mb-8" aria-label="Breadcrumb">
               <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">

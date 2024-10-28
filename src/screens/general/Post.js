@@ -392,9 +392,9 @@ const Post = () => {
   // https://www.tailwindtoolbox.com/components/fullscreen-modal
 
 	return (<>
-		<div className="flex flex-col pl-5 pr-5 h-screen bg-[#000423]">
-			<Drawer/>
-			<Menu/>
+		<div className="flex flex-col p-5 h-screen bg-[#000423]">
+			<Drawer />
+      <Header />
       <Fullscreen
         fullScreen={fullScreen}
         setFullScreen={setFullScreen}
@@ -404,7 +404,6 @@ const Post = () => {
       />
 		  <div className="flex items-center justify-center h-full">
 		    <div className="w-[500px] h-full">
-          <Header />
           <div className="w-10/12 text-center">
             <div>
               <input value={titleFormValue} onChange={handleTitle} maxlength="25" className="block py-2.5 pr-2.5 mb-5 w-full text-lg text-lg text-white bg-transparent !outline-none" placeholder="Title (25)"/>
