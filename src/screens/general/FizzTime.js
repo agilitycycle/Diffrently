@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Menu,
+  Page,
   Drawer,
   Header
 } from '../../components';
@@ -8,7 +8,7 @@ import {
 const FizzTime = () => {
 
 	return (<>
-		<div className="flex flex-col p-5 h-screen bg-[#000423]">
+		<Page>
 			<Drawer />
       <Header />
 		  <div className="flex items-center justify-center h-full">
@@ -18,7 +18,7 @@ const FizzTime = () => {
           </div>
 		    </div>
 		  </div>
-	  </div>
+	  </Page>
   </>);
 };
 

@@ -6,6 +6,7 @@ const initialState = {
     drawerHomeMenuItemClicked: false,
     drawer: false,
     drawerMenuItemClicked: false,
+    darkMode: true,
     loggedIn: false,
     userId: '',
     email: '',

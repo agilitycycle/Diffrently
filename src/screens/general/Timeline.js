@@ -8,14 +8,15 @@ import {
   fbOnValueOrderByKeyEndAtLimitToLast,
 } from '../../services/firebaseService';
 import {
-  Menu,
+  Page,
   Drawer,
   Header,
   CardSmaller,
   ModalExport
 } from '../../components';
 
-// refactored
+// https://www.google.com/search?sca_esv=439ed1f28d78315f&rlz=1C5CHFA_enNZ825NZ825&q=css+animated+popup+menu&udm=2&fbs=AEQNm0A633aOWMcGwo5EkodWqZWQxPIwflRJ4Hu3ORx2YNN2hMyLXvg7YutBzzEkH5jrqRZVNqsK5Bw5ddbAfF-taybgSSQV7ogjWSUk63vkbvL-w7wplyYljl--izGla_RJHQhdiGyVfedERY6-5VfW4M7BV3Ud5xzVSoH7Zzd0edbV8j9TFjV_MhEJQhb7WmcnaxJEZCsQrhOzFoPtN07fPg85l8T3FA&sa=X&ved=2ahUKEwjdvbeAvreJAxVEyDgGHataG74QtKgLegQIFxAB&biw=1415&bih=1044&dpr=1
+
 const initialLoaded = {
   tagCategoryLoaded: false,
   postLoaded: false
@@ -163,7 +164,7 @@ const Timeline = () => {
 
 	return (<>
     <ModalExport open={open} setOpen={setOpen} postItem={postItem} />
-		<div className="flex flex-col p-5 h-screen bg-[#000423]">
+		<Page>
 			<Drawer />
       <Header />
 		  <div className="flex items-center justify-center h-full">
@@ -242,7 +243,7 @@ const Timeline = () => {
           </div>
 		    </div>
 		  </div>
-	  </div>
+    </Page>
   </>);
 };
 

@@ -5,9 +5,8 @@ import { updateAppState, appState } from '../../app/appSlice';
 import { auth, provider, fbdb } from '../../app/firebase';
 import { signInWithPopup } from 'firebase/auth';
 import { ref, query, get, push, orderByChild, equalTo } from 'firebase/database';
-import { fbSet } from '../../services/firebaseService';
 import {
-  Menu,
+  Page,
   Drawer,
   Header
 } from '../../components';
@@ -66,7 +65,7 @@ const SignIn = () => {
   }
 
 	return (<>
-		<div className="flex flex-col p-5 h-screen bg-[#000423]">
+		<Page>
 			<Drawer />
       <Header useLink="/" />
 		  <div className="flex items-center justify-center h-full">
@@ -110,7 +109,7 @@ const SignIn = () => {
 		      </div>
 		    </div>
 		  </div>
-	  </div>
+	  </Page>
   </>);
 };
 

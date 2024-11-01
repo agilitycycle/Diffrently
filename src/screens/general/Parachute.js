@@ -1,7 +1,12 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { appState } from '../../app/appSlice';
 import {
-  Menu,
+  fbOnValueOrderByKeyLimitToLast
+} from '../../services/firebaseService';
+import {
+  Page,
   Drawer,
   Header
 } from '../../components';
@@ -10,9 +15,43 @@ import {
 
 const Parachute = () => {
   const navigate = useNavigate();
+  const currentAppState = useSelector(appState);
+  const {userId} = currentAppState;
+  const [dropzonesLoaded, setDropzonesLoaded] = useState(false);
+  const [dropzones, setDropzones] = useState(undefined);
+
+  const getDropzones = async () => {
+    const result = await fbOnValueOrderByKeyLimitToLast(`/userDropzones/${userId}/dropzones/`, 100);
+    setDropzones(result);
+    setDropzonesLoaded(true);
+  }
+
+  const renderDropzones = () => {
+    if (!dropzones) return;
+    const items = [];
+    for (let i in dropzones) {
+      items.push(dropzones[i]);
+    }
+    return items.map(item => {
+      return (
+        <div className="relative group border border-gray-700 bg-transparent py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md">
+          <img className="w-20 h-20 object-cover object-center rounded-full" src={item.image && 'data:image/jpeg;base64,' + item.image || 'https://picsum.photos/id/18/300/200'} />
+          <h4 className="text-white text-xl font-bold capitalize text-center">{item.title}</h4>
+          <p className="text-white/50">5 members</p>
+          <p className="absolute top-2 text-white/20 inline-flex items-center text-xs">2 Online <span className="ml-2 w-2 h-2 block bg-green-500 rounded-full group-hover:animate-pulse"></span></p>
+        </div>
+      )
+    })
+  }
+
+  useEffect(() => {
+    if (dropzonesLoaded) return;
+    getDropzones();
+    // eslint-disable-next-line
+  }, [dropzones])
 
 	return (<>
-		<div className="flex flex-col p-5 h-screen bg-[#000423]">
+		<Page>
 			<Drawer />
       <Header />
 		  <div className="flex items-center justify-center h-full">
@@ -33,24 +72,7 @@ const Parachute = () => {
                       </a>
                       <a href={null} onClick={() => navigate('/create-dropzone')} className="text-white/50 text-center">Create dropzone</a>
                     </div>
-                    <div className="relative group border border-gray-700 bg-transparent py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md">
-                      <img className="w-20 h-20 object-cover object-center rounded-full" src="https://picsum.photos/id/18/300/200" />
-                      <h4 className="text-white text-xl font-bold capitalize text-center">MBSG Prayers</h4>
-                      <p className="text-white/50">5 members</p>
-                      <p className="absolute top-2 text-white/20 inline-flex items-center text-xs">2 Online <span className="ml-2 w-2 h-2 block bg-green-500 rounded-full group-hover:animate-pulse"></span></p>
-                    </div>
-                    <div className="relative group border border-gray-700 bg-transparent py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md">
-                      <img className="w-20 h-20 object-cover object-center rounded-full" src="https://picsum.photos/id/18/300/200" />
-                      <h4 className="text-white text-xl font-bold capitalize text-center">MBSG News</h4>
-                      <p className="text-white/50">4 members</p>
-                      <p className="absolute top-2 text-white/20 inline-flex items-center text-xs">1 Online <span className="ml-2 w-2 h-2 block bg-green-500 rounded-full group-hover:animate-pulse"></span></p>
-                    </div>
-                    <div className="relative group border border-gray-700 bg-transparent py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md">
-                      <img className="w-20 h-20 object-cover object-center rounded-full" src="https://picsum.photos/id/18/300/200" />
-                      <h4 className="text-white text-xl font-bold capitalize text-center">Prayers</h4>
-                      <p className="text-white/50">5 members</p>
-                      <p className="absolute top-2 text-white/20 inline-flex items-center text-xs">2 Online <span className="ml-2 w-2 h-2 block bg-green-500 rounded-full group-hover:animate-pulse"></span></p>
-                    </div>
+                    {renderDropzones()}
                   </div>
                 </div>
               </div>
@@ -58,7 +80,7 @@ const Parachute = () => {
           </div>
 		    </div>
 		  </div>
-	  </div>
+	  </Page>
   </>);
 };
 

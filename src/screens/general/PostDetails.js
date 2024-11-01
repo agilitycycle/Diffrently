@@ -9,7 +9,7 @@ import {
   fbOnValueOrderByKeyLimitToLast
 } from '../../services/firebaseService';
 import {
-  Menu,
+  Page,
   Drawer,
   Header,
   Card,
@@ -160,7 +160,7 @@ const PostDetails = () => {
 
 	return (<>
     <ModalExport open={open} setOpen={setOpen} postItem={postItem} />
-		<div className="flex flex-col p-5 h-screen bg-[#000423]">
+		<Page>
 			<Drawer />
       <Header />
 		  <div className="flex items-center justify-center h-full">
@@ -234,7 +234,7 @@ const PostDetails = () => {
           </div>
 		    </div>
 		  </div>
-	  </div>
+	  </Page>
   </>);
 };
 

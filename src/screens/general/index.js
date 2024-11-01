@@ -1,6 +1,7 @@
 import LandingPage from './LandingPage';
 import WhyDiffrently from './WhyDiffrently';
 import Pricing from './Pricing';
+import Site from './Site';
 import Dashboard from './Dashboard';
 import Profile from './Profile';
 import Timeline from './Timeline';
@@ -17,6 +18,7 @@ export {
 	LandingPage,
 	WhyDiffrently,
 	Pricing,
+  Site,
 	Dashboard,
 	Profile,
 	Timeline,

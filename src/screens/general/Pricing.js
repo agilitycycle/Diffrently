@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Menu,
+  Page,
   DrawerHome,
   Header
 } from '../../components';
@@ -8,7 +8,7 @@ import {
 const Pricing = () => {
 
 	return (<>
-		<div className="flex flex-col p-5 h-screen bg-[#000423]">
+		<Page>
       <DrawerHome/>
       <Header useLink="/" />
       <div className="flex items-center justify-center h-full">
@@ -64,7 +64,7 @@ const Pricing = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Page>
   </>);
 };
 

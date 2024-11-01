@@ -1,13 +1,18 @@
 import { fn } from '@storybook/test';
-
-import './button.css';
+import {
+  SecondaryActionButton
+} from '../components/';
 
 // https://storybook.js.org/docs/api/arg-types
+// https://www.juango.dev/posts/dark-mode-tailwind-storybook
+// https://storybook.js.org/docs/essentials/backgrounds
 const Button = ({label, type, size, className}) => {
-  let additional = '';
-  if (type === 'SecondaryAction' && size === 'small') { additional = 'px-5 p-1.5' }
-  if (type === 'SecondaryAction' && size === 'medium') { additional = 'px-5 p-2.5' }
-  return (<button onClick={() => {}} className={`${className} ${additional}`}>
+  if (type === 'SecondaryAction') {
+    const css = (size === 'small') ? 'px-5 p-1.5' : 'px-5 p-2.5';
+    return <SecondaryActionButton onClick={() => {}} css={css} label={label} />
+  }
+
+  return (<button onClick={() => {}} className={className}>
       <span>{label}</span>
     </button>)
 }
@@ -39,8 +44,7 @@ export const SecondaryAction = {
   args: {
     type: 'SecondaryAction',
     label: 'Generate',
-    size: 'small',
-    className: 'text-white bg-blue-600 rounded-lg font-medium text-sm'
+    size: "small"
   },
 };
 

@@ -4,12 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import Buffer from 'buffer';
 import TextareaAutosize from 'react-textarea-autosize';
 import axios from 'axios';
+import { generateImage } from '../../utility';
 import { ref as sRef, uploadBytes } from 'firebase/storage';
 import { fbSet, fbPush } from '../../services/firebaseService';
 import { fbStorage } from '../../app/firebase';
 import moment from 'moment';
 import {
-  Menu,
+  Page,
   Drawer,
   Header,
   Fullscreen
@@ -266,11 +267,7 @@ const Post = () => {
 
       setImageTagFormValue('');
 
-      const resp = await axios.post('https://3aov9b5qbh.execute-api.ap-southeast-2.amazonaws.com/Prod/{generate+}', JSON.stringify({
-        data: {
-          prompt: `A representation image of ${newImageTagFormValue}`
-        }
-      }));
+      const resp = await generateImage(newImageTagFormValue);
 
       setGeneratedImage(resp.data.response.data[0].b64_json);
     }
@@ -392,7 +389,7 @@ const Post = () => {
   // https://www.tailwindtoolbox.com/components/fullscreen-modal
 
 	return (<>
-		<div className="flex flex-col p-5 h-screen bg-[#000423]">
+		<Page>
 			<Drawer />
       <Header />
       <Fullscreen
@@ -577,7 +574,7 @@ const Post = () => {
 		      </div>
 		    </div>
 		  </div>
-	  </div>
+	  </Page>
   </>);
 };
 

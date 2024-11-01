@@ -5,9 +5,15 @@ const config = {
     "@storybook/preset-create-react-app",
     "@storybook/addon-onboarding",
     "@storybook/addon-links",
-    "@storybook/addon-essentials",
+    {
+      name: '@storybook/addon-essentials',
+      options: {
+        backgrounds: false,
+      },
+    },
     "@chromatic-com/storybook",
     "@storybook/addon-interactions",
+    "@storybook/addon-styling"
   ],
   framework: {
     name: "@storybook/react-webpack5",

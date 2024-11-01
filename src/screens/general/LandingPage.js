@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Menu,
+  Page,
   DrawerHome,
   Header,
   CardMini
@@ -74,7 +74,7 @@ const LandingPage = () => {
   }
 
 	return (<>
-    <div className="flex flex-col p-5 bg-[#000423]">
+    <Page>
       <DrawerHome />
       <Header useLink="/" invisible />
       <div className="flex items-center justify-center h-full">
@@ -362,12 +362,12 @@ const LandingPage = () => {
               </div>
             </div>
           </div>
-          <div className="text-gray-400 text-sm text-center mb-10 font-sans font-extralight">
+          <div className="text-gray-400 text-sm text-center mb-10 pb-10 font-sans font-extralight">
             © Copyright Diffrently. All rights reserved.
           </div>
         </div>
       </div>
-    </div>
+    </Page>
   </>);
 };
 

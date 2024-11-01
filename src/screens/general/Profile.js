@@ -8,7 +8,7 @@ import { fbdb } from '../../app/firebase';
 import Resizer from 'react-image-file-resizer';
 import { appState } from '../../app/appSlice';
 import {
-  Menu,
+  Page,
   Drawer,
   Header
 } from '../../components';
@@ -77,7 +77,7 @@ const Profile = () => {
   }
 
 	return (<>
-		<div className="flex flex-col p-5 h-screen bg-[#000423]">
+		<Page>
 			<Drawer />
       <Header />
 		  <div className="flex items-center justify-center h-full">
@@ -129,7 +129,7 @@ const Profile = () => {
           </div>
 		    </div>
 		  </div>
-	  </div>
+	  </Page>
   </>);
 };
 

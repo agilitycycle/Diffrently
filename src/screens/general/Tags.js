@@ -7,7 +7,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { CategoryContext } from '../../context/CategoryContext';
 import { fbSet, fbUpdate, fbRemove } from '../../services/firebaseService';
 import {
-  Menu,
+  Page,
   Drawer,
   Header
 } from '../../components';
@@ -269,7 +269,7 @@ const Tags = () => {
   }, [contextObj.categories, categoriesLoaded, setFormTags])
 
 	return (<>
-		<div className="flex flex-col p-5 h-screen bg-[#000423]">
+		<Page>
 			<Drawer />
       <Header />
 		  <div className="flex items-center justify-center h-full">
@@ -348,7 +348,7 @@ const Tags = () => {
           )}
 		    </div>
 		  </div>
-	  </div>
+	  </Page>
   </>);
 };
 

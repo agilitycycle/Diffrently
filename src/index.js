@@ -139,6 +139,10 @@ const router = createBrowserRouter([
     path: '/pricing',
     element: <Pricing />,
   },
+  // {
+  //   path: '/hosting/:alias',
+  //   element: <Site/>,
+  // },
   {
     path: '/dashboard',
     element: CategoryContextComponent(Dashboard),
