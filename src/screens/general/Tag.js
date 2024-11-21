@@ -13,7 +13,7 @@ import {
   Drawer,
   Header,
   CardSmaller,
-  ModalExport
+  ModalShare
 } from '../../components';
 
 const initialLoaded = {
@@ -179,7 +179,7 @@ const Tag = () => {
   }, [loaded, postLoaded])
 
 	return (<>
-    <ModalExport open={open} setOpen={setOpen} postItem={postItem} />
+    <ModalShare open={open} setOpen={setOpen} postItem={postItem} />
 		<Page>
 			<Drawer />
       <Header />

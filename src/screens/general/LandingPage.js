@@ -130,7 +130,7 @@ const LandingPage = () => {
           </div>
           <div className="flex flex-col mb-16 text-3xl text-white font-sans font-thin">
             <div className="mb-5 leading-relaxed text-center">
-              Export your content to popular Social Media platforms
+              Share to popular Social Media platforms
             </div>
             <div>
               {renderSocialMediaIcons()}
@@ -178,7 +178,7 @@ const LandingPage = () => {
                             </path>
                           </svg>
                         </div>
-                        <p className="text-base text-gray-400">Publish / export 1-2 post</p>
+                        <p className="text-base text-gray-400">Publish / share 1-2 post</p>
                       </div>
                     </div>
                   </div>
@@ -216,7 +216,7 @@ const LandingPage = () => {
                             </path>
                           </svg>
                         </div>
-                        <p className="text-base text-gray-400">Publish / export 15-25 post</p>
+                        <p className="text-base text-gray-400">Publish / share 15-25 post</p>
                       </div>
                       <div className="inline-flex justify-start gap-3">
                         <div className="min-w-[20px] mb-1">
@@ -292,7 +292,7 @@ const LandingPage = () => {
                             </path>
                           </svg>
                         </div>
-                        <p className="text-base text-gray-400">Publish / export 4-5 post</p>
+                        <p className="text-base text-gray-400">Publish / share 4-5 post</p>
                       </div>
                       <div className="inline-flex justify-start gap-3">
                         <div className="min-w-[20px] mb-1">
@@ -340,7 +340,7 @@ const LandingPage = () => {
                             </path>
                           </svg>
                         </div>
-                        <p className="text-base text-gray-400">Publish / export 75-85 post</p>
+                        <p className="text-base text-gray-400">Publish / share 75-85 post</p>
                       </div>
                       <div className="inline-flex justify-start gap-3">
                         <div className="min-w-[20px] mb-1">

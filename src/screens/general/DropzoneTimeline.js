@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { appState } from '../../app/appSlice';
 import {
@@ -19,11 +19,11 @@ import {
 // https://www.google.com/search?sca_esv=439ed1f28d78315f&rlz=1C5CHFA_enNZ825NZ825&q=css+animated+popup+menu&udm=2&fbs=AEQNm0A633aOWMcGwo5EkodWqZWQxPIwflRJ4Hu3ORx2YNN2hMyLXvg7YutBzzEkH5jrqRZVNqsK5Bw5ddbAfF-taybgSSQV7ogjWSUk63vkbvL-w7wplyYljl--izGla_RJHQhdiGyVfedERY6-5VfW4M7BV3Ud5xzVSoH7Zzd0edbV8j9TFjV_MhEJQhb7WmcnaxJEZCsQrhOzFoPtN07fPg85l8T3FA&sa=X&ved=2ahUKEwjdvbeAvreJAxVEyDgGHataG74QtKgLegQIFxAB&biw=1415&bih=1044&dpr=1
 
 const initialLoaded = {
-  tagCategoryLoaded: false,
   postLoaded: false
 }
 
-const Timeline = () => {
+const DropzoneTimeline = () => {
+  const location = useLocation();
   const navigate = useNavigate();
   const currentAppState = useSelector(appState);
   const { photoUrl, displayName, userId } = currentAppState;
@@ -32,11 +32,11 @@ const Timeline = () => {
   const [postItem, setPostItem] = useState(undefined);
   const [loaded, setLoaded] = useState(initialLoaded);
   const [postTagDetails, setPostTagDetails] = useState([]);
-  const [tagCategories, setTagCategories] = useState(undefined);
   const [lastId, setLastId] = useState('');
   const [paginationEnd, setPaginationEnd] = useState(false);
-  const { tagCategoryLoaded, postLoaded } = loaded;
-
+  const { postLoaded } = loaded;
+  const { pathname } = location;
+  const dzId = JSON.parse(atob(pathname.substring(pathname.lastIndexOf('/') + 1)));
   const loadTag = (tag) => {
     const newLoaded = {...loaded};
     newLoaded.postLoaded = false;
@@ -54,12 +54,8 @@ const Timeline = () => {
     setPostTagDetails(newPostTagDetails);
   }
 
-  const handleDynamicTags = (tag) => {
-    navigate(`/timeline/${tag}`);
-  }
-
   const getPost = async () => {
-    const path = `/userTimeline/${userId}/post`;
+    const path = `/userDropzoneTimeline/${dzId.id}/post`;
 
     let result = (lastId === '') ? 
       await fbOnValueOrderByKeyLimitToLast(path, 5) :
@@ -104,20 +100,6 @@ const Timeline = () => {
     setLoaded(newLoaded);
   }
 
-  const getTagCategory = async () => {
-    const path = `/userTagFrequency/${userId}`;
-
-    const tagCategories = await fbOnValueOrderByKeyLimitToLast(path, 25);
-
-    if (tagCategories) {
-      setTagCategories(tagCategories);
-    }
-
-    const newLoaded = {...loaded};
-    newLoaded.tagCategoryLoaded = true;
-    setLoaded(newLoaded);
-  }
-
   const renderPost = () => {
     if (postTagDetails.length < 1) return;
     return postTagDetails.map(item => {
@@ -134,30 +116,6 @@ const Timeline = () => {
       return (<CardSmaller {...props} />)
     })
   }
-
-  const renderTagCategories = () => {
-    let tags = []
-    for (let i in tagCategories) {
-      tags.push(i.replace('tag',''));
-    }
-
-    return <div className="mb-7">
-      {tags.map((tag, index) => {
-        return <button key={`tag${index}`} className="mb-4" onClick={() => handleDynamicTags(tag)}>
-          <span className="opacity-40 border border-[#A9AAC5] text-[#A9AAC5] bg-transparent text-sm font-medium me-2 px-2.5 py-0.5 rounded">
-            {tag}
-          </span>
-        </button>
-      })}
-    </div>
-  }
-
-  useEffect(() => {
-    if (!tagCategoryLoaded) {
-      getTagCategory();
-    }
-    // eslint-disable-next-line
-  }, [tagCategoryLoaded])
 
   useEffect(() => {
     if (!postLoaded) {
@@ -180,7 +138,7 @@ const Timeline = () => {
                 <li className="inline-flex items-center">
                   <a href={null} className="cursor-pointer inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
                     <svg className="w-5 h-5 me-2.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM64 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L96 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/></svg>
-                    Timeline
+                    {dzId && dzId.title}
                   </a>
                 </li>
               </ol>
@@ -188,7 +146,6 @@ const Timeline = () => {
             <button onClick={() => navigate('/post')} className="block rounded-full mb-10 text-xl uppercase w-48 h-14 border border-white bg-transparent text-[#fff]">
               Post
             </button>
-            {tagCategories && (renderTagCategories())}
             {postLoaded && renderPost()}
             {!postLoaded && (<div className="flex flex-row text-white mb-5">
               <div>
@@ -252,4 +209,4 @@ const Timeline = () => {
   </>);
 };
 
-export default Timeline;
+export default DropzoneTimeline;

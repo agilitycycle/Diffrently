@@ -30,9 +30,13 @@ import {
 	Post,
   Tag,
   PostDetails,
+  DropzoneTimeline,
   CreateDropzone,
   Parachute,
   FizzTime,
+  Site,
+  Hosting,
+  Media,
   SignIn
 } from './screens/general';
 import './index.css';
@@ -139,10 +143,6 @@ const router = createBrowserRouter([
     path: '/pricing',
     element: <Pricing />,
   },
-  // {
-  //   path: '/hosting/:alias',
-  //   element: <Site/>,
-  // },
   {
     path: '/dashboard',
     element: CategoryContextComponent(Dashboard),
@@ -180,6 +180,14 @@ const router = createBrowserRouter([
     element: CategoryContextComponent(Payment),
   },
   {
+    path: '/dz/:dzid',
+    element: CategoryContextComponent(DropzoneTimeline),
+  },
+  {
+    path: '/dz/:dzid/:tag',
+    element: CategoryContextComponent(Tag),
+  },
+  {
     path: '/create-dropzone',
     element: CategoryContextComponent(CreateDropzone),
   },
@@ -190,6 +198,26 @@ const router = createBrowserRouter([
   {
     path: '/fizztime',
     element: CategoryContextComponent(FizzTime),
+  },
+  {
+    path: '/hosting',
+    element: CategoryContextComponent(Hosting),
+  },
+  {
+    path: '/media',
+    element: CategoryContextComponent(Media),
+  },
+  {
+    path: '/h/:siteid',
+    element: <Site/>,
+  },
+  {
+    path: '/h/:siteid/:tag',
+    element: <Site/>,
+  },
+  {
+    path: '/h/:siteid/:tag/:postdetails',
+    element: <Site/>,
   },
   {
     path: '/signin',

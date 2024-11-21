@@ -448,7 +448,7 @@ const Post = () => {
                     {titleFormValue || 'Title'}
                   </h5>
                 </a>
-                <p className="mb-8 font-normal text-gray-700 dark:text-gray-400">
+                <p className="mb-8 font-normal text-gray-700 dark:text-gray-400" style={{wordBreak: 'break-word'}}>
                   {postDetails.body.length > 0 ? postDetails.body : 'Write something...'}
                 </p>
                 {/** Render generated tags **/}

@@ -9,9 +9,12 @@ import Post from './Post';
 import Tag from './Tag';
 import PostEdit from './PostEdit';
 import PostDetails from './PostDetails';
+import DropzoneTimeline from './DropzoneTimeline';
 import CreateDropzone from './CreateDropzone';
 import Parachute from './Parachute';
 import FizzTime from './FizzTime';
+import Hosting from './Hosting';
+import Media from './Media';
 import SignIn from './SignIn';
 
 export {
@@ -26,8 +29,11 @@ export {
   Tag,
   PostEdit,
   PostDetails,
+  DropzoneTimeline,
   CreateDropzone,
   Parachute,
   FizzTime,
+  Hosting,
+  Media,
   SignIn
 }

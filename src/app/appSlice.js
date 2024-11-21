@@ -6,6 +6,12 @@ const initialState = {
     drawerHomeMenuItemClicked: false,
     drawer: false,
     drawerMenuItemClicked: false,
+    cardComponent: {
+      type: '',
+      siteid: undefined,
+      tagid: undefined,
+      postid: undefined
+    },
     darkMode: true,
     loggedIn: false,
     userId: '',
