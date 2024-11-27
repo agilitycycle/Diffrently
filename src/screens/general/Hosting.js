@@ -69,6 +69,10 @@ const Site = () => {;
     }
   }
 
+  const updatePost = (url) => {
+    // url
+  }
+
   const renderDropzones = () => {
     if (!dropzones) return;
     const items = [];
@@ -126,7 +130,10 @@ const Site = () => {;
                       </div>
                       <h4 className="mt-10 text-2xl font-extralight text-white/50">Active sites</h4>
                       <div className="sm:mb-0 mt-10 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-                        <div onClick={() => {}} className="relative group border border-gray-700 bg-transparent py-10 px-4 flex flex-col space-y-4 items-center cursor-pointer rounded-md">
+                        <div onClick={() => updatePost('agility-cycle-blog')} className="relative group border border-gray-700 bg-transparent py-10 px-4 flex flex-col space-y-4 items-center cursor-pointer rounded-md">
+                          <button onClick={() => {}} className="absolute top-4 right-4 dark:bg-gray-700/30 dark:text-gray-300 rounded font-medium text-xs px-2 py-1">
+                            Update
+                          </button>
                           <img className="w-20 h-20 object-cover object-center rounded-full" src="https://picsum.photos/id/18/300/200"
                             alt=""
                           />

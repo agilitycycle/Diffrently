@@ -51,7 +51,7 @@ const Parachute = () => {
       const { id, title, image } = item;
       return (
         <div onClick={() => navigate(`/dz/${btoa(JSON.stringify({id, title}))}`)} className="relative group border border-gray-700 bg-transparent py-10 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md">
-          <LazyLoadImage className="w-20 h-20 object-cover object-center rounded-full" src={image && 'data:image/jpeg;base64,' + image || 'https://picsum.photos/id/18/300/200'}
+          <LazyLoadImage className="w-20 h-20 object-cover object-center rounded-full" src={image || 'https://picsum.photos/id/18/300/200'}
             alt={title}
           />
           <h4 className="text-white text-xl font-bold text-center">{title}</h4>

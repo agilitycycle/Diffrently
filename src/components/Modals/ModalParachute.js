@@ -71,7 +71,7 @@ const ModalParachute = ({open, setOpen, postItem}) => {
       delete newPost.id;
       fbSet(`/userDropzoneTimeline/${i}/post/${id}`, newPost);
     }
-    // add update trigger to original post **
+    // update original post
     fbUpdate(`/userTimeline/${userId}/post/${id}`, {
       dropzoneAlias: JSON.stringify(unique(newAlias))
     });
