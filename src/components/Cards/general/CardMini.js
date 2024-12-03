@@ -39,14 +39,14 @@ const CardMini = (props) => {
     <div className="flex justify-between mt-5 ml-5">
       <div className="flex items-center justify-center bg-transparent border border-gray-700 p-2 rounded-md">
         <div className="mr-2">
-          <img src="https://firebasestorage.googleapis.com/v0/b/flipbio-1712c.appspot.com/o/images%2F-NrnSwk-t38iZWOB76Lt%2Fimage1728438644559.jpg?alt=media"
+          <img referrerpolicy="no-referrer" src="https://firebasestorage.googleapis.com/v0/b/flipbio-1712c.appspot.com/o/profile%2F-NrnSwk-t38iZWOB76Lt%2Fprofile.png?alt=media"
             className="h-[40px] rounded" />
         </div>
         <div className="mr-2">
           {renderThumbnail(item.primaryTag)}
         </div>
         <div>
-          <div className="rounded-full w-[40px] h-[40px] bg-[#40435a]" style={{backgroundImage: 'url(\'https://firebasestorage.googleapis.com/v0/b/flipbio-1712c.appspot.com/o/profile%2F-NrnSwk-t38iZWOB76Lt%2Fprofile.png?alt=media\')', backgroundSize: 'contain'}}>
+          <div className="rounded-full w-[40px] h-[40px] bg-[#40435a]" style={{backgroundImage: 'url(\'https://lh3.googleusercontent.com/d/18UOi66-7Gb9Jkl6kmsi3i1bOVmoSr-cH\')', backgroundSize: 'contain'}}>
             &nbsp;
           </div>
         </div>

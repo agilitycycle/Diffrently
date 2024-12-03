@@ -95,7 +95,7 @@ const LandingPage = () => {
               Generate image
             </div>
             <div>
-              <img className="w-11/12 m-auto" src="https://firebasestorage.googleapis.com/v0/b/flipbio-1712c.appspot.com/o/images%2F-NrnSwk-t38iZWOB76Lt%2Fimage1728438644559.jpg?alt=media" />
+              <img className="w-11/12 m-auto" referrerpolicy="no-referrer" src="https://lh3.googleusercontent.com/d/18UOi66-7Gb9Jkl6kmsi3i1bOVmoSr-cH" />
             </div>
           </div>
           <div className="flex flex-col mb-16 text-3xl text-white font-sans font-thin">

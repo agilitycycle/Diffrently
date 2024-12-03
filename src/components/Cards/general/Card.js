@@ -19,11 +19,6 @@ const renderThumbnail = (categoryName) => {
   return <img src={avatar} alt="Avatar" className="w-[40px] h-[40px]" />
 }
 
-const renderImage = (image) => {
-  const base = 'https://firebasestorage.googleapis.com/v0/b/flipbio-1712c.appspot.com/o/';
-  return `${base}${encodeURIComponent(image)}?alt=media`;
-}
-
 const renderSocialMediaIcons = () => {
   return(<div className="flex items-center justify-center">
     <svg className="opacity-25 w-[20px] h-[20px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -64,7 +59,7 @@ const Card = (props) => {
       </div>
     </div>
     <a href={null} className="block h-[300px] rounded-t-lg" style={{
-      backgroundImage: `url(${item.image && renderImage(item.image) || 'https://www.amormeus.org/web/wp-content/uploads/2018/05/Solemnity-of-the-Ascension-of-the-Lord-Jesus-Christ-into-Heaven.jpg'})`,
+      backgroundImage: `url(${item.image ? item.image : 'https://www.amormeus.org/web/wp-content/uploads/2018/05/Solemnity-of-the-Ascension-of-the-Lord-Jesus-Christ-into-Heaven.jpg'})`,
       backgroundPosition: 'top',
       backgroundSize: 'cover'
     }}>&nbsp;</a>

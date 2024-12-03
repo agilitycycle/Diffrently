@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { appState } from '../../app/appSlice';
+import { fbdb } from '../../app/firebase';
+import { ref, query, get } from 'firebase/database';
 import {
   fbSet,
   fbOnValueOrderByKeyLimitToLast
@@ -69,8 +71,31 @@ const Site = () => {;
     }
   }
 
-  const updatePost = (url) => {
-    // url
+  const updatePost = async (siteId) => {
+    const dropzoneId = '-OAWqqD04fzmh4N_k_Y-';
+    const path = `/userDropzoneTimeline/${dropzoneId}/post`;
+    const userRef = ref(fbdb, path);
+    const q = query(userRef);
+    const result = await get(q)
+      .then((snapshot) => {
+        if (snapshot.val() !== null) {
+          return snapshot.val();
+        }
+        return undefined;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    if (result) {
+      // when does this stop working??
+      for (let i in result) {
+        fbSet(`/userHost/${siteId}/post/${i}`, {
+          photoUrl,
+          displayName,
+          ...result[i]
+        });
+      }
+    }
   }
 
   const renderDropzones = () => {

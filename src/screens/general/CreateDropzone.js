@@ -21,6 +21,7 @@ const CreateDropzone = () => {
   const currentAppState = useSelector(appState);
   const {userId} = currentAppState;
   const [dropzoneTitle, setDropzoneTitle] = useState(undefined);
+  const [dropzoneImageUrl, setDropzoneImageUrl] = useState(undefined);
   const [dropzoneImageText, setDropzoneImageText] = useState(undefined);
   const [generatedImage, setGeneratedImage] = useState(undefined);
   const [generatingImage, setGeneratingImage] = useState(false);
@@ -29,33 +30,39 @@ const CreateDropzone = () => {
   const handleDropzoneTitle = (e) => {
     const { value } = e.target;
     setDropzoneTitle(value);
-    setDropzoneImageText(value);
+    // setDropzoneImageText(value);
   }
 
-  const handleDropzoneImageText = (e) => {
+  const handleDropzoneImageUrl = (e) => {
     const { value } = e.target;
-    setDropzoneImageText(value);
+    setDropzoneImageUrl(value);
+    //setDropzoneImageText(value);
   }
 
-  const handleGenerateDropzoneImage = async () => {
-    if (dropzoneImageText.length < 3) return;
-    setGeneratingImage(true);
-    const resp = await generateImage(dropzoneImageText);
-    setGeneratedImage(resp.data.response.data[0].b64_json);
-    setGeneratingImage(false);
-  }
+  // const handleDropzoneImageText = (e) => {
+  //   const { value } = e.target;
+  //   setDropzoneImageText(value);
+  // }
+
+  // const handleGenerateDropzoneImage = async () => {
+  //   if (dropzoneImageText.length < 3) return;
+  //   setGeneratingImage(true);
+  //   const resp = await generateImage(dropzoneImageText);
+  //   setGeneratedImage(resp.data.response.data[0].b64_json);
+  //   setGeneratingImage(false);
+  // }
 
   const handleCreateDropzone = () => {
     const dropzone = {
       title: dropzoneTitle,
-      image: generatedImage
+      image: dropzoneImageUrl
     }
     fbPush(`/userDropzones/${userId}/dropzones/`, dropzone);
     setPublished(true);
   }
 
   const isCreateDisabled = () => {
-    if (dropzoneTitle && dropzoneTitle.length > 3 && generatedImage !== undefined) {
+    if (dropzoneTitle && dropzoneTitle.length > 3) {
       return false;
     }
     return true;
@@ -69,9 +76,10 @@ const CreateDropzone = () => {
 		    <div className="h-full w-full max-w-[500px] sm:w-8/12">
           <div className="w-10/12 text-center">
             <div>
-              <input value={dropzoneTitle} onChange={handleDropzoneTitle} maxlength="25" className="block py-2.5 pr-2.5 mb-1.5 w-full text-lg text-white bg-transparent !outline-none" placeholder="Dropzone (25)"/>
-              <input value={dropzoneImageText} onChange={handleDropzoneImageText} maxlength="25" className="block py-2.5 pr-2.5 mb-5 w-full text-base text-white bg-transparent !outline-none" placeholder="A representation image of..."/>
+              <input value={dropzoneTitle} onChange={handleDropzoneTitle} maxlength="25" className="block py-2.5 pr-2.5 mb-1.5 w-full text-lg text-white bg-transparent !outline-none" placeholder="Title (25)"/>
+              <input value={dropzoneImageUrl} onChange={handleDropzoneImageUrl} className="block py-2.5 pr-2.5 mb-5 w-full text-lg text-white bg-transparent !outline-none" placeholder="Image URL"/>
             </div>
+            {/*
             <div className="relative w-fit flex items-center mb-9 bg-white dark:border dark:border-gray-700 dark:bg-transparent rounded-lg px-12 py-5 sm:px-20">
               <div className="relative">
                 <img className="w-20 h-20 object-cover object-center rounded-full" src={generatedImage && 'data:image/jpeg;base64,' + generatedImage || 'https://picsum.photos/id/18/300/200'} />
@@ -81,6 +89,7 @@ const CreateDropzone = () => {
                 <SecondaryActionButton onClick={handleGenerateDropzoneImage} disabled={generatingImage} css="ml-5 disabled:opacity-50" label="Generate" />
               </div>
             </div>
+            */}
             <button onClick={handleCreateDropzone} disabled={isCreateDisabled() || published} className="block rounded text-base uppercase w-24 h-9 bg-[#f87341] text-[#ffffff] justify-center disabled:opacity-50">
               Create
             </button>

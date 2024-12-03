@@ -34,7 +34,6 @@ const initialState = {
   ],
   selected: [],
   autoTagging: [],
-  primaryTag: undefined,
   generating: false,
   generatingImage: false,
   saving: false,
@@ -53,10 +52,10 @@ const Post = () => {
   const [fullScreen, setFullScreen] = useState(false);
   const [tagFormValue, setTagFormValue] = useState('');
   const [titleFormValue, setTitleFormValue] = useState('');
-  const [primaryTagFormValue, setPrimaryTagFormValue] = useState('');
   const [primaryImageTagFormValue, setPrimaryImageTagFormValue] = useState('');
   const [imageTagFormValue, setImageTagFormValue] = useState('');
   const [generatedImage, setGeneratedImage] = useState(undefined);
+  const [imageUrl, setImageUrl] = useState(undefined);
 
   const capitalizeFirstLetter = (tagName) => {
     return `${tagName.charAt(0).toUpperCase()}${tagName.slice(1)}`;
@@ -87,10 +86,6 @@ const Post = () => {
           console.log(resp)
           
           const autoTaggingArray = content.split(',').map(item => hydrateTag(item)).filter(a => a.toLowerCase() !== 'error' && a.length < 25);
-
-          if (autoTaggingArray.length > 0) {
-            setPrimaryTagFormValue(autoTaggingArray[0]);
-          }
 
           // regex
           const newPostDetailsForError = Object.assign({...postDetails}, {
@@ -159,26 +154,34 @@ const Post = () => {
     setPostDetails(newPostDetails);
   }
 
-  const handlePostAnother = () => setPostDetails(initialState);
+  const handlePostAnother = () => {
+    setTagFormValue('');
+    setTitleFormValue('');
+    setGeneratedImage(undefined);
+    setPostDetails(initialState);
+  }
 
   const handleTitle = (e) => {
     const { value } = e.target;
     setTitleFormValue(value);
-    setImageTagFormValue(value);
+  }
+
+  const handleImage = (e) => {
+    const { value } = e.target;
+    setImageUrl(value);
   }
 
   const handlePost = async () => {
     const { body } = postDetails;
     if (body.length < 3) return;
-    if (body.length > 35 && body.length < 851 && credit > 0 &&
-      credit >= postDetails.autoTagging.length) {
+    if (body.length > 35 && body.length < 851) {
       // remove credit
-      const tagsCredit = credit - postDetails.autoTagging.length;
-      fbSet(`/users/${userId}/credit`, tagsCredit);
-      const newAppState = Object.assign({...currentAppState}, {
-        credit: tagsCredit
-      });
-      dispatch(updateAppState(newAppState));
+      // const tagsCredit = credit - postDetails.autoTagging.length;
+      // fbSet(`/users/${userId}/credit`, tagsCredit);
+      // const newAppState = Object.assign({...currentAppState}, {
+      //   credit: tagsCredit
+      // });
+      // dispatch(updateAppState(newAppState));
 
       setPostDetails(Object.assign({...postDetails}, { saving: true }));
 
@@ -190,20 +193,20 @@ const Post = () => {
 
       const postItem = {
         dateCreated: moment().valueOf(),
-        predefinedTags: JSON.stringify(postDetails.selected),
-        primaryTag: primaryTagFormValue,
+        predefinedTags: JSON.stringify(postDetails.selected), // selected tags
         title: titleFormValue,
+        image: imageUrl || null,
         body
       }
 
-      if (generatedImage) {
-        const image = `images/${userId}/image${Date.now()}.jpg`;
-        const storageRef = sRef(fbStorage, image);
-        const buffer = new Buffer.Buffer(generatedImage, 'base64');
-        const blob = new Blob([buffer], { type: 'image/jpeg' });
-        postItem.image = image;
-        await uploadBytes(storageRef, blob);
-      }
+      // if (generatedImage) {
+      //   const image = `images/${userId}/image${Date.now()}.jpg`;
+      //   const storageRef = sRef(fbStorage, image);
+      //   const buffer = new Buffer.Buffer(generatedImage, 'base64');
+      //   const blob = new Blob([buffer], { type: 'image/jpeg' });
+      //   postItem.image = image;
+      //   await uploadBytes(storageRef, blob);
+      // }
 
       for (const key of postDetails.autoTagging) {
         postItem[`tag${key}`] = true;
@@ -214,11 +217,6 @@ const Post = () => {
       // success
       setPostDetails(newPostDetails);
     }
-  }
-
-  const handlePrimaryTag = (e) => {
-    const { value } = e.target;
-    setPrimaryTagFormValue(value);
   }
   
   const handleNewImageTag = (e) => {
@@ -402,9 +400,15 @@ const Post = () => {
 		  <div className="flex items-center justify-center h-full">
 		    <div className="w-[500px] h-full">
           <div className="w-10/12 text-center">
+            <p className="sm:mt-0 mb-5 text-gray-500 dark:text-gray-400 text-right">
+              <button onClick={() => {}} className="cursor-pointer inline-flex items-center text-blue-600 dark:text-blue-500 hover:underline ml-5">
+                Preview
+              </button>
+            </p>
             <div>
               <input value={titleFormValue} onChange={handleTitle} maxlength="25" className="block py-2.5 pr-2.5 mb-5 w-full text-lg text-lg text-white bg-transparent !outline-none" placeholder="Title (25)"/>
             </div>
+            <input type="text" value={imageUrl} onChange={handleImage} className="w-full h-[40px] bg-transparent text-white text-lg block inline py-2.5 mb-5 !outline-none" placeholder="Image URL" />
             <div className="relative">
               <TextareaAutosize onChange={handleChange} value={postDetails.body} minRows={3} maxRows={15} className="resize-none block py-2.5 pr-2.5 mb-20 w-full h-fit text-lg text-lg text-white bg-transparent !outline-none" placeholder="Write something..."/>
               <button onClick={() => toggleFullscreen()} className="border border-gray-400/35 absolute top-3.5 right-1 rounded cursor-pointer">
@@ -415,10 +419,45 @@ const Post = () => {
                 </div>
               </button>
             </div>
+            {postDetails.autoTagging.length > 0 && (
+              <div className="pb-8 mt-4">
+                <div className="mt-8">
+                  {renderGeneratedTags()}
+                </div>
+              </div>
+            )}
             <div className="sm:mt-0 mb-6 text-gray-500 dark:text-gray-400">
               (<span className={characterCount > 850 ? 'text-red-700' : ''}>{characterCount}</span>/850)
             </div>
-            <div className="mx-auto bg-transparent border border-gray-200 rounded-lg shadow dark:bg-transparent dark:border-gray-700">
+            <div className="p-6 mb-8 mt-4 mx-auto block text-gray-500 rounded border border-gray-700">
+              <div className="space-y-1">
+                <div className="h-[32px]">
+                  <div className="flex justify-between">
+                    <input value={imageTagFormValue} onChange={handleNewImageTag} maxlength="25" className="pe-4 mb-5 mr-2 w-8/12 h-[32px] text-base text-white bg-[#000423] bg-opacity-70 rounded !outline-none" placeholder={primaryImageTagFormValue || `A representation image of...`}/>
+                    <button type="button" disabled={!generatedImage} onClick={handleAddImageTag} className={`h-[32px] opacity-${!generatedImage ? '100' : '50'} text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 pt-.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800`}>
+                      Generate
+                    </button>
+                  </div>
+                </div>
+                {generatedImage && (
+                  <>
+                    <div className="py-5">
+                      <div className="rounded-lg w-[100px] h-[100px] bg-contain bg-center" style={{
+                        backgroundImage: `url('${generatedImage && 'data:image/jpeg;base64,' + generatedImage ||
+                          'https://picsum.photos/id/18/300/200'
+                        }')`
+                      }}>
+                        &nbsp;
+                      </div>
+                    </div>
+                    <button type="button" onClick={() => {}} className="cursor-pointer inline-flex items-center font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                      Download
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+            {/*<div className="mx-auto bg-transparent border border-gray-200 rounded-lg shadow dark:bg-transparent dark:border-gray-700">
               <a href={null} className="relative w-full block">
                 {postDetails.generatingImage && (
                   <svg aria-hidden="true" className="absolute top-[25px] right-[25px] w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -451,7 +490,7 @@ const Post = () => {
                 <p className="mb-8 font-normal text-gray-700 dark:text-gray-400" style={{wordBreak: 'break-word'}}>
                   {postDetails.body.length > 0 ? postDetails.body : 'Write something...'}
                 </p>
-                {/** Render generated tags **/}
+                // Render generated tags
                 {postDetails.autoTagging.length > 0 && (
                   <div className="pb-8 mt-4">
                     <div className="mt-8">
@@ -479,17 +518,8 @@ const Post = () => {
                 </div>
               </div>
             </div>
-            <div className="mb-3 mt-4 mx-auto block text-gray-500">
-              <select value={primaryTagFormValue || 'Primary tag'} onChange={handlePrimaryTag} className="bg-transparent border border-gray-700 text-neutral-400 text-sm rounded-lg block w-full p-2.5 dark:bg-transparent dark:border-gray-700 dark:text-neutral-400">
-                <option value="Primary tag">Primary tag</option>
-                {postDetails.autoTagging.map((item) => {
-                  return (
-                    <option value={item}>{item}</option>
-                  )
-                })}
-              </select>
-            </div>
-            <div className="p-6 mb-16 mt-4 mx-auto block text-gray-500 rounded border border-gray-700">
+            */}
+            <div className="p-6 mb-10 mt-4 mx-auto block text-gray-500 rounded border border-gray-700">
               <div className="space-y-1">
                 <ul className="w-full">
                   <li>
@@ -498,30 +528,34 @@ const Post = () => {
                         <input type="text" value={tagFormValue} onChange={handleNewTag} className="w-full h-[40px] bg-transparent text-white text-lg block inline py-2.5 border-b border-b-sky-100 !outline-none" placeholder="Help your AI learn" />
                       </div>
                       <div className="flex-none">
-                        <button type="button" onClick={handleAddTag} disabled={postDetails.tags.length > 25} className="h-[40px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add tags</button>
+                        <button type="button" onClick={handleAddTag} disabled={postDetails.tags.length > 25} className="h-[40px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Add tags</button>
                       </div>
                     </div>
                   </li>
                 </ul>
               </div>
               {renderClickableTags()}
+              {(postDetails.autoTagging.length === 0) && (
+                <button type="button" onClick={generateTags} disabled={postDetails.generating || postDetails.selected.length == 0} className={`opacity-${postDetails.generating || (postDetails.body.length < 36 || postDetails.body.length > 850 || characterCount < 0 || postDetails.selected.length == 0) ? '50' : '100'} block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded-lg text-base mt-5 mx-auto px-5 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 justify-center`}>
+                  {postDetails.generating ? <span>Generating...</span> : <span>Generate</span>}
+                </button>
+              )}
             </div>
+            <p className="sm:mt-0 mb-10 text-gray-500 dark:text-gray-400 text-center">
+              <button onClick={() => {}} className="cursor-pointer text-xs font-medium inline-flex border border-emerald-500 rounded-full px-4 py-1.5 text-emerald-500 dark:text-emerald-500 hover:underline">
+                900 Credit - Upgrade
+              </button>
+            </p>
             {/** Feed button **/}
             {postDetails.published && (
-              <button onClick={() => navigate('/timeline')} className="block rounded-full mb-8 mx-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center">
+              <button onClick={() => navigate('/timeline')} className="block rounded-full mb-4 mx-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center">
                 <svg className="w-5 h-5 mt-[-3px] me-2.5 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM64 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L96 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/></svg>
                 timeline
               </button>
             )}
-            {/** Generate **/}
-            {(postDetails.autoTagging.length === 0) && (
-              <button onClick={generateTags} disabled={postDetails.generating || postDetails.selected.length == 0} className={`opacity-${postDetails.generating || (postDetails.body.length < 36 || postDetails.body.length > 850 || characterCount < 0 || postDetails.selected.length == 0) ? '50' : '100'} block rounded-full mb-8 mx-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center`}>
-                {postDetails.generating ? <span>generating...</span> : <span>generate</span>}
-              </button>
-            )}
             {/** Publish **/}
-            {(!postDetails.published && postDetails.autoTagging.length > 0) && (
-              <button onClick={handlePost} disabled={!credit || credit - postDetails.autoTagging.length < 0} className={`opacity-${!credit || credit - postDetails.autoTagging.length < 0 || (postDetails.body.length < 50 || postDetails.body.length > 850 || characterCount < 0) ? '50' : '100'} block rounded-full mb-8 mx-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center`}>
+            {(!postDetails.published) && (
+              <button onClick={handlePost} disabled={postDetails.selected.length === 0} className={`opacity-${postDetails.selected.length > 0 ? '100' : '50'} block rounded-full mb-4 mx-auto text-xl uppercase w-48 h-14 bg-[#f87341] text-[#ffffff] justify-center`}>
                 {postDetails.saving ? <span>saving...</span> : <span>publish</span>}
               </button>
             )}
@@ -529,16 +563,16 @@ const Post = () => {
             {/** Generate again **/}
             {!postDetails.published && postDetails.autoTagging.length > 0 && (<>
               <div className="w-full mb-16 flex flex-col items-center justify-center font-normal text-blue-600 dark:text-blue-500">
-                <div className="text-base mb-3">
-                  {credit - postDetails.autoTagging.length >= 0 && (
+                <div className="text-base">
+                  {/* {credit - postDetails.autoTagging.length >= 0 && (
                     <span className="text-neutral-400">Yes, you can publish. ({credit})</span>
-                  )}
-                  {credit !== 0 && credit - postDetails.autoTagging.length < 0 && (
+                  )} */}
+                  {/* {credit !== 0 && credit - postDetails.autoTagging.length < 0 && (
                     <span className="text-neutral-400">Please remove some tags, you only have - {credit} credits</span>
                   )}
                   {!credit && (
                     <span className="text-neutral-400">Sorry, you have no credit to publish. (0)</span>
-                  )}
+                  )} */}
                 </div>
                 <div className="mb-8">
                   <span className="text-base font-sm">Unhappy?</span>&nbsp;<a href={null} onClick={generateTags} className="cursor-pointer underline">Generate again</a>.
