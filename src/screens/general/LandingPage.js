@@ -152,7 +152,7 @@ const LandingPage = () => {
           </div>
           <div className="mb-18 lg:mb-20">
             <div className="text-center text-white text-7xl font-extralight mb-11">
-              FREE or $25 /MO*
+              FREE or $25/MO*
             </div>
             <div className="text-gray-400 text-base text-center mt-10 mb-10 pb-10 font-sans font-extralight">
               * All benefits incl. AI features.
