@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { appState } from '../../app/appSlice';
+import { appState } from '../../app/slices/appSlice';
 import {
   fbOnValueOrderByKeyLimitToLast
 } from '../../services/firebaseService';

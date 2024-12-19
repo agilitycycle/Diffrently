@@ -6,7 +6,7 @@ import {
   Drawer,
   Header
 } from '../../components';
-import { appState } from '../../app/appSlice';
+import { appState } from '../../app/slices/appSlice';
 
 const ActiveSubScriptions = () => {
 	const navigate = useNavigate();

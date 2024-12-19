@@ -1,13 +1,11 @@
-import CardV2 from './components/Card';
-import Card from './general/Card';
-import CardMini from './general/CardMini';
-import CardSmaller from './general/CardSmaller';
-import CardContainer from './containers/CardContainer';
+import Full from './type/common/Full';
+import Compact from './type/common/Compact';
+import Flat from './type/Flat';
+import CardType from './middleware/CardType';
 
 export {
-  CardV2,
-	Card,
-  CardMini,
-  CardSmaller,
-  CardContainer
+  Full,
+	Compact,
+  Flat,
+  CardType
 }

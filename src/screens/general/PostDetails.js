@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { appState } from '../../app/appSlice';
+import { appState } from '../../app/slices/appSlice';
 import { fbdb } from '../../app/firebase';
 import { ref, query, get} from 'firebase/database';
 import {
@@ -12,7 +12,7 @@ import {
   Page,
   Drawer,
   Header,
-  Card,
+  Full,
   ModalShare
 } from '../../components';
 
@@ -140,7 +140,7 @@ const PostDetails = () => {
         getTags,
         postLength: 850
       }
-      return (<Card {...props} />)
+      return (<Full {...props} />)
     })
   }
 

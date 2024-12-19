@@ -40,7 +40,7 @@ const renderSocialMediaIcons = () => {
   </div>)
 }
 
-const Card = (props) => {
+const Full = (props) => {
   const { item, photoUrl, loadTag, handleDeletePost, setPostItem, setOpen, getTags, postLength } = props;
   const { body, dateCreated } = item;
   const tagEl = Object.keys(item).filter(a => a.indexOf('tag') > -1).map(b => b.replace('tag', ''));
@@ -110,4 +110,4 @@ const Card = (props) => {
   </div>);
 }
 
-export default Card;
+export default Full;

@@ -3,7 +3,7 @@ import {
   Page,
   DrawerHome,
   Header,
-  CardMini
+  Flat
 } from '../../components';
 import GithubImage from '../../assets/github-mark-white.svg';
 
@@ -49,7 +49,7 @@ const LandingPage = () => {
         primaryTag: 'HurricaneHelene'
       }
     }
-    return (<CardMini {...props} />)
+    return (<Flat {...props} />)
   }
 
   const renderSocialMediaIcons = () => {

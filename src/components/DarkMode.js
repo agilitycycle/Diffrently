@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateAppState, appState } from '../app/appSlice';
+import { updateAppState, appState } from '../app/slices/appSlice';
 
 const DarkMode = () => {
   const currentAppState = useSelector(appState);

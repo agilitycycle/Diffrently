@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { matchPath } from 'react-router';
 import { useLocation } from 'react-router-dom';
-import { updateAppState, appState } from '../app/appSlice';
+import { updateAppState, appState } from '../app/slices/appSlice';
 
 const PageRouter = (props) => {
   const {paths, currentLocation, children} = props;

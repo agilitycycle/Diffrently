@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateAppState, appState } from '../app/appSlice';
+import { updateAppState, appState } from '../app/slices/appSlice';
 
 const Menu = () => {
 	const currentAppState = useSelector(appState);

@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import CardContent from '../components/CardContent';
+import Content from '../components/Content';
 import SocialMediaIcons from '../components/SocialMediaIcons';
-import ActiveMenuCard from '../components/ActiveMenuCard';
+import MenuOverlay from '../components/MenuOverlay';
 import MoreMenu from '../components/MoreMenu';
 
-const Sm = (props) => {
+const Simple = (props) => {
   const {
     id,
     title,
@@ -24,7 +24,7 @@ const Sm = (props) => {
     setOpenMenu(!openMenu);
   }
 
-  const MoreMenuProps = {
+  const moreMenuProps = {
     title,
     body,
     tags,
@@ -36,7 +36,7 @@ const Sm = (props) => {
 
   const showHide = openMenu ? 'opacity-0 pointer-events-none' : 'opacity-100';
 
-  const cardContentProps = {
+  const contentProps = {
     photoUrl,
     displayName,
     showHide,
@@ -51,9 +51,9 @@ const Sm = (props) => {
 
   return (<div className="relative mb-7 mx-auto bg-transparent border border-gray-200 rounded-lg shadow dark:bg-transparent dark:border-gray-700">
     <div>
-      {openMenu && (<ActiveMenuCard toggleSubmenu={toggleSubmenu}/>)}
-      <MoreMenu {...MoreMenuProps}/>
-      <CardContent {...cardContentProps} />
+      {openMenu && (<MenuOverlay toggleSubmenu={toggleSubmenu}/>)}
+      <MoreMenu {...moreMenuProps}/>
+      <Content {...contentProps} />
       <div className="pb-5">
         {SocialMediaIcons()}
       </div>
@@ -61,4 +61,4 @@ const Sm = (props) => {
   </div>);
 } 
 
-export default Sm;
+export default Simple;

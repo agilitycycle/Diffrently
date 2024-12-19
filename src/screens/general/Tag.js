@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { appState } from '../../app/appSlice';
+import { appState } from '../../app/slices/appSlice';
 import {
   fbRemove,
   fbOnValueOrderByKeyLimitToLast,
@@ -12,7 +12,7 @@ import {
   Page,
   Drawer,
   Header,
-  CardSmaller,
+  Compact,
   ModalShare
 } from '../../components';
 
@@ -160,7 +160,7 @@ const Tag = () => {
         setOpen,
         getTags
       }
-      return (<CardSmaller {...props} />)
+      return (<Compact {...props} />)
     })
   }
 

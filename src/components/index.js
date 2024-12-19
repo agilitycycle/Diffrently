@@ -2,11 +2,10 @@ import {
   SecondaryActionButton
 } from './Buttons';
 import {
-  CardContainer,
-  CardV2,
-	Card,
-  CardMini,
-  CardSmaller
+  Full,
+	Compact,
+  Flat,
+  CardType
 } from './Cards';
 import {
 	ModalShare,
@@ -24,11 +23,10 @@ import Toaster from './Toaster';
 
 export {
   SecondaryActionButton,
-  CardContainer,
-  CardV2,
-	Card,
-  CardMini,
-  CardSmaller,
+  Full,
+	Compact,
+  Flat,
+  CardType,
 	ModalShare,
 	ModalShareV2,
   ModalParachute,

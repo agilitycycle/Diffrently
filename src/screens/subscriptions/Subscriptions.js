@@ -8,7 +8,7 @@ import {
   Header
 } from '../../components';
 import { fbUpdate, fbPush, fbSet } from '../../services/firebaseService';
-import { updateAppState, appState } from '../../app/appSlice';
+import { updateAppState, appState } from '../../app/slices/appSlice';
 
 const initialPriceCredit = 25;
 

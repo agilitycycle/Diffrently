@@ -22,7 +22,8 @@ const initialState = {
     activeSubscriptions: '',
     freeTrial: false,
     checkOut: '',
-    credit: ''
+    credit: '',
+    currentTimeline: []
   },
 }
 

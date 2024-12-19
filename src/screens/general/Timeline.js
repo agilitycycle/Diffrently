@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { appState } from '../../app/appSlice';
+import { appState } from '../../app/slices/appSlice';
 import {
   fbRemove,
   fbOnValueOrderByKeyLimitToLast,
@@ -11,7 +11,7 @@ import {
   Page,
   Drawer,
   Header,
-  CardSmaller,
+  Compact,
   ModalShare,
   ModalParachute
 } from '../../components';
@@ -131,7 +131,7 @@ const Timeline = () => {
         setOpenShareModal,
         setOpenParachuteModal
       }
-      return (<CardSmaller {...props} />)
+      return (<Compact {...props} />)
     })
   }
 

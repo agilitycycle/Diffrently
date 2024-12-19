@@ -6,7 +6,7 @@ import {
   Drawer,
   Header
 } from '../../components';
-import { appState } from '../../app/appSlice';
+import { appState } from '../../app/slices/appSlice';
 
 // https://gist.github.com/jamestalmage/2d8d1d5c42157caf349e
 // https://firebase.google.com/docs/storage/web/list-files

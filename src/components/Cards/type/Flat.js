@@ -32,7 +32,7 @@ const renderSocialMediaIcons = () => {
   </div>)
 }
 
-const CardMini = (props) => {
+const Flat = (props) => {
   const { item } = props;
 
   return (<div className="relative w-full sm:w-[400px] mx-auto bg-transparent border border-gray-200 rounded-lg shadow dark:bg-transparent dark:border-gray-700">
@@ -76,4 +76,4 @@ const CardMini = (props) => {
   </div>);
 }
 
-export default CardMini;
+export default Flat;

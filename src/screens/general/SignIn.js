@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateAppState, appState } from '../../app/appSlice';
+import { updateAppState, appState } from '../../app/slices/appSlice';
 import { auth, provider, fbdb } from '../../app/firebase';
 import { signInWithPopup } from 'firebase/auth';
 import { ref, query, get, push, orderByChild, equalTo } from 'firebase/database';

@@ -30,7 +30,7 @@ const renderSocialMediaIcons = () => {
   </div>)
 }
 
-const CardSmaller = (props) => {
+const Compact = (props) => {
   const navigate = useNavigate();
   const {item, photoUrl, displayName, loadTag, handleDeletePost, setPostItem, setOpenShareModal, setOpenParachuteModal, getTags, postLength} = props;
   const {body, dateCreated} = item;
@@ -142,14 +142,16 @@ const CardSmaller = (props) => {
                     {tagEl.length} tags
                   </span>
                 </button>
-                <button className="mb-4">
-                  <span className="opacity-40 border border-[#A9AAC5] text-[#A9AAC5] bg-transparent text-sm font-medium me-2.5 px-2.5 py-0.5 rounded">
-                    Media
-                  </span>
-                </button>
-                <span className="bg-blue-100 text-slate-300 text-sm font-normal me-2 px-2.5 py-0.5 rounded dark:bg-indigo-800 dark:text-slate-300">
+                {item.image && (
+                  <button className="mb-4">
+                    <span className="opacity-40 border border-[#A9AAC5] text-[#A9AAC5] bg-transparent text-sm font-medium me-2.5 px-2.5 py-0.5 rounded">
+                      Media
+                    </span>
+                  </button>
+                )}
+                {/*<span className="bg-blue-100 text-slate-300 text-sm font-normal me-2 px-2.5 py-0.5 rounded dark:bg-indigo-800 dark:text-slate-300">
                   Trending
-                </span>
+                </span>*/}
               </>
             )}
           </p>
@@ -175,4 +177,4 @@ const CardSmaller = (props) => {
   </div>);
 } 
 
-export default CardSmaller;
+export default Compact;

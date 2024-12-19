@@ -15,7 +15,7 @@ import {
   Header,
   Fullscreen
 } from '../../components';
-import { updateAppState, appState } from '../../app/appSlice';
+import { updateAppState, appState } from '../../app/slices/appSlice';
 
 const initialState = {
   body: '',
@@ -65,7 +65,6 @@ const Post = () => {
     const { body, tags } = postDetails;
     if (body.length < 3) return;
     if (body.length > 35) {
-      // remove credit
       setPostDetails(Object.assign({...postDetails}, {
         published: false,
         saving: false,
@@ -75,40 +74,36 @@ const Post = () => {
 
       // check whether user has any tags...
       axios.post('https://d9mi4czmx5.execute-api.ap-southeast-2.amazonaws.com/prod/{read+}', JSON.stringify({
+          option: 'zero-shot-classifier',
           data: {
-            tags: tags.map((item) => `\n- ${item.tag}`).join(',').replace(',', ''),
+            tags: tags.map(item => `\n- ${item.tag}`).join(',').replace(',', ''),
             text: body
           }
-        })).then((resp) => {
+        })).then(resp => {
           const { data } = resp;
           const { response } = data;
           const { content } = response;
-          console.log(resp)
-          
-          const autoTaggingArray = content.split(',').map(item => hydrateTag(item)).filter(a => a.toLowerCase() !== 'error' && a.length < 25);
+          console.log(resp);
 
-          // regex
-          const newPostDetailsForError = Object.assign({...postDetails}, {
-            error: true,
-            errorResponse: hydrateErrorResponseMessage(content) === true ? content : '',
-            generating: false
-          });
+          const newContent = JSON.parse(content);
 
-          const newPostDetailsForSuccess = Object.assign({...postDetails}, {
-            autoTagging: autoTaggingArray,
-            error: false,
-            generating: false
-          });
+          if(newContent.hasOwnProperty('categories')) {
+            const tagArray = [...newContent.categories.map(item => hydrateTag(item))];
 
-          // error
-          if (hydrateErrorResponseMessage(content) === true ||
-            autoTaggingArray.length === 0) {
-            setPostDetails(newPostDetailsForError);
-            return false;
+            setPostDetails(Object.assign({...postDetails}, {
+              autoTagging: tagArray,
+              error: false,
+              generating: false
+            }));
           }
 
-          // success
-          setPostDetails(newPostDetailsForSuccess);
+          if(newContent.hasOwnProperty('error')) {
+            setPostDetails(Object.assign({...postDetails}, {
+              error: true,
+              errorResponse: newContent.error.message,
+              generating: false
+            }));
+          }
 
       }).catch(error => {
         console.log(error);
@@ -116,32 +111,11 @@ const Post = () => {
     }
   }
 
-  const hydrateErrorResponseMessage = (content) => {
-    console.log(content);
-    if (content.indexOf('This article can') > -1 ||
-    content.indexOf('The article you') > -1 ||
-    content.indexOf('This article fits') > -1 ||
-    content.indexOf('article falls under') > -1 ||
-    content.indexOf('falls under the category') > -1 ||
-    content.indexOf('The provided article is related to') > -1 ||
-    content.indexOf('The artical provided falls under') > -1 ||
-    content.indexOf('The article provided seems') > -1 ||
-    content.indexOf('I would classify this under') > -1 ||
-    content.indexOf('This quote aligns with') > -1 ||
-    content.indexOf('This quote is related') > -1 ||
-    content.indexOf('This quote emphasizes') > -1 ||
-    content.indexOf('This quote by') > -1 ||
-    content.indexOf('The categories that best fit this') > -1 ||
-    content.indexOf('Categories:') > -1) {
-      return true;
-    }
-    return false;
-  }
-
   const hydrateTag = (tag) => {
     // remove space, special characters
-    return tag.replace(/\w+/g, (a) =>
+    const hydrated = tag.replace(/\w+/g, (a) =>
     `${a.charAt(0).toUpperCase()}${a.substr(1)}`).replace(/\s/g, '').replace(/[^\w\s]/gi, '');
+    return [hydrated].filter(a => a.toLowerCase() && a.length < 25);
   }
 
   const handleChange = (e) => {
@@ -434,7 +408,7 @@ const Post = () => {
                 <div className="h-[32px]">
                   <div className="flex justify-between">
                     <input value={imageTagFormValue} onChange={handleNewImageTag} maxlength="25" className="pe-4 mb-5 mr-2 w-8/12 h-[32px] text-base text-white bg-[#000423] bg-opacity-70 rounded !outline-none" placeholder={primaryImageTagFormValue || `A representation image of...`}/>
-                    <button type="button" disabled={!generatedImage} onClick={handleAddImageTag} className={`h-[32px] opacity-${!generatedImage ? '100' : '50'} text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 pt-.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800`}>
+                    <button type="button" onClick={handleAddImageTag} className={`h-[32px] opacity-${!generatedImage ? '100' : '50'} text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 pt-.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800`}>
                       Generate
                     </button>
                   </div>

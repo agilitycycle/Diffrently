@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateAppState, appState } from '../app/appSlice';
+import { updateAppState, appState } from '../app/slices/appSlice';
 import { Menu } from './';
 import { clsx } from 'clsx';
 

@@ -5,6 +5,7 @@ import Site from './Site';
 import Dashboard from './Dashboard';
 import Profile from './Profile';
 import Timeline from './Timeline';
+import TimelineV2 from './TimelineV2';
 import Post from './Post';
 import Tag from './Tag';
 import PostEdit from './PostEdit';
@@ -12,9 +13,9 @@ import PostDetails from './PostDetails';
 import DropzoneTimeline from './DropzoneTimeline';
 import CreateDropzone from './CreateDropzone';
 import Parachute from './Parachute';
-import FizzTime from './FizzTime';
+import Subject from './Subject';
+import AddSettings from './AddSettings';
 import Hosting from './Hosting';
-import Media from './Media';
 import SignIn from './SignIn';
 
 export {
@@ -25,6 +26,7 @@ export {
 	Dashboard,
 	Profile,
 	Timeline,
+	TimelineV2,
 	Post,
   Tag,
   PostEdit,
@@ -32,8 +34,8 @@ export {
   DropzoneTimeline,
   CreateDropzone,
   Parachute,
-  FizzTime,
+  Subject,
+  AddSettings,
   Hosting,
-  Media,
   SignIn
 }

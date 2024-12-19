@@ -6,7 +6,7 @@ import { fbStorage } from '../../app/firebase';
 import { ref, update } from 'firebase/database';
 import { fbdb } from '../../app/firebase';
 import Resizer from 'react-image-file-resizer';
-import { appState } from '../../app/appSlice';
+import { appState } from '../../app/slices/appSlice';
 import {
   Page,
   Drawer,

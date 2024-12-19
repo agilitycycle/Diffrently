@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuth, signOut } from 'firebase/auth';
-import { updateAppState, appState } from '../app/appSlice';
+import { updateAppState, appState } from '../app/slices/appSlice';
 import { Menu } from './';
 import { clsx } from 'clsx';
 
@@ -82,7 +82,7 @@ const Drawer = ({ side = 'left' }) => {
   return (
     <div
       id={`dialog-${side}`}
-      className='relative z-10'
+      className='relative z-50'
       aria-labelledby='slide-over'
       role='dialog'
       aria-modal='true'
@@ -108,8 +108,8 @@ const Drawer = ({ side = 'left' }) => {
             <div
               className={clsx(
                 'pointer-events-auto relative w-full h-full transform transition ease-in-out duration-500',
-                { [closeClassNames[side]]: !open },
-                { [openClassNames[side]]: open }
+                {[closeClassNames[side]]: !open},
+                {[openClassNames[side]]: open}
               )}
               onClick={(event) => {
                 event.preventDefault();
@@ -118,7 +118,7 @@ const Drawer = ({ side = 'left' }) => {
             >
               <div
                 className={clsx(
-                  'flex flex-col h-full w-64 bg-white p-5 shadow-xl bg-blue-400'
+                  'flex flex-col h-full w-72 bg-white p-5 shadow-xl bg-blue-400'
                 )}
               >
                 <div className="flex">

@@ -1,18 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
-import {updateAppState, appState} from '../../app/appSlice';
+import {updateAppState, appState} from '../../app/slices/appSlice';
 import {
   getPost,
   hydrateContent,
   getPostDetails
 } from '../../utility';
 import PageRouter from '../../containers/PageRouter';
+import CardContainer from '../../components/Cards/containers/CardContainer';
 import {
   Page,
   Header,
-  ModalShareV2,
-  CardContainer
+  ModalShareV2
 } from '../../components';
 
 /**

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { appState } from '../../app/appSlice';
+import { appState } from '../../app/slices/appSlice';
 import { fbdb } from '../../app/firebase';
 import { ref, query, get } from 'firebase/database';
 import { fbSet, fbUpdate } from '../../services/firebaseService';

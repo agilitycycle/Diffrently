@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { updateAppState, appState } from './app/appSlice';
+import { updateAppState, appState } from './app/slices/appSlice';
 import { fbdb } from './app/firebase';
 import { ref, query, get, orderByChild, equalTo } from 'firebase/database';
 import {
@@ -27,16 +27,17 @@ import {
 	Dashboard,
 	Profile,
 	Timeline,
+	TimelineV2,
 	Post,
   Tag,
   PostDetails,
   DropzoneTimeline,
   CreateDropzone,
   Parachute,
-  FizzTime,
+  Subject,
+  AddSettings,
   Site,
   Hosting,
-  Media,
   SignIn
 } from './screens/general';
 import './index.css';
@@ -164,6 +165,10 @@ const router = createBrowserRouter([
     element: CategoryContextComponent(PostDetails),
   },
   {
+    path: '/timeline-v2',
+    element: CategoryContextComponent(TimelineV2),
+  },
+  {
     path: '/post',
     element: CategoryContextComponent(Post),
   },
@@ -196,16 +201,16 @@ const router = createBrowserRouter([
     element: CategoryContextComponent(Parachute),
   },
   {
-    path: '/fizztime',
-    element: CategoryContextComponent(FizzTime),
+    path: '/subject',
+    element: CategoryContextComponent(Subject),
+  },
+  {
+    path: '/add-settings',
+    element: CategoryContextComponent(AddSettings),
   },
   {
     path: '/hosting',
     element: CategoryContextComponent(Hosting),
-  },
-  {
-    path: '/media',
-    element: CategoryContextComponent(Media),
   },
   {
     path: '/h/:siteid',

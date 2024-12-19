@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createContext } from 'react';
 import { useSelector } from 'react-redux';
 import { fbOnValueOrderByKeyLimitToLast } from '../services/firebaseService';
-import { appState } from '../app/appSlice';
+import { appState } from '../app/slices/appSlice';
 
 export const CategoryContext = createContext(null);
 

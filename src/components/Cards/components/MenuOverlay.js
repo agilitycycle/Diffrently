@@ -1,4 +1,4 @@
-const ActiveMenuCard = (props) => {
+const MenuOverlay = (props) => {
   const {toggleSubmenu} = props;
   return(<a href={null} onClick={toggleSubmenu} className="cursor-pointer z-20 absolute right-0 w-full h-full">
     <div className="flex flex-col justify-between h-full">
@@ -9,4 +9,4 @@ const ActiveMenuCard = (props) => {
   </a>)
 }
 
-export default ActiveMenuCard;
+export default MenuOverlay;
