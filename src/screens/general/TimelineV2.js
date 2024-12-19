@@ -296,6 +296,7 @@ const TimelineV2 = () => {
               data-ad-client="ca-pub-2497889154695387"
               data-ad-slot="6935324495"
               data-ad-format="auto"
+              data-adtest="on"
               data-full-width-responsive="true"></ins>
             <script>
               (adsbygoogle = window.adsbygoogle || []).push({});
