@@ -284,9 +284,27 @@ const TimelineV2 = () => {
               <li>#russellCrowe | 25 cards</li>
               <li>#russellCrowe | 25 cards</li>
             </ul>
-
-            Ads
-
+            {/**
+             * 
+             * Google Square Ad
+             * 
+             */}
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2497889154695387"
+              crossorigin="anonymous"></script>
+            <ins className="adsbygoogle"
+              style={{display: 'block'}}
+              data-ad-client="ca-pub-2497889154695387"
+              data-ad-slot="6935324495"
+              data-ad-format="auto"
+              data-full-width-responsive="true"></ins>
+            <script>
+              (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+            {/**
+             * 
+             * End ~
+             * 
+             */}
             <p className="text-sm text-[#B3B5CC] text-center w-9/12 mx-auto leading-loose">
               Pay a mo. subscription for no Ads, Unlimited timelines and more control.
             </p>
