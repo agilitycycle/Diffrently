@@ -287,7 +287,7 @@ const TimelineV2 = () => {
             {/**
              * 
              * Google Square Ad
-             * data-adtest="on"s
+             * data-adtest="on"
              * 
              */}
             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2497889154695387"
